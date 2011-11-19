@@ -322,10 +322,12 @@ $(function() {
 			if (data.method == "announce_join") {
 				// dump whole game for new client
 				console.info("CLIENT JOINED (" + data.count + ")");
+				showNotification("Player joined game");
 				socket.send(JSON.stringify({method: "broadcast", game: game}));
 
 			} else if (data.method == "announce_leave") {
 				console.info("CLIENT LEFT (" + data.count + ")");
+				showNotification("Player left game");
 
 			} else if (data.method == "broadcast") {
 				console.info("broadcast received: ", data.game);
