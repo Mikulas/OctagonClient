@@ -375,6 +375,9 @@ $(function() {
 		socket = new WebSocket(host);
 		socket.onopen = function(msg) {
 			console.info("connected to server");
+			setInterval(function() {
+				socket.send("{\"method\": \"keep-alive\"}");
+			}, 30 * 1000);
 		};
 		socket.onmessage = function(e) {
 			var data = e.data;
