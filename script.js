@@ -1,4 +1,5 @@
 var socket = null;
+var game = null;
 
 function Game() {
 	this.container = null;
@@ -165,13 +166,11 @@ function Card() {
 	this.stand = function() {
 		that.container.removeClass("kneeling").addClass("standing");
 		that.kneeling = false;
-		that.broadcast();
 	};
 	
 	this.kneel = function() {
 		that.container.removeClass("standing").addClass("kneeling");
 		that.kneeling = true;
-		that.broadcast();
 	};
 	
 	this.toggleKneeling = function() {
@@ -238,6 +237,39 @@ function Card() {
 				},
 				stack: ".card:not(#" + that.id + ")"
 			});
+			that.container.contextMenu({menu: "context_menu"},
+				function(action, el, pos) {
+					switch(action) {
+						case "kneel":
+							that.kneel(); break;
+						case "stand":
+							that.stand(); break;
+						case "face-down":
+							that.turnFaceDown(); break;
+						case "face-up":
+							that.turnFaceUp(); break;
+					}
+					that.broadcast();
+				},
+				// on show menu callback
+				function(e) {
+					var card = game.getCard($(e.srcElement).parent().attr('id'));
+					if (card.kneeling) {
+						$("#context_menu [href=#kneel]").hide();
+						$("#context_menu [href=#stand]").show();
+					} else {
+						$("#context_menu [href=#kneel]").show();
+						$("#context_menu [href=#stand]").hide();
+					}
+					if (card.faceDown) {
+						$("#context_menu [href=#face-down]").hide();
+						$("#context_menu [href=#face-up]").show();
+					} else {
+						$("#context_menu [href=#face-down]").show();
+						$("#context_menu [href=#face-up]").hide();
+					}
+				}
+			);
 			that.container.append($("<img/>").attr("src", that.getImageSrc()));
 			that.container.css({
 				left: 0,
@@ -285,8 +317,7 @@ function Card() {
 	};
 
 	this.onDoubleClick = function(e) {
-		//that.toggleKneeling();
-		that.toggleFaceDown();
+		that.toggleKneeling();
 		that.broadcast();
 	};
 
@@ -334,7 +365,7 @@ $(function() {
 		alert('The File APIs are not fully supported. Please update your browser to the latest version.');
 	}
 
-	var game = new Game; // defaults to empty if no broadcast is received upon connecting
+	game = new Game; // defaults to empty if no broadcast is received upon connecting
 
 	var optimizations = {"~@0~": "a12af4e8-be4b-4cda-a6b6-534f97"};
 	var host = "ws://192.168.100.77:4723";

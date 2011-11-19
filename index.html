@@ -2,162 +2,15 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<title>Octgn Client</title>
+	<title>Octagon Client</title>
+
+	<link rel="stylesheet" href="style.css" type="text/css" media="all" />
 
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="json2.js"></script>
 	<script type="text/javascript" src="script.js"></script>
-  
-<style type='text/css'>
-	/** @see http://www.colourlovers.com/palette/1861951/one_d */
-	
-	@-webkit-keyframes kneel {
-		from {-webkit-transform: rotate(0deg);}
-		to {-webkit-transform: rotate(90deg);}
-	}
-	@-webkit-keyframes stand {
-		from {-webkit-transform: rotate(90deg);}
-		to {-webkit-transform: rotate(0deg);}
-	}
-	@-webkit-keyframes flip-down {
-		0% {-webkit-transform: scaleX(1); opacity: 1;}
-		50% {-webkit-transform: scaleX(0); opacity: 0.5;}
-		100% {-webkit-transform: scaleX(1); opacity: 1;}
-	}
-	@-webkit-keyframes flip-up {
-		0% {-webkit-transform: scaleX(1); opacity: 1;}
-		50% {-webkit-transform: scaleX(0); opacity: 0.5;}
-		100% {-webkit-transform: scaleX(1); opacity: 1;}
-	}
-	@-webkit-keyframes pulse-error {
-		0% {color: #DB886B; -webkit-box-shadow: 0px 0px 5px red;}
-		75% {color: white;}
-		85% {-webkit-box-shadow: 0px 0px 0px white;}
-		100% {color: #DB886B; -webkit-box-shadow: 0px 0px 5px red;}
-	}
-
-	html, body, div, span, applet, object, iframe,
-	h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-	a, abbr, acronym, address, big, cite, code,
-	del, dfn, em, img, ins, kbd, q, s, samp,
-	small, strike, strong, sub, sup, tt, var,
-	b, u, i, center,
-	dl, dt, dd, ol, ul, li,
-	fieldset, form, label, legend,
-	table, caption, tbody, tfoot, thead, tr, th, td,
-	article, aside, canvas, details, embed,
-	figure, figcaption, footer, header, hgroup,
-	menu, nav, output, ruby, section, summary,
-	time, mark, audio, video {
-		margin: 0;
-		padding: 0;
-		border: 0;
-		font-size: 100%;
-		font: inherit;
-		vertical-align: baseline;
-	}
-	/* HTML5 display-role reset for older browsers */
-	article, aside, details, figcaption, figure,
-	footer, header, hgroup, menu, nav, section {
-		display: block;
-	}
-	body {
-		line-height: 1;
-	}
-	ol, ul {
-		list-style: none;
-	}
-	blockquote, q {
-		quotes: none;
-	}
-	blockquote:before, blockquote:after,
-	q:before, q:after {
-		content: '';
-		content: none;
-	}
-	table {
-		border-collapse: collapse;
-		border-spacing: 0;
-	}
-
-	.card {
-		-webkit-animation-iteration-count: 1;
-		-webkit-transition-timing-function: ease-in-out;
-		-webkit-transform-origin: 50% 66%;
-		display: block;
-		width: 168px;
-		height: 240px;
-	}
-
-	.card img {
-		width: 168px;
-		height: 240px;
-		border: none;
-		border-radius: 12px;
-	}
-
-	.card.kneeling {
-		-webkit-animation-duration: .6s;
-		-webkit-transform: rotate(90deg);
-		-webkit-animation-name: kneel; 
-	}
-	
-	.card.standing {
-		-webkit-animation-duration: .6s;
-		-webkit-transform: rotate(0deg);
-		-webkit-animation-name: stand;
-	}
-
-	.card.face-down {
-		-webkit-animation-duration: .4s;
-		-webkit-animation-name: flip-down;
-	}
-
-	.card.face-up {
-		-webkit-animation-duration: .4s;
-		-webkit-animation-name: flip-up;
-	}
-
-	.card.focus {
-		outline: 2px auto -webkit-focus-ring-color;
-	}
-
-	#notifications {
-		text-align: center;
-		width: 100%;
-		position: absolute;
-		bottom: 100px;
-	}
-
-	.notification {
-		font-family: "Verdana";
-		display: block;
-		font-size: 30pt;
-		color: white;
-		background-color: rgba(0, 0, 0, 0.6);
-		width: 480px;
-		height: 70px;
-		padding: 20px 0 0 0;
-		margin: 10pt auto;
-		border-radius: 7px;
-
-		-webkit-animation-iteration-count: infinite;
-		-webkit-animation-duration: 5s;
-		-webkit-transition-timing-function: ease;
-	}
-
-	.notification.error {
-		-webkit-animation-name: pulse-error;
-	}
-
-	#drop_zone {
-		display: block;
-		width: 100%;
-		height: 60px;
-		background-color: #CCC;
-	}
-</style>
+	<script type="text/javascript" src="context_menu.js"></script>
 
 </head>
 <body>
@@ -167,5 +20,12 @@
 	-->
 	<div id="board"></div>
 	<div id="notifications"></div>
+
+	<ul id="context_menu" class="contextMenu">
+		<li><a href="#kneel">Kneel</a></li>
+		<li><a href="#stand">Stand</a></li>
+		<li><a href="#face-down">Turn face down</a></li>
+		<li><a href="#face-up">Turn face up</a></li>
+	</ul>
 </body>
 </html>
