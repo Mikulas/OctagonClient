@@ -358,6 +358,8 @@ function Card() {
 }
 
 $(function() {
+	$(document).disableSelection();
+
 	// Check for the various File API support.
 	if (window.File && window.FileReader && window.FileList && window.Blob) {
 		// Great success! All the File APIs are supported.
