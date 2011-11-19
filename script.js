@@ -150,7 +150,8 @@ function Card() {
 	this.id = null;
 	this.position = {x: null, y: null};
 	this.kneeling = false;
-	
+	this.faceDown = false;
+
 	var that = this;
 	
 	this._init = function() {
@@ -163,19 +164,15 @@ function Card() {
 	};
 	
 	this.stand = function() {
-		if (that.kneeling) {
-			that.container.removeClass("kneeling").addClass("standing");
-			that.kneeling = false;
-			that.broadcast();
-		}
+		that.container.removeClass("kneeling").addClass("standing");
+		that.kneeling = false;
+		that.broadcast();
 	};
 	
 	this.kneel = function() {
-		if (!that.kneeling) {
-			that.container.removeClass("standing").addClass("kneeling");
-			that.kneeling = true;
-			that.broadcast();
-		}
+		that.container.removeClass("standing").addClass("kneeling");
+		that.kneeling = true;
+		that.broadcast();
 	};
 	
 	this.toggleKneeling = function() {
@@ -186,8 +183,38 @@ function Card() {
 		}
 	};
 
+	this.turnFaceUp = function() {
+		that.container.removeClass("face-down").addClass("face-up");
+		// this animation takes .4 seconds, being at scale 0 at .2
+		setTimeout(function() {
+			that.container.children('img').attr('src', that.getImageSrc());
+		}, 200);
+		that.faceDown = false;
+	};
+
+	this.turnFaceDown = function() {
+		that.container.removeClass("face-up").addClass("face-down");
+		// this animation takes .4 seconds, being at scale 0 at .2
+		setTimeout(function() {
+			that.container.children('img').attr('src', that.getBackImageSrc());
+		}, 200);
+		that.faceDown = true;
+	};
+
+	this.toggleFaceDown = function() {
+		if (that.faceDown) {
+			that.turnFaceUp();
+		} else {
+			that.turnFaceDown();
+		}
+	};
+
 	this.getImageSrc = function() {
 		return "http://192.168.100.77/OctgnWeb/images/" + this.card_id + ".jpg";
+	};
+
+	this.getBackImageSrc = function() {
+		return "http://192.168.100.77/OctgnWeb/images/facedown.jpg";
 	};
 
 	this.render = function() {
@@ -219,9 +246,15 @@ function Card() {
 		}
 
 		if (that.kneeling && !that.container.hasClass("kneeling")) {
-			that.container.removeClass("standing").addClass("kneeling");
+			that.kneel();
 		} else if (!that.kneeling && that.container.hasClass("kneeling")) {
-			that.container.removeClass("kneeling").addClass("standing");
+			that.stand();
+		}
+
+		if (that.faceDown && !that.container.hasClass("face-down")) {
+			that.turnFaceDown();
+		} else if (!that.faceDown && that.container.hasClass("face-down")) {
+			that.turnFaceUp();
 		}
 
 		if (that.position.left != null && that.position.top != null) {
@@ -237,6 +270,7 @@ function Card() {
 		that.card_id = data.card_id;
 		that.position = data.position;
 		that.kneeling = data.kneeling;
+		that.faceDown = data.faceDown;
 	};
 	
 	this.onClick = function(e) {
@@ -244,7 +278,9 @@ function Card() {
 	};
 
 	this.onDoubleClick = function(e) {
-		that.toggleKneeling();
+		//that.toggleKneeling();
+		that.toggleFaceDown();
+		that.broadcast();
 	};
 
 	this.broadcast = function(e) {
@@ -256,7 +292,8 @@ function Card() {
 			position: that.position,
 			card_id: that.card_id,
 			id: that.id,
-			kneeling: that.kneeling
+			kneeling: that.kneeling,
+			faceDown: that.faceDown
 		};
 	};
 	
