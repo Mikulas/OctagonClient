@@ -148,7 +148,7 @@ function Card() {
 	this.container = null;
 	this.card_id = null;
 	this.id = null;
-	this.position = {top: null, left: null, z: null};
+	this.position = {top: null, left: null, z: 1};
 	this.kneeling = false;
 	this.faceDown = false;
 
@@ -237,7 +237,7 @@ function Card() {
 					that.position.z = that.container.css("z-index");
 					that.broadcast();
 				},
-				stack: ".card"
+				stack: ".card:not(#" + that.id + ")"
 			});
 			that.container.append($("<img/>").attr("src", that.getImageSrc()));
 			that.container.css({
@@ -259,13 +259,13 @@ function Card() {
 			that.turnFaceUp();
 		}
 
+		that.container.css({"z-index": that.position.z});
 		if (that.position.left != null && that.position.top != null) {
 			that.container.stop(true).animate({
 				left: that.position.left,
 				top: that.position.top
 			}, 600);
 		}
-		that.container.css({"z-index": that.position.z});
 	};
 
 	this.update = function(data) {
