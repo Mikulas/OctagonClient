@@ -202,6 +202,9 @@ function Card() {
 				that.onClick(e);
 			});
 			that.container.draggable({
+				start: function() {
+					$(this).stop(true);
+				},
 				stop: function(event, ui) {
 					that.position = ui.position;
 					socket.send(JSON.stringify({method: "update_card", card: that.toSerializable()}));
@@ -216,7 +219,7 @@ function Card() {
 		}
 
 		if (that.position.left != null && that.position.top != null) {
-			that.container.animate({
+			that.container.stop(true).animate({
 				left: that.position.left,
 				top: that.position.top
 			}, 600);
