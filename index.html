@@ -24,7 +24,20 @@
 		-webkit-animation-iteration-count: 1;
 		-webkit-transition-timing-function: ease-in-out;
 		-webkit-transform-origin: 50% 66%;
-		border: 1px dashed brown;
+		display: block;
+		width: 168px;
+		height: 240px;
+		padding: none;
+		margin: none;
+	}
+
+	.card img {
+		width: 168px;
+		height: 240px;
+		border: none;
+		padding: none;
+		margin: none;
+		border-radius: 12px;
 	}
 
 	.card.kneeling {
@@ -40,12 +53,22 @@
 	.card.focus {
 		outline: 2px auto -webkit-focus-ring-color;
 	}
+
+	#drop_zone {
+		display: block;
+		width: 100%;
+		border: 2px dashed gray;
+		height: 60px;
+		background-color: #CCC;
+	}
 </style>
 
 </head>
 <body>
-	<button id="run">toggle</button>
+	<div id="drop_zone">Drop your deck here</div>
+	<!--
 	<div id="c" class="card standing" style="background: url('http://wargamecenter.files.wordpress.com/2010/08/agot_eddard.jpg?w=240') no-repeat no-repeat; width: 240px; height: 328px;"></div>
-	<textarea id="output" style="width: 100%; height: 800px;"></textarea>
+	-->
+	<div id="board"></div>
 </body>
 </html>
