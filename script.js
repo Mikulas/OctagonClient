@@ -149,6 +149,7 @@ function Card() {
 	this.card_id = null;
 	this.id = null;
 	this.position = {x: null, y: null};
+	this.kneeling = false;
 	
 	var that = this;
 	
@@ -161,28 +162,24 @@ function Card() {
 		that.container.addClass("focus");
 	};
 	
-	this.isStanding = function() {
-		return that.container.hasClass("standing");
-	};
-	
-	this.isKneeling = function() {
-		return that.container.hasClass("kneeling");
-	};
-	
 	this.stand = function() {
-		if (that.isStanding)
-			return false;
-		that.container.removeClass("kneeling").addClass("standing");
+		if (that.kneeling) {
+			that.container.removeClass("kneeling").addClass("standing");
+			that.kneeling = false;
+			that.broadcast();
+		}
 	};
 	
 	this.kneel = function() {
-		if (that.isKneeling)
-			return false;
-		that.container.removeClass("standing").addClass("kneeling");
+		if (!that.kneeling) {
+			that.container.removeClass("standing").addClass("kneeling");
+			that.kneeling = true;
+			that.broadcast();
+		}
 	};
 	
 	this.toggleKneeling = function() {
-		if (that.isKneeling) {
+		if (that.kneeling) {
 			that.stand();
 		} else {
 			that.kneel();
@@ -201,13 +198,16 @@ function Card() {
 			that.container.click(function(e) {
 				that.onClick(e);
 			});
+			that.container.dblclick(function(e) {
+				that.onDoubleClick(e);
+			});
 			that.container.draggable({
 				start: function() {
 					$(this).stop(true);
 				},
 				stop: function(event, ui) {
 					that.position = ui.position;
-					socket.send(JSON.stringify({method: "update_card", card: that.toSerializable()}));
+					that.broadcast();
 				}
 			});
 			that.container.append($("<img/>").attr("src", that.getImageSrc()));
@@ -216,6 +216,12 @@ function Card() {
 				top: 0
 			});
 			$("#board").append(that.container);
+		}
+
+		if (that.kneeling && !that.container.hasClass("kneeling")) {
+			that.container.removeClass("standing").addClass("kneeling");
+		} else if (!that.kneeling && that.container.hasClass("kneeling")) {
+			that.container.removeClass("kneeling").addClass("standing");
 		}
 
 		if (that.position.left != null && that.position.top != null) {
@@ -230,17 +236,27 @@ function Card() {
 		that.id = data.id;
 		that.card_id = data.card_id;
 		that.position = data.position;
+		that.kneeling = data.kneeling;
 	};
 	
 	this.onClick = function(e) {
 		//this.focus();
 	};
 
+	this.onDoubleClick = function(e) {
+		that.toggleKneeling();
+	};
+
+	this.broadcast = function(e) {
+		socket.send(JSON.stringify({method: "update_card", card: that.toSerializable()}));
+	};
+
 	this.toSerializable = function() {
 		return {
 			position: that.position,
 			card_id: that.card_id,
-			id: that.id
+			id: that.id,
+			kneeling: that.kneeling
 		};
 	};
 	
