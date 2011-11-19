@@ -31,7 +31,7 @@ function Game() {
 			$.each(pl.piles, function(i, pi) {
 				var pile = new Pile;
 				pile.cards = [];
-				$.each(pi.cards, function(i, ca) {
+				$.each(pi.c, function(i, ca) {
 					var card = new Card;
 					card.update(ca);
 					pile.cards.push(card);
@@ -111,7 +111,6 @@ function Player() {
 			piles: {}
 		};
 		$.each(that.piles, function(i, pile) {
-			console.log(i);
 			obj.piles[i] = pile.toSerializable();
 		});
 		return obj;
@@ -136,9 +135,9 @@ function Pile() {
 	};
 
 	this.toSerializable = function() {
-		var obj = {cards: []};
+		var obj = {c: []};
 		$.each(that.cards, function(i, card) {
-			obj.cards.push(card.toSerializable());
+			obj.c.push(card.toSerializable());
 		});
 		return obj;
 	};
@@ -148,7 +147,7 @@ function Card() {
 	this.container = null;
 	this.card_id = null;
 	this.id = null;
-	this.position = {top: null, left: null, z: 1};
+	this.position = {top: 0, left: 0, z: 1};
 	this.kneeling = false;
 	this.faceDown = false;
 
@@ -210,7 +209,7 @@ function Card() {
 	};
 
 	this.getImageSrc = function() {
-		return "http://192.168.100.77/OctgnWeb/images/" + this.card_id + ".jpg";
+		return "http://192.168.100.77/OctgnWeb/images/" + that.card_id + ".jpg";
 	};
 
 	this.getBackImageSrc = function() {
@@ -270,10 +269,15 @@ function Card() {
 
 	this.update = function(data) {
 		that.id = data.id;
-		that.card_id = data.card_id;
-		that.position = data.position;
-		that.kneeling = data.kneeling;
-		that.faceDown = data.faceDown;
+		that.card_id = data.cid;
+		if (data.hasOwnProperty("p"))
+			that.position = {
+				top: data.p.hasOwnProperty("t") ? data.p.t : 0,
+				left: data.p.hasOwnProperty("l") ? data.p.l : 0,
+				z: data.p.hasOwnProperty("z") ? data.p.z : 1
+			};
+		that.kneeling = data.hasOwnProperty("k") ? data.k : false;
+		that.faceDown = data.hasOwnProperty("f") ? data.f : false;
 	};
 	
 	this.onClick = function(e) {
@@ -291,13 +295,32 @@ function Card() {
 	};
 
 	this.toSerializable = function() {
-		return {
-			position: that.position,
-			card_id: that.card_id,
-			id: that.id,
-			kneeling: that.kneeling,
-			faceDown: that.faceDown
+		var obj = {
+			cid: that.card_id,
+			id: that.id
 		};
+		if (that.position.top != 0) {
+			if (!obj.hasOwnProperty("p"))
+				obj.p = {};
+			obj.p.t = that.position.top;
+		}
+		if (that.position.left != 0) {
+			if (!obj.hasOwnProperty("p"))
+				obj.p = {};
+			obj.p.l = that.position.left;
+		}
+		if (that.position.z != 1) {
+			if (!obj.hasOwnProperty("p"))
+				obj.p = {};
+			obj.p.z = that.position.z;
+		}
+		if (that.kneeling) {
+			obj.k = that.kneeling;
+		}
+		if (that.faceDown) {
+			obj.f = that.faceDown;
+		}
+		return obj;
 	};
 	
 	this._init();
@@ -313,6 +336,7 @@ $(function() {
 
 	var game = new Game; // defaults to empty if no broadcast is received upon connecting
 
+	var optimizations = {"~@0~": "a12af4e8-be4b-4cda-a6b6-534f97"};
 	var host = "ws://192.168.100.77:4723";
 	try {
 		socket = new WebSocket(host);
@@ -320,13 +344,30 @@ $(function() {
 			console.info("connected to server");
 		};
 		socket.onmessage = function(e) {
-			var data = JSON.parse(e.data);
-			// console.info(data);
+			var data = e.data;
+			$.each(optimizations, function(i, v) {
+				var regex = new RegExp(i, "g");
+				data = data.replace(regex, v);
+			});
+			data = JSON.parse(data);
+
 			if (data.method == "announce_join") {
 				// dump whole game for new client
 				console.info("CLIENT JOINED (" + data.count + ")");
 				showNotification("Player joined game");
-				socket.send(JSON.stringify({method: "broadcast", game: game}));
+				var packed = '{"method": "broadcast", "game": ' + game.toJSON() + '}';
+				packed = packed.replace(/false/g, "0");
+				packed = packed.replace(/null/g, "0");
+				$.each(optimizations, function(i, v) {
+					var regex = new RegExp(v, "g");
+					packed = packed.replace(regex, i);
+				});
+				console.log("broadcast sent", packed);
+				if (packed.length > 16384) {
+					console.log(packed.length);
+					return false;
+				}
+				socket.send(packed);
 
 			} else if (data.method == "announce_leave") {
 				console.info("CLIENT LEFT (" + data.count + ")");
@@ -334,7 +375,7 @@ $(function() {
 
 			} else if (data.method == "broadcast") {
 				console.info("broadcast received: ", data.game);
-				game.updateFromBroadcast(JSON.parse(data.game));
+				game.updateFromBroadcast(data.game);
 
 			} else if (data.method == "update_card") {
 				console.info("card update received: ", data.card);
