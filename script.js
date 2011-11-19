@@ -311,7 +311,6 @@ $(function() {
 	var game = new Game; // defaults to empty if no broadcast is received upon connecting
 
 	var host = "ws://192.168.100.77:4723";
-	var ignore_next_broadcast = false;
 	try {
 		socket = new WebSocket(host);
 		socket.onopen = function(msg) {
@@ -338,12 +337,13 @@ $(function() {
 				card.update(data.card);
 				card.render();
 			}
-
 		};
+
 		/*
 		 $('#output').val($('#output').val() + "\n" + e.data);
 		 */
 		socket.onclose = function(msg) {
+			showError("Server not available");
 			console.info("connection closed");
 		};
 		socket.onerror = function(error) {
@@ -411,7 +411,23 @@ $(function() {
 		game.render();
 		console.log(game);
 	}
-	
+
+	function showNotification(content, persist) {
+		var $node = $('<div/>').addClass("notification").html(content).hide();
+		$("#notifications").append($node);
+		$node.fadeIn();
+		if (persist == undefined || !persist) {
+			setInterval(function() {
+				$node.fadeOut();
+			}, 2000);
+		}
+		return $node;
+	}
+
+	function showError(content) {
+		return showNotification(content, true).addClass('error');
+	}
+
 	$("#drop_zone")[0].addEventListener('dragover', handleDragOver, false);
 	$("#drop_zone")[0].addEventListener('drop', handleFileSelect, false);
 });

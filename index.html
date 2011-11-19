@@ -10,6 +10,8 @@
 	<script type="text/javascript" src="script.js"></script>
   
 <style type='text/css'>
+	/** @see http://www.colourlovers.com/palette/1861951/one_d */
+	
 	@-webkit-keyframes kneel {
 		from {-webkit-transform: rotate(0deg);}
 		to {-webkit-transform: rotate(90deg);}
@@ -28,6 +30,12 @@
 		50% {-webkit-transform: scaleX(0); opacity: 0.5;}
 		100% {-webkit-transform: scaleX(1); opacity: 1;}
 	}
+	@-webkit-keyframes pulse-error {
+		0% {color: #DB886B; -webkit-box-shadow: 0px 0px 5px red;}
+		75% {color: white;}
+		85% {-webkit-box-shadow: 0px 0px 0px white;}
+		100% {color: #DB886B; -webkit-box-shadow: 0px 0px 5px red;}
+	}
 
 	.card {
 		-webkit-animation-iteration-count: 1;
@@ -36,16 +44,16 @@
 		display: block;
 		width: 168px;
 		height: 240px;
-		padding: none;
-		margin: none;
+		padding: 0;
+		margin: 0;
 	}
 
 	.card img {
 		width: 168px;
 		height: 240px;
 		border: none;
-		padding: none;
-		margin: none;
+		padding: 0;
+		margin: 0;
 		border-radius: 12px;
 	}
 
@@ -75,12 +83,42 @@
 		outline: 2px auto -webkit-focus-ring-color;
 	}
 
+	#notifications {
+		text-align: center;
+		width: 100%;
+		position: absolute;
+		bottom: 100px;
+	}
+
+	.notification {
+		font-family: "Verdana";
+		display: block;
+		font-size: 30pt;
+		color: white;
+		background-color: rgba(0, 0, 0, 0.6);
+		width: 480px;
+		height: 70px;
+		padding: 20px 0 0 0;
+		margin: auto;
+		border-radius: 7px;
+
+		-webkit-animation-iteration-count: infinite;
+		-webkit-animation-duration: 5s;
+		-webkit-transition-timing-function: ease;
+	}
+
+	.notification.error {
+		-webkit-animation-name: pulse-error;
+	}
+
 	#drop_zone {
 		display: block;
 		width: 100%;
 		border: 2px dashed gray;
 		height: 60px;
 		background-color: #CCC;
+		padding: 0;
+		margin: 0;
 	}
 </style>
 
@@ -91,5 +129,6 @@
 	<div id="c" class="card standing" style="background: url('http://wargamecenter.files.wordpress.com/2010/08/agot_eddard.jpg?w=240') no-repeat no-repeat; width: 240px; height: 328px;"></div>
 	-->
 	<div id="board"></div>
+	<div id="notifications"></div>
 </body>
 </html>
