@@ -148,7 +148,7 @@ function Card() {
 	this.container = null;
 	this.card_id = null;
 	this.id = null;
-	this.position = {x: null, y: null};
+	this.position = {top: null, left: null, z: null};
 	this.kneeling = false;
 	this.faceDown = false;
 
@@ -234,8 +234,10 @@ function Card() {
 				},
 				stop: function(event, ui) {
 					that.position = ui.position;
+					that.position.z = that.container.css("z-index");
 					that.broadcast();
-				}
+				},
+				stack: ".card"
 			});
 			that.container.append($("<img/>").attr("src", that.getImageSrc()));
 			that.container.css({
@@ -263,6 +265,7 @@ function Card() {
 				top: that.position.top
 			}, 600);
 		}
+		that.container.css({"z-index": that.position.z});
 	};
 
 	this.update = function(data) {
