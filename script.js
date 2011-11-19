@@ -1,5 +1,6 @@
 var socket = null;
 var game = null;
+var optimizations = {"~@0~": "a12af4e8-be4b-4cda-a6b6-534f97"};
 
 function Game() {
 	this.container = null;
@@ -73,6 +74,22 @@ function Game() {
 
 	this.toJSON = function() {
 		return JSON.stringify(that.toSerializable());
+	};
+
+	this.broadcast = function() {
+		var packed = '{"method": "broadcast", "game": ' + game.toJSON() + '}';
+		packed = packed.replace(/false/g, "0");
+		packed = packed.replace(/null/g, "0");
+		$.each(optimizations, function(i, v) {
+			var regex = new RegExp(v, "g");
+			packed = packed.replace(regex, i);
+		});
+		console.log("broadcast sent", packed);
+		if (packed.length > 16384) {
+			console.log(packed.length);
+			return false;
+		}
+		socket.send(packed);
 	};
 
 	this._init();
@@ -369,7 +386,6 @@ $(function() {
 
 	game = new Game; // defaults to empty if no broadcast is received upon connecting
 
-	var optimizations = {"~@0~": "a12af4e8-be4b-4cda-a6b6-534f97"};
 	var host = "ws://192.168.100.77:4723";
 	try {
 		socket = new WebSocket(host);
@@ -391,19 +407,7 @@ $(function() {
 				// dump whole game for new client
 				console.info("CLIENT JOINED (" + data.count + ")");
 				showNotification("Player joined game");
-				var packed = '{"method": "broadcast", "game": ' + game.toJSON() + '}';
-				packed = packed.replace(/false/g, "0");
-				packed = packed.replace(/null/g, "0");
-				$.each(optimizations, function(i, v) {
-					var regex = new RegExp(v, "g");
-					packed = packed.replace(regex, i);
-				});
-				console.log("broadcast sent", packed);
-				if (packed.length > 16384) {
-					console.log(packed.length);
-					return false;
-				}
-				socket.send(packed);
+				game.broadcast();
 
 			} else if (data.method == "announce_leave") {
 				console.info("CLIENT LEFT (" + data.count + ")");
@@ -492,6 +496,7 @@ $(function() {
 		});
 		game.render();
 		console.log(game);
+		game.broadcast();
 	}
 
 	function showNotification(content, persist) {
