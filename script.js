@@ -140,6 +140,7 @@ function Player() {
 			$.each(that.counters, function(i, v) {
 				var $input = $("<input type=\"number\"/>").addClass("counter " + i);
 				$input.bind("change click", function() {
+					that.counters[i] = $(this).val();
 					send(JSON.stringify({
 						"method": "update_counter",
 						"player_id": $input.parent().attr("data-player-id"),
