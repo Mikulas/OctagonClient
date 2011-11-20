@@ -33,6 +33,8 @@ function Game() {
 
 	this.updateFromBroadcast = function(data) {
 		that.players = []; // wipe
+		$("#board").children().remove();
+		$("#counters").children().remove();
 		$.each(data.players, function(i, pl) {
 			var player = new Player;
 			player.id = i;
