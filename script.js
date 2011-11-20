@@ -1,6 +1,13 @@
 var socket = null;
 var game = null;
 var optimizations = {"~@0~": "a12af4e8-be4b-4cda-a6b6-534f97"};
+var client_id = null;
+var client_view = null;
+
+function send(content) {
+	var tampered = content.substr(0, content.length - 1) + ",\"client_id\":\"" + client_id + "-" + client_view + "\",\"time\":" + new Date().getTime() + "}";
+	socket.send(tampered);
+}
 
 function Game() {
 	this.container = null;
@@ -84,12 +91,11 @@ function Game() {
 			var regex = new RegExp(v, "g");
 			packed = packed.replace(regex, i);
 		});
-		console.log("broadcast sent", packed);
 		if (packed.length > 16384) {
 			console.log(packed.length);
 			return false;
 		}
-		socket.send(packed);
+		send(packed);
 	};
 
 	this._init();
@@ -233,7 +239,6 @@ function Card() {
 	};
 
 	this.render = function() {
-		console.info("render card #" + that.id);
 		that.container = $(".card#" + that.id);
 		if (!that.container.size()) {
 			that.container = $("<div/>").attr("id", that.id).addClass("card");
@@ -339,7 +344,7 @@ function Card() {
 	};
 
 	this.broadcast = function(e) {
-		socket.send(JSON.stringify({method: "update_card", card: that.toSerializable()}));
+		send(JSON.stringify({method: "update_card", card: that.toSerializable()}));
 	};
 
 	this.toSerializable = function() {
@@ -377,6 +382,19 @@ function Card() {
 $(function() {
 	$(document).disableSelection();
 
+	if (!localStorage.hasOwnProperty("client_id")) {
+		localStorage.client_id = new Date().getTime() + "-" + Math.floor((Math.random() * 10e6));
+	}
+	client_id = localStorage.client_id;
+
+	if (!localStorage.hasOwnProperty("client_view")) {
+		localStorage.client_view = 0;
+	} else {
+		localStorage.client_view++;
+	}
+	client_view = localStorage.client_view;
+	console.log("This clients id = ", client_id + "-" + client_view);
+
 	// Check for the various File API support.
 	if (window.File && window.FileReader && window.FileList && window.Blob) {
 		// Great success! All the File APIs are supported.
@@ -392,7 +410,7 @@ $(function() {
 		socket.onopen = function(msg) {
 			console.info("connected to server");
 			setInterval(function() {
-				socket.send("{\"method\": \"keep-alive\"}");
+				send("{\"method\": \"keep-alive\"}");
 			}, 30 * 1000);
 		};
 		socket.onmessage = function(e) {
@@ -402,6 +420,9 @@ $(function() {
 				data = data.replace(regex, v);
 			});
 			data = JSON.parse(data);
+			if (data.client_id == client_id + "-" + client_view) {
+				return false;
+			}
 
 			if (data.method == "announce_join") {
 				// dump whole game for new client
@@ -475,7 +496,6 @@ $(function() {
 	function parseO8DXml(xmlString) {
 		var player = game.addPlayer();
 		$(xmlString).children().each(function(i, sec) {
-			console.log($(sec), $(sec).attr("name"));
 			$(sec).children().each(function(i, ca) {
 				for (var qty = 0; qty < $(ca).attr('qty'); ++qty) {
 					var card = new Card;
