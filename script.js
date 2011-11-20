@@ -23,6 +23,7 @@ function Game() {
 	this.addPlayer = function() {
 		var p = new Player;
 		that.players.push(p);
+		p.id = that.players.length - 1;
 		return p;
 	};
 
@@ -34,7 +35,7 @@ function Game() {
 		that.players = []; // wipe
 		$.each(data.players, function(i, pl) {
 			var player = new Player;
-			player.name = pl.name;
+			player.id = i;
 			player.counters = pl.counters;
 			player.piles = {};
 			$.each(pl.piles, function(i, pi) {
@@ -73,9 +74,9 @@ function Game() {
 	};
 
 	this.toSerializable = function() {
-		var obj = {players: []};
+		var obj = {players: {}};
 		$.each(that.players, function(i, player) {
-			obj.players.push(player.toSerializable());
+			obj.players[i] = player.toSerializable();
 		});
 		return obj;
 	};
@@ -104,7 +105,7 @@ function Game() {
 
 function Player() {
 	this.counter_container = null;
-	this.name = null;
+	this.id = null;
 	this.counters = {power: 0, gold: 0};
 	this.piles = {};
 
@@ -132,14 +133,14 @@ function Player() {
 
 	this.render = function() {
 		if (that.counter_container == null) {
-			that.counter_container = $("<div/>").attr("id", this.name);
+			that.counter_container = $("<div/>").attr("data-player-id", this.id);
 			$("#counters").append(that.counter_container);
 			$.each(that.counters, function(i, v) {
 				var $input = $("<input type=\"number\"/>").addClass("counter " + i);
 				$input.bind("change click", function() {
 					send(JSON.stringify({
 						"method": "update_counter",
-						"player_id": $input.parent().attr("id"),
+						"player_id": $input.parent().attr("data-player-id"),
 						"counter": i,
 						"value": $(this).val()
 					}));
@@ -158,7 +159,7 @@ function Player() {
 
 	this.toSerializable = function() {
 		var obj = {
-			name: that.name,
+			id: that.id,
 			counters: that.counters,
 			piles: {}
 		};
