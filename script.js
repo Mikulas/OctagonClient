@@ -323,7 +323,17 @@ function Card() {
 					}
 				}
 			);
-			that.container.append($("<img/>").attr("src", that.getImageSrc()));
+
+			that.container.mouseenter(function(e) {
+				if (!that.faceDown) {
+					$("#magnifier").attr("src", that.getImageSrc()).fadeIn();
+				}
+			}).mouseleave(function(e) {
+				if (!$(e.toElement).hasClass("raw-card"))
+					$("#magnifier").fadeOut();
+			});
+
+			that.container.append($("<img/>").addClass("raw-card").attr("src", that.getImageSrc()));
 			that.container.css({
 				left: 0,
 				top: 0

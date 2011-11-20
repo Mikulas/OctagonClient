@@ -189,6 +189,14 @@ table {
 	background: white url("icons/gold.png") no-repeat no-repeat 2px 2px;
 }
 
+#magnifier {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	border-radius: 18px;
+	z-index: 9998;
+}
+
 /**
  * ----------------------------------------------------------------------
  *  CONTEXT MENU
