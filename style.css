@@ -164,6 +164,31 @@ table {
 	background-color: #CCC;
 }
 
+#counters {
+	display: block;
+	width: 100%;
+	height: 30px;
+	background-color: #DDD;
+}
+
+.counter {
+	border: none;
+	width: 40px;
+	padding: 0 5px 0 29px;
+	text-align: right;
+	height: 30px;
+	font-size: 13pt;
+	margin: 0 5px 0 5px;
+}
+
+.counter.power {
+	background: white url("icons/power.png") no-repeat no-repeat 2px 2px;
+}
+
+.counter.gold {
+	background: white url("icons/gold.png") no-repeat no-repeat 2px 2px;
+}
+
 /**
  * ----------------------------------------------------------------------
  *  CONTEXT MENU

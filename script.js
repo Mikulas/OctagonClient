@@ -57,6 +57,7 @@ function Game() {
 			$.each(player.piles.play.cards, function(i, card) {
 				card.render();
 			});
+			player.render();
 		});
 	};
 
@@ -102,8 +103,9 @@ function Game() {
 }
 
 function Player() {
+	this.counter_container = null;
 	this.name = null;
-	this.counters = [];
+	this.counters = {power: 0, gold: 0};
 	this.piles = {};
 
 	var that = this;
@@ -126,6 +128,32 @@ function Player() {
 			}
 		});
 		return found;
+	};
+
+	this.render = function() {
+		if (that.counter_container == null) {
+			that.counter_container = $("<div/>").attr("id", this.name);
+			$("#counters").append(that.counter_container);
+			$.each(that.counters, function(i, v) {
+				var $input = $("<input type=\"number\"/>").addClass("counter " + i);
+				$input.bind("change click", function() {
+					send(JSON.stringify({
+						"method": "update_counter",
+						"player_id": $input.parent().attr("id"),
+						"counter": i,
+						"value": $(this).val()
+					}));
+				});
+				that.counter_container.append($input);
+			});
+		}
+		$.each(that.counters, function(i, v) {
+			that.counter_container.children("." + i).val(that.counters[i]);
+		});
+	};
+
+	this.updateCounter = function(data) {
+		that.counters[data.counter] = data.value;
 	};
 
 	this.toSerializable = function() {
@@ -380,7 +408,7 @@ function Card() {
 }
 
 $(function() {
-	$(document).disableSelection();
+	$("#board").disableSelection();
 
 	if (!localStorage.hasOwnProperty("client_id")) {
 		localStorage.client_id = new Date().getTime() + "-" + Math.floor((Math.random() * 10e6));
@@ -443,6 +471,12 @@ $(function() {
 				var card = game.getCard(data.card.id);
 				card.update(data.card);
 				card.render();
+
+			} else if (data.method == "update_counter") {
+				console.info("card counter received: ", data);
+				var player = game.players[data.player_id];
+				player.updateCounter(data);
+				player.render();
 			}
 		};
 
