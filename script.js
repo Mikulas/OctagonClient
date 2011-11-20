@@ -3,6 +3,7 @@ var game = null;
 var optimizations = {"~@0~": "a12af4e8-be4b-4cda-a6b6-534f97"};
 var client_id = null;
 var client_view = null;
+var this_player = null;
 
 function send(content) {
 	var tampered = content.substr(0, content.length - 1) + ",\"client_id\":\"" + client_id + "-" + client_view + "\",\"time\":" + new Date().getTime() + "}";
@@ -119,6 +120,7 @@ function Player() {
 		this.piles.discard = new Pile;
 		this.piles.death = new Pile;
 		this.piles.play = new Pile;
+		this.piles.hand = new Pile;
 		this.counters = {power: 0, gold: 0};
 	};
 
@@ -151,9 +153,33 @@ function Player() {
 				that.counter_container.append($input);
 			});
 		}
+		$("#hand").children().remove();
+		$.each(that.piles.hand.cards, function(i, card) {
+			var $element = $("<div/>").attr("id", that.id).addClass("card").addClass("small");
+			$element.append($("<img/>").attr("src", card.getImageSrc()).addClass("raw-card"));
+			$("#hand").append($element);
+
+		});
 		$.each(that.counters, function(i, v) {
 			that.counter_container.children("." + i).val(that.counters[i]);
 		});
+	};
+
+	this.draw = function(count) {
+		if (count == undefined)
+			count = 1;
+
+		var drawn = 0;
+		while (count-- > 0) {
+			var card = that.piles.deck.cards.pop();
+			if (card == undefined) {
+				console.log("cannot draw more cards, deck depleted");
+				break;
+			}
+			drawn++;
+			that.piles.hand.cards.push(card);
+		}
+		console.log("player draws " + drawn + " card" + (drawn > 1 ? "s" : ""));
 	};
 
 	this.updateCounter = function(data) {
@@ -188,6 +214,17 @@ function Pile() {
 			}
 		});
 		return found;
+	};
+
+	this.shuffle = function() {
+		var tmp, current, top = that.cards.length;
+		while (--top >= 0) {
+			current = Math.floor(Math.random() * (top + 1));
+			tmp = that.cards[current];
+			that.cards[current] = that.cards[top];
+			that.cards[top] = tmp;
+		}
+		console.log("pile shuffled");
 	};
 
 	this.toSerializable = function() {
@@ -324,15 +361,6 @@ function Card() {
 					}
 				}
 			);
-
-			that.container.mouseenter(function(e) {
-				if (!that.faceDown) {
-					$("#magnifier").attr("src", that.getImageSrc()).fadeIn();
-				}
-			}).mouseleave(function(e) {
-				if (!$(e.toElement).hasClass("raw-card"))
-					$("#magnifier").fadeOut();
-			});
 
 			that.container.append($("<img/>").addClass("raw-card").attr("src", that.getImageSrc()));
 			that.container.css({
@@ -543,6 +571,7 @@ $(function() {
 
 	function parseO8DXml(xmlString) {
 		var player = game.addPlayer();
+		this_player = player;
 		$(xmlString).children().each(function(i, sec) {
 			$(sec).children().each(function(i, ca) {
 				for (var qty = 0; qty < $(ca).attr('qty'); ++qty) {
@@ -562,10 +591,28 @@ $(function() {
 				}
 			});
 		});
+
+		player.piles.deck.shuffle();
+		player.draw(7);
 		game.render();
-		console.log(game);
 		game.broadcast();
 	}
+
+	$(".card").live("mouseenter", function(e) {
+		if (!$(this).hasClass("face-down")) {
+			$("#magnifier").attr("src", $(this).children("img").attr("src")).fadeIn();
+		}
+	}).live("mouseleave", function(e) {
+		if (!$(e.toElement).hasClass("raw-card")) {
+			$("#magnifier").fadeOut();
+		}
+	});
+
+	// temporary
+	$("#draw-card").click(function() {
+		this_player.draw();
+		this_player.render();
+	});
 
 	function showNotification(content, persist) {
 		var $node = $('<div/>').addClass("notification").html(content).hide();

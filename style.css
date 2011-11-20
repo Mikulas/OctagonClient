@@ -103,6 +103,12 @@ table {
 	border-radius: 12px;
 }
 
+.card.small, .card.small img {
+	display: inline;
+	width: 89px;
+	height: 128px;
+}
+
 .card.kneeling {
 	-webkit-animation-duration: .6s;
 	-webkit-transform: rotate(90deg);
