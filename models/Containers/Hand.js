@@ -2,6 +2,7 @@ function Hand() {
 	var that = this;
 
 	this.render = function() {
+		console.log("render hand");
 		if (that.element == null) {
 			that.element = $('<div />').addClass("container");
 		}

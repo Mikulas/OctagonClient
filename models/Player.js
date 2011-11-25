@@ -62,7 +62,7 @@ function Player() {
 			that.counter_container.children("." + i).val(that.counters[i]);
 		});
 
-		$("#hand").append(that.containers.hand.render(true));
+		$("#hand").append(that.containers.hand.render());
 	};
 
 	this.draw = function(count) {

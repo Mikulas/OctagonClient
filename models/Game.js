@@ -26,10 +26,19 @@ function Game() {
 			var player = new Player();
 			player.id = i;
 			player.counters = pl.counters;
-			player.containers = {};
 			$.each(pl.containers, function(i, pi) {
-				var container = new Container();
-				container.cards = [];
+				var container = null;
+				if (i == "play") {
+					Board.prototype = new Container();
+					container = new Board();
+				} else if (i == "hand") {
+					Hand.prototype = new Container();
+					container = new Hand();
+				} else {
+					Pile.prototype = new Container();
+					container = new Pile();
+				}
+
 				$.each(pi.c, function(i, ca) {
 					var card = new Card();
 					card.update(ca);

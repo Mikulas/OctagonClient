@@ -79,21 +79,8 @@ function Card() {
 			that.element.dblclick(function(e) {
 				that.onDoubleClick(e);
 			});
-			console.log(revert, revert != undefined && revert);
 			that.element.draggable({
-				revert: revert != undefined && revert,
-				start: function(event, ui) {
-					$(this).stop(true);
-					ui.helper.data('dropped', false);
-				},
-				stop: function(event, ui) {
-					if (!revert || ui.helper.data('dropped')) {
-						console.log("MOVED", !revert, ui.helper.data('dropped'));
-						that.position = ui.position;
-						that.position.z = that.container.css("z-index");
-						that.broadcast();
-					}
-				},
+				revert: true,
 				stack: ".card[data-id!=" + that.id + "]"
 			});
 

@@ -15,8 +15,15 @@ function Container() {
 	};
 
 	this.render = function() {
+		console.log("container render");
 		if (that.element == null) {
 			that.element = $('<div />').addClass("container");
+			that.element.droppable({
+				accept: ".card",
+				drop: function(event, ui) {
+					console.log("TODO: change card position in structure");
+				}
+			});
 		}
 
 		$.each(this.cards, function(i, card) {
