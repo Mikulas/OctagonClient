@@ -317,7 +317,7 @@ function Card() {
 	this.render = function(revert) {
 		that.container = $(".card#" + that.id);
 		if (!that.container.size()) {
-			that.container = $("<div/>").attr("id", that.id).addClass("card");
+			that.container = $("<div/>").attr("data-id", that.id).addClass("card");
 			that.container.click(function(e) {
 				that.onClick(e);
 			});
@@ -339,7 +339,7 @@ function Card() {
 						that.broadcast();
 					}
 				},
-				stack: ".card:not(#" + that.id + ")"
+				stack: ".card[data-id!=" + that.id + "]"
 			});
 
 			that.container.contextMenu({menu: "context_menu"},
@@ -358,7 +358,7 @@ function Card() {
 				},
 				// on show menu callback
 				function(e) {
-					var card = game.getCard($(e.srcElement).parent().attr('id'));
+					var card = game.getCard($(e.srcElement).parent().attr("data-id"));
 					if (card.kneeling) {
 						$("#context_menu [href=#kneel]").hide();
 						$("#context_menu [href=#stand]").show();
@@ -592,7 +592,7 @@ $(function() {
 				for (var qty = 0; qty < $(ca).attr('qty'); ++qty) {
 					var card = new Card;
 					card.id = game.getUniqueId();
-					card.card_id = $(ca).attr("id");
+					card.card_id = $(ca).attr("data-id");
 					if ($.inArray($(sec).attr("name"), ["House", "Agenda"]) != -1) {
 						// put card directly to table
 						player.piles.play.cards.push(card);
