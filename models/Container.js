@@ -1,4 +1,5 @@
-function Pile() {
+function Container() {
+	this.element = null;
 	this.cards = [];
 
 	var that = this;
@@ -21,15 +22,18 @@ function Pile() {
 			that.cards[current] = that.cards[top];
 			that.cards[top] = tmp;
 		}
-		console.log("pile shuffled");
+		console.log("container shuffled");
 	};
 
 	this.render = function(revert) {
-		var containers = [];
+		if (that.element == null) {
+			that.element = $('<div />').addClass("container");
+		}
+
 		$.each(this.cards, function(i, card) {
-			containers.push(card.render(revert));
+			that.element.append(card.render(revert));
 		});
-		return containers;
+		return that.element;
 	};
 
 	this.toSerializable = function() {

@@ -83,9 +83,6 @@ $(function() {
 			}
 		};
 
-		/*
-		 $('#output').val($('#output').val() + "\n" + e.data);
-		 */
 		socket.onclose = function(msg) {
 			showError("Server not available");
 			console.info("connection closed");
@@ -97,12 +94,6 @@ $(function() {
 	} catch(ex) {
 		console.error(ex);
 	}
-
-	/*
-	$("#run").click(function() {
-		$("#c").toggleClass("kneeling").toggleClass("standing");
-	});
-	*/
 
 	function handleFileSelect(evt) {
 		evt.stopPropagation();
@@ -136,24 +127,24 @@ $(function() {
 		$(xmlString).children().each(function(i, sec) {
 			$(sec).children().each(function(i, ca) {
 				for (var qty = 0; qty < $(ca).attr('qty'); ++qty) {
-					var card = new Card;
+					var card = new Card();
 					card.id = game.getUniqueId();
-					card.card_id = $(ca).attr("data-id");
+					card.card_id = $(ca).attr("id");
 					if ($.inArray($(sec).attr("name"), ["House", "Agenda"]) != -1) {
 						// put card directly to table
-						player.piles.play.cards.push(card);
+						player.containers.play.cards.push(card);
 					} else if ($.inArray($(sec).attr("name"), ["Plots"]) != -1) {
-						// put card to unrevealed plot pile
-						player.piles.plot.cards.push(card);
+						// put card to unrevealed plot container
+						player.containers.plot.cards.push(card);
 					} else {
 						// put card to deck
-						player.piles.deck.cards.push(card);
+						player.containers.deck.cards.push(card);
 					}
 				}
 			});
 		});
 
-		player.piles.deck.shuffle();
+		player.containers.deck.shuffle();
 		player.draw(7);
 		game.render();
 		game.broadcast();
@@ -178,6 +169,7 @@ $(function() {
 		tolerance: "pointer"
 	});*/
 
+	/*
 	$("#board").droppable({
 		accept: '.card',
 		drop: function(event, ui) {
@@ -185,6 +177,7 @@ $(function() {
 			console.log("dropped");
 		}
 	});
+	*/
 
 	// temporary
 	$("#draw-card").click(function() {

@@ -1,12 +1,10 @@
 function Game() {
-	this.container = null;
 	this.players = [];
 	this.unique_id = 1;
 
 	var that = this;
 
 	this._init = function() {
-		that.container = $("#board");
 	};
 
 	this.addPlayer = function() {
@@ -25,29 +23,30 @@ function Game() {
 		$("#board").children().remove();
 		$("#counters").children().remove();
 		$.each(data.players, function(i, pl) {
-			var player = new Player;
+			var player = new Player();
 			player.id = i;
 			player.counters = pl.counters;
-			player.piles = {};
-			$.each(pl.piles, function(i, pi) {
-				var pile = new Pile;
-				pile.cards = [];
+			player.containers = {};
+			$.each(pl.containers, function(i, pi) {
+				var container = new Container();
+				container.cards = [];
 				$.each(pi.c, function(i, ca) {
-					var card = new Card;
+					var card = new Card();
 					card.update(ca);
-					pile.cards.push(card);
+					container.cards.push(card);
 				});
-				player.piles[i] = pile;
+				player.containers[i] = container;
 			});
 			that.players.push(player);
 		});
 		that.render();
+		console.log(that);
 	};
 
 	this.render = function() {
 		$.each(that.players, function(i, player) {
-			$.each(player.piles.play.render(), function(i, container) {
-				$("#board").append(container);
+			$.each(player.containers.play.render(), function(i, element) {
+				$("#board").append(element);
 			});
 			player.render();
 		});

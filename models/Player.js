@@ -2,24 +2,26 @@ function Player() {
 	this.counter_container = null;
 	this.id = null;
 	this.counters = {power: 0, gold: 0};
-	this.piles = {};
+	this.containers = {};
 
 	var that = this;
 
 	this._init = function() {
-		this.piles.deck = new Pile;
-		this.piles.plot = new Pile;
-		this.piles.discard = new Pile;
-		this.piles.death = new Pile;
-		this.piles.play = new Pile;
-		this.piles.hand = new Pile;
+		this.containers = {
+			deck: new Container(),
+			plot: new Container(),
+			discard: new Container(),
+			death: new Container(),
+			play: new Container(),
+			hand: new Container()
+		};
 		this.counters = {power: 0, gold: 0};
 	};
 
 	this.getCard = function(id) {
 		var found = null;
-		$.each(that.piles, function(i, pile) {
-			var card = pile.getCard(id);
+		$.each(that.containers, function(i, container) {
+			var card = container.getCard(id);
 			if (card != null) {
 				found = card;
 			}
@@ -50,10 +52,9 @@ function Player() {
 		});
 
 		$("#hand").children().remove();
-		$.each(that.piles.hand.render(true), function(i, container) {
-			container.addClass("small");
-			$("#hand").append(container);
-		});
+		var hand_container = that.containers.hand.render(true);
+		hand_container.children(".card").addClass("small");
+		$("#hand").append(hand_container);
 	};
 
 	this.draw = function(count) {
@@ -62,13 +63,13 @@ function Player() {
 
 		var drawn = 0;
 		while (count-- > 0) {
-			var card = that.piles.deck.cards.pop();
+			var card = that.containers.deck.cards.pop();
 			if (card == undefined) {
 				console.log("cannot draw more cards, deck depleted");
 				break;
 			}
 			drawn++;
-			that.piles.hand.cards.push(card);
+			that.containers.hand.cards.push(card);
 		}
 		console.log("player draws " + drawn + " card" + (drawn > 1 ? "s" : ""));
 	};
@@ -81,10 +82,10 @@ function Player() {
 		var obj = {
 			id: that.id,
 			counters: that.counters,
-			piles: {}
+			containers: {}
 		};
-		$.each(that.piles, function(i, pile) {
-			obj.piles[i] = pile.toSerializable();
+		$.each(that.containers, function(i, container) {
+			obj.containers[i] = container.toSerializable();
 		});
 		return obj;
 	};

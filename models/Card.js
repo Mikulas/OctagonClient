@@ -1,5 +1,5 @@
 function Card() {
-	this.container = null;
+	this.element = null;
 	this.card_id = null;
 	this.id = null;
 	this.position = {top: 0, left: 0, z: 1};
@@ -9,21 +9,21 @@ function Card() {
 	var that = this;
 
 	this._init = function() {
-
+		
 	};
 
 	this.focus = function() {
 		$(".focus").removeClass("focus");
-		that.container.addClass("focus");
+		that.element.addClass("focus");
 	};
 
 	this.stand = function() {
-		that.container.removeClass("kneeling").addClass("standing");
+		that.element.removeClass("kneeling").addClass("standing");
 		that.kneeling = false;
 	};
 
 	this.kneel = function() {
-		that.container.removeClass("standing").addClass("kneeling");
+		that.element.removeClass("standing").addClass("kneeling");
 		that.kneeling = true;
 	};
 
@@ -36,19 +36,19 @@ function Card() {
 	};
 
 	this.turnFaceUp = function() {
-		that.container.removeClass("face-down").addClass("face-up");
+		that.element.removeClass("face-down").addClass("face-up");
 		// this animation takes .4 seconds, being at scale 0 at .2
 		setTimeout(function() {
-			that.container.children('img').attr('src', that.getImageSrc());
+			that.element.children('img').attr('src', that.getImageSrc());
 		}, 200);
 		that.faceDown = false;
 	};
 
 	this.turnFaceDown = function() {
-		that.container.removeClass("face-up").addClass("face-down");
+		that.element.removeClass("face-up").addClass("face-down");
 		// this animation takes .4 seconds, being at scale 0 at .2
 		setTimeout(function() {
-			that.container.children('img').attr('src', that.getBackImageSrc());
+			that.element.children('img').attr('src', that.getBackImageSrc());
 		}, 200);
 		that.faceDown = true;
 	};
@@ -70,17 +70,17 @@ function Card() {
 	};
 
 	this.render = function(revert) {
-		that.container = $(".card#" + that.id);
-		if (!that.container.size()) {
-			that.container = $("<div/>").attr("data-id", that.id).addClass("card");
-			that.container.click(function(e) {
+		that.element = $(".card#" + that.id);
+		if (!that.element.size()) {
+			that.element = $("<div/>").attr("data-id", that.id).addClass("card");
+			that.element.click(function(e) {
 				that.onClick(e);
 			});
-			that.container.dblclick(function(e) {
+			that.element.dblclick(function(e) {
 				that.onDoubleClick(e);
 			});
 			console.log(revert, revert != undefined && revert);
-			that.container.draggable({
+			that.element.draggable({
 				revert: revert != undefined && revert,
 				start: function(event, ui) {
 					$(this).stop(true);
@@ -97,7 +97,7 @@ function Card() {
 				stack: ".card[data-id!=" + that.id + "]"
 			});
 
-			that.container.contextMenu({menu: "context_menu"},
+			that.element.contextMenu({menu: "context_menu"},
 				function(action, el, pos) {
 					switch(action) {
 						case "kneel":
@@ -131,30 +131,29 @@ function Card() {
 				}
 			);
 
-			that.container.append($("<img/>").addClass("raw-card").attr("src", that.getImageSrc()));
-			that.container.css({
+			that.element.append($("<img/>").addClass("raw-card").attr("src", that.getImageSrc()));
+			that.element.css({
 				left: 0,
 				top: 0
 			});
-			//$("#board").append(that.container);
-			return that.container;
+			return that.element;
 		}
 
-		if (that.kneeling && !that.container.hasClass("kneeling")) {
+		if (that.kneeling && !that.element.hasClass("kneeling")) {
 			that.kneel();
-		} else if (!that.kneeling && that.container.hasClass("kneeling")) {
+		} else if (!that.kneeling && that.element.hasClass("kneeling")) {
 			that.stand();
 		}
 
-		if (that.faceDown && !that.container.hasClass("face-down")) {
+		if (that.faceDown && !that.element.hasClass("face-down")) {
 			that.turnFaceDown();
-		} else if (!that.faceDown && that.container.hasClass("face-down")) {
+		} else if (!that.faceDown && that.element.hasClass("face-down")) {
 			that.turnFaceUp();
 		}
 
-		that.container.css({"z-index": that.position.z});
+		that.element.css({"z-index": that.position.z});
 		if (that.position.left != null && that.position.top != null) {
-			that.container.stop(true).animate({
+			that.element.stop(true).animate({
 				left: that.position.left,
 				top: that.position.top
 			}, 600);
