@@ -8,12 +8,12 @@ function Player() {
 
 	this._init = function() {
 		this.containers = {
-			deck: new Container(),
-			plot: new Container(),
-			discard: new Container(),
-			death: new Container(),
-			play: new Container(),
-			hand: new Container()
+			deck: new Pile(),
+			plot: new Pile(),
+			discard: new Pile(),
+			death: new Pile(),
+			play: new Board(),
+			hand: new Hand()
 		};
 		this.counters = {power: 0, gold: 0};
 	};

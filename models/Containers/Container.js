@@ -14,17 +14,6 @@ function Container() {
 		return found;
 	};
 
-	this.shuffle = function() {
-		var tmp, current, top = that.cards.length;
-		while (--top >= 0) {
-			current = Math.floor(Math.random() * (top + 1));
-			tmp = that.cards[current];
-			that.cards[current] = that.cards[top];
-			that.cards[top] = tmp;
-		}
-		console.log("container shuffled");
-	};
-
 	this.render = function(revert) {
 		if (that.element == null) {
 			that.element = $('<div />').addClass("container");
