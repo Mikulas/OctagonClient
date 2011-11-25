@@ -80,7 +80,8 @@ function Card() {
 				that.onDoubleClick(e);
 			});
 			that.element.draggable({
-				revert: true,
+				revert: "invalid",
+				scope: "body",
 				stack: ".card[data-id!=" + that.id + "]"
 			});
 

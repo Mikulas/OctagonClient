@@ -15,11 +15,11 @@ function Container() {
 	};
 
 	this.render = function() {
-		console.log("container render");
 		if (that.element == null) {
 			that.element = $('<div />').addClass("container");
 			that.element.droppable({
 				accept: ".card",
+				scope: "body",
 				drop: function(event, ui) {
 					console.log("TODO: change card position in structure");
 				}
