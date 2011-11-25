@@ -1,0 +1,220 @@
+function Card() {
+	this.container = null;
+	this.card_id = null;
+	this.id = null;
+	this.position = {top: 0, left: 0, z: 1};
+	this.kneeling = false;
+	this.faceDown = false;
+
+	var that = this;
+
+	this._init = function() {
+
+	};
+
+	this.focus = function() {
+		$(".focus").removeClass("focus");
+		that.container.addClass("focus");
+	};
+
+	this.stand = function() {
+		that.container.removeClass("kneeling").addClass("standing");
+		that.kneeling = false;
+	};
+
+	this.kneel = function() {
+		that.container.removeClass("standing").addClass("kneeling");
+		that.kneeling = true;
+	};
+
+	this.toggleKneeling = function() {
+		if (that.kneeling) {
+			that.stand();
+		} else {
+			that.kneel();
+		}
+	};
+
+	this.turnFaceUp = function() {
+		that.container.removeClass("face-down").addClass("face-up");
+		// this animation takes .4 seconds, being at scale 0 at .2
+		setTimeout(function() {
+			that.container.children('img').attr('src', that.getImageSrc());
+		}, 200);
+		that.faceDown = false;
+	};
+
+	this.turnFaceDown = function() {
+		that.container.removeClass("face-up").addClass("face-down");
+		// this animation takes .4 seconds, being at scale 0 at .2
+		setTimeout(function() {
+			that.container.children('img').attr('src', that.getBackImageSrc());
+		}, 200);
+		that.faceDown = true;
+	};
+
+	this.toggleFaceDown = function() {
+		if (that.faceDown) {
+			that.turnFaceUp();
+		} else {
+			that.turnFaceDown();
+		}
+	};
+
+	this.getImageSrc = function() {
+		return "http://192.168.100.77/OctgnWeb/images/" + that.card_id + ".jpg";
+	};
+
+	this.getBackImageSrc = function() {
+		return "http://192.168.100.77/OctgnWeb/images/facedown.jpg";
+	};
+
+	this.render = function(revert) {
+		that.container = $(".card#" + that.id);
+		if (!that.container.size()) {
+			that.container = $("<div/>").attr("data-id", that.id).addClass("card");
+			that.container.click(function(e) {
+				that.onClick(e);
+			});
+			that.container.dblclick(function(e) {
+				that.onDoubleClick(e);
+			});
+			console.log(revert, revert != undefined && revert);
+			that.container.draggable({
+				revert: revert != undefined && revert,
+				start: function(event, ui) {
+					$(this).stop(true);
+					ui.helper.data('dropped', false);
+				},
+				stop: function(event, ui) {
+					if (!revert || ui.helper.data('dropped')) {
+						console.log("MOVED", !revert, ui.helper.data('dropped'));
+						that.position = ui.position;
+						that.position.z = that.container.css("z-index");
+						that.broadcast();
+					}
+				},
+				stack: ".card[data-id!=" + that.id + "]"
+			});
+
+			that.container.contextMenu({menu: "context_menu"},
+				function(action, el, pos) {
+					switch(action) {
+						case "kneel":
+							that.kneel(); break;
+						case "stand":
+							that.stand(); break;
+						case "face-down":
+							that.turnFaceDown(); break;
+						case "face-up":
+							that.turnFaceUp(); break;
+					}
+					that.broadcast();
+				},
+				// on show menu callback
+				function(e) {
+					var card = game.getCard($(e.srcElement).parent().attr("data-id"));
+					if (card.kneeling) {
+						$("#context_menu [href=#kneel]").hide();
+						$("#context_menu [href=#stand]").show();
+					} else {
+						$("#context_menu [href=#kneel]").show();
+						$("#context_menu [href=#stand]").hide();
+					}
+					if (card.faceDown) {
+						$("#context_menu [href=#face-down]").hide();
+						$("#context_menu [href=#face-up]").show();
+					} else {
+						$("#context_menu [href=#face-down]").show();
+						$("#context_menu [href=#face-up]").hide();
+					}
+				}
+			);
+
+			that.container.append($("<img/>").addClass("raw-card").attr("src", that.getImageSrc()));
+			that.container.css({
+				left: 0,
+				top: 0
+			});
+			//$("#board").append(that.container);
+			return that.container;
+		}
+
+		if (that.kneeling && !that.container.hasClass("kneeling")) {
+			that.kneel();
+		} else if (!that.kneeling && that.container.hasClass("kneeling")) {
+			that.stand();
+		}
+
+		if (that.faceDown && !that.container.hasClass("face-down")) {
+			that.turnFaceDown();
+		} else if (!that.faceDown && that.container.hasClass("face-down")) {
+			that.turnFaceUp();
+		}
+
+		that.container.css({"z-index": that.position.z});
+		if (that.position.left != null && that.position.top != null) {
+			that.container.stop(true).animate({
+				left: that.position.left,
+				top: that.position.top
+			}, 600);
+		}
+	};
+
+	this.update = function(data) {
+		that.id = data.id;
+		that.card_id = data.cid;
+		if (data.hasOwnProperty("p"))
+			that.position = {
+				top: data.p.hasOwnProperty("t") ? data.p.t : 0,
+				left: data.p.hasOwnProperty("l") ? data.p.l : 0,
+				z: data.p.hasOwnProperty("z") ? data.p.z : 1
+			};
+		that.kneeling = data.hasOwnProperty("k") ? data.k : false;
+		that.faceDown = data.hasOwnProperty("f") ? data.f : false;
+	};
+
+	this.onClick = function(e) {
+		//this.focus();
+	};
+
+	this.onDoubleClick = function(e) {
+		that.toggleKneeling();
+		that.broadcast();
+	};
+
+	this.broadcast = function(e) {
+		send(JSON.stringify({method: "update_card", card: that.toSerializable()}));
+	};
+
+	this.toSerializable = function() {
+		var obj = {
+			cid: that.card_id,
+			id: that.id
+		};
+		if (that.position.top != 0) {
+			if (!obj.hasOwnProperty("p"))
+				obj.p = {};
+			obj.p.t = that.position.top;
+		}
+		if (that.position.left != 0) {
+			if (!obj.hasOwnProperty("p"))
+				obj.p = {};
+			obj.p.l = that.position.left;
+		}
+		if (that.position.z != 1) {
+			if (!obj.hasOwnProperty("p"))
+				obj.p = {};
+			obj.p.z = that.position.z;
+		}
+		if (that.kneeling) {
+			obj.k = that.kneeling;
+		}
+		if (that.faceDown) {
+			obj.f = that.faceDown;
+		}
+		return obj;
+	};
+
+	this._init();
+}

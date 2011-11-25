@@ -1,0 +1,95 @@
+function Game() {
+	this.container = null;
+	this.players = [];
+	this.unique_id = 1;
+
+	var that = this;
+
+	this._init = function() {
+		that.container = $("#board");
+	};
+
+	this.addPlayer = function() {
+		var p = new Player;
+		that.players.push(p);
+		p.id = that.players.length - 1;
+		return p;
+	};
+
+	this.getUniqueId = function() {
+		return this.unique_id++;
+	};
+
+	this.updateFromBroadcast = function(data) {
+		that.players = []; // wipe
+		$("#board").children().remove();
+		$("#counters").children().remove();
+		$.each(data.players, function(i, pl) {
+			var player = new Player;
+			player.id = i;
+			player.counters = pl.counters;
+			player.piles = {};
+			$.each(pl.piles, function(i, pi) {
+				var pile = new Pile;
+				pile.cards = [];
+				$.each(pi.c, function(i, ca) {
+					var card = new Card;
+					card.update(ca);
+					pile.cards.push(card);
+				});
+				player.piles[i] = pile;
+			});
+			that.players.push(player);
+		});
+		that.render();
+	};
+
+	this.render = function() {
+		$.each(that.players, function(i, player) {
+			$.each(player.piles.play.render(), function(i, container) {
+				$("#board").append(container);
+			});
+			player.render();
+		});
+	};
+
+	this.getCard = function(id) {
+		var found = null;
+		$.each(that.players, function(i, player) {
+			var card = player.getCard(id);
+			if (card != null) {
+				found = card;
+			}
+		});
+		return found;
+	};
+
+	this.toSerializable = function() {
+		var obj = {players: {}};
+		$.each(that.players, function(i, player) {
+			obj.players[i] = player.toSerializable();
+		});
+		return obj;
+	};
+
+	this.toJSON = function() {
+		return JSON.stringify(that.toSerializable());
+	};
+
+	this.broadcast = function() {
+		var packed = '{"method": "broadcast", "game": ' + game.toJSON() + '}';
+		packed = packed.replace(/false/g, "0");
+		packed = packed.replace(/null/g, "0");
+		$.each(optimizations, function(i, v) {
+			var regex = new RegExp(v, "g");
+			packed = packed.replace(regex, i);
+		});
+		if (packed.length > 16384) {
+			console.log(packed.length);
+			return false;
+		}
+		send(packed);
+	};
+
+	this._init();
+}
