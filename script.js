@@ -58,8 +58,8 @@ function Game() {
 
 	this.render = function() {
 		$.each(that.players, function(i, player) {
-			$.each(player.piles.play.cards, function(i, card) {
-				card.render();
+			$.each(player.piles.play.render(), function(i, container) {
+				$("#board").append(container);
 			});
 			player.render();
 		});
@@ -153,15 +153,14 @@ function Player() {
 				that.counter_container.append($input);
 			});
 		}
-		$("#hand").children().remove();
-		$.each(that.piles.hand.cards, function(i, card) {
-			var $element = $("<div/>").attr("id", that.id).addClass("card").addClass("small");
-			$element.append($("<img/>").attr("src", card.getImageSrc()).addClass("raw-card"));
-			$("#hand").append($element);
-
-		});
 		$.each(that.counters, function(i, v) {
 			that.counter_container.children("." + i).val(that.counters[i]);
+		});
+
+		$("#hand").children().remove();
+		$.each(that.piles.hand.render(true), function(i, container) {
+			container.addClass("small");
+			$("#hand").append(container);
 		});
 	};
 
@@ -225,6 +224,14 @@ function Pile() {
 			that.cards[top] = tmp;
 		}
 		console.log("pile shuffled");
+	};
+
+	this.render = function(revert) {
+		var containers = [];
+		$.each(this.cards, function(i, card) {
+			containers.push(card.render(revert));
+		});
+		return containers;
 	};
 
 	this.toSerializable = function() {
@@ -307,7 +314,7 @@ function Card() {
 		return "http://192.168.100.77/OctgnWeb/images/facedown.jpg";
 	};
 
-	this.render = function() {
+	this.render = function(revert) {
 		that.container = $(".card#" + that.id);
 		if (!that.container.size()) {
 			that.container = $("<div/>").attr("id", that.id).addClass("card");
@@ -317,17 +324,24 @@ function Card() {
 			that.container.dblclick(function(e) {
 				that.onDoubleClick(e);
 			});
+			console.log(revert, revert != undefined && revert);
 			that.container.draggable({
-				start: function() {
+				revert: revert != undefined && revert,
+				start: function(event, ui) {
 					$(this).stop(true);
+					ui.helper.data('dropped', false);
 				},
 				stop: function(event, ui) {
-					that.position = ui.position;
-					that.position.z = that.container.css("z-index");
-					that.broadcast();
+					if (!revert || ui.helper.data('dropped')) {
+						console.log("MOVED", !revert, ui.helper.data('dropped'));
+						that.position = ui.position;
+						that.position.z = that.container.css("z-index");
+						that.broadcast();
+					}
 				},
 				stack: ".card:not(#" + that.id + ")"
 			});
+
 			that.container.contextMenu({menu: "context_menu"},
 				function(action, el, pos) {
 					switch(action) {
@@ -367,7 +381,8 @@ function Card() {
 				left: 0,
 				top: 0
 			});
-			$("#board").append(that.container);
+			//$("#board").append(that.container);
+			return that.container;
 		}
 
 		if (that.kneeling && !that.container.hasClass("kneeling")) {
@@ -605,6 +620,23 @@ $(function() {
 	}).live("mouseleave", function(e) {
 		if (!$(e.toElement).hasClass("raw-card")) {
 			$("#magnifier").fadeOut();
+		}
+	});
+
+	/*$("#hand").sortable({
+		placeholder: "card small placeholder",
+		axis: "x",
+		forceHelperSize: true,
+		forcePlaceholderSize: true,
+		items: "img",
+		tolerance: "pointer"
+	});*/
+
+	$("#board").droppable({
+		accept: '.card',
+		drop: function(event, ui) {
+			ui.draggable.data('dropped', true);
+			console.log("dropped");
 		}
 	});
 

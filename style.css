@@ -109,6 +109,10 @@ table {
 	height: 128px;
 }
 
+.card.placeholder {
+	display: inline-block;
+}
+
 .card.kneeling {
 	-webkit-animation-duration: .6s;
 	-webkit-transform: rotate(90deg);
@@ -201,6 +205,10 @@ table {
 	right: 5px;
 	border-radius: 18px;
 	z-index: 9998;
+}
+
+#board {
+	background-color: #BBFF99;
 }
 
 /**
