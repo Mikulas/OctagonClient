@@ -7,14 +7,25 @@ function Player() {
 	var that = this;
 
 	this._init = function() {
-		this.containers = {
-			deck: new Pile(),
-			plot: new Pile(),
-			discard: new Pile(),
-			death: new Pile(),
-			play: new Board(),
-			hand: new Hand()
-		};
+		Pile.prototype = new Container();
+		this.containers.deck = new Pile();
+
+		Pile.prototype = new Container();
+		this.containers.plot = new Pile();
+
+		Pile.prototype = new Container();
+		this.containers.discard = new Pile();
+
+		Pile.prototype = new Container();
+		this.containers.death = new Pile();
+
+		Board.prototype = new Container();
+		this.containers.play = new Board();
+
+		Hand.prototype = new Container();
+		this.containers.hand = new Hand();
+		console.log(game);
+
 		this.counters = {power: 0, gold: 0};
 	};
 
@@ -51,10 +62,7 @@ function Player() {
 			that.counter_container.children("." + i).val(that.counters[i]);
 		});
 
-		$("#hand").children().remove();
-		var hand_container = that.containers.hand.render(true);
-		hand_container.children(".card").addClass("small");
-		$("#hand").append(hand_container);
+		$("#hand").append(that.containers.hand.render(true));
 	};
 
 	this.draw = function(count) {

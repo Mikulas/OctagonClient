@@ -13,7 +13,4 @@ function Pile() {
 	};
 }
 
-// Set  prototype to a new instance of Container
-Pile.prototype = new Container();
-// Make sure to list Container as the actual constructor
 Pile.prototype.constructor = Container;

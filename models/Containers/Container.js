@@ -14,13 +14,13 @@ function Container() {
 		return found;
 	};
 
-	this.render = function(revert) {
+	this.render = function() {
 		if (that.element == null) {
 			that.element = $('<div />').addClass("container");
 		}
 
 		$.each(this.cards, function(i, card) {
-			that.element.append(card.render(revert));
+			that.element.append(card.render());
 		});
 		return that.element;
 	};
