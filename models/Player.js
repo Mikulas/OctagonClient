@@ -39,7 +39,7 @@ function Player() {
 		return found;
 	};
 
-	this.render = function(player_id) {
+	this.render = function() {
 		if (that.counter_container == null) {
 			that.counter_container = $("<div/>").attr("data-player-id", this.id);
 			$("#counters").append(that.counter_container);
@@ -61,7 +61,7 @@ function Player() {
 			that.counter_container.children("." + i).val(that.counters[i]);
 		});
 		$.each(that.containers, function(i, container) {
-			$("#containers").append(container.render(i, player_id));
+			$("#containers").append(container.render(i, that.id));
 		});
 	};
 

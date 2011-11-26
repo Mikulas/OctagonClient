@@ -53,7 +53,7 @@ function Game() {
 
 	this.render = function() {
 		$.each(that.players, function(i, player) {
-			player.render(i);
+			player.render();
 		});
 	};
 

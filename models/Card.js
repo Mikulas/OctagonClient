@@ -14,7 +14,12 @@ function Card() {
 	};
 
 	this.moveTo = function(container) {
+		// find this card's index in container's cards array
+		console.log(that.container.cards);
 		$.each(that.container.cards, function(i, card) {
+			if (card == undefined)
+				return false;
+
 			if (card.id == that.id) {
 				that.container.cards.splice(i, i + 1);
 			}
@@ -86,7 +91,8 @@ function Card() {
 		that.position.z = that.element.css("z-index");
 	};
 
-	this.render = function(revert) {
+	this.render = function() {
+		console.log("card render A");
 		if (that.element == null) {
 			that.element = $("<div/>").attr("data-id", that.id).addClass("card");
 			that.element.disableSelection();
@@ -143,7 +149,6 @@ function Card() {
 			//*/
 
 			that.element.append($("<img/>").addClass("raw-card").attr("src", that.getImageSrc()));
-			return that.element;
 		}
 
 		if (that.kneeling && !that.element.hasClass("kneeling")) {
@@ -159,18 +164,21 @@ function Card() {
 		}
 
 		if (that.container.getType() == "play") {
-			that.element.css({position: "absolute"});
+			that.element.css({
+				position: "absolute",
+				"z-index": that.position.z
+			});
+			if (that.position.left != null && that.position.top != null) {
+				that.element.stop(true).animate({
+					left: that.position.left,
+					top: that.position.top
+				}, 600);
+			}
 		} else {
-			that.element.css({position: "static"});
+			that.element.css({position: "relative", top: 0, left: 0});
 		}
 
-		that.element.css({"z-index": that.position.z});
-		if (that.position.left != null && that.position.top != null) {
-			that.element.stop(true).animate({
-				left: that.position.left,
-				top: that.position.top
-			}, 600);
-		}
+		return that.element;
 	};
 
 	this.update = function(data) {
@@ -182,7 +190,6 @@ function Card() {
 				left: data.p.hasOwnProperty("l") ? data.p.l : 0,
 				z: data.p.hasOwnProperty("z") ? data.p.z : 1
 			};
-			console.log(that.position);
 		}
 		that.kneeling = data.hasOwnProperty("k") ? data.k : false;
 		that.faceDown = data.hasOwnProperty("f") ? data.f : false;
