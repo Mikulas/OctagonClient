@@ -150,7 +150,7 @@ $(function() {
 
 	$(".card").live("mouseenter", function(e) {
 		if (!$(this).hasClass("face-down")) {
-			$("#magnifier").attr("src", $(this).children("img").attr("src")).fadeIn();
+			$("#magnifier").attr("src", $(this).children("img").attr("src")).stop(false, true).fadeIn();
 		}
 	}).live("mouseleave", function(e) {
 		if (!$(e.toElement).hasClass("raw-card")) {

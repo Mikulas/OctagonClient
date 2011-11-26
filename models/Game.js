@@ -22,6 +22,7 @@ function Game() {
 		that.players = []; // wipe
 		$("#containers").children().remove();
 		$("#counters").children().remove();
+		that.unique_id = data.unique_id;
 		$.each(data.players, function(i, pl) {
 			var player = new Player();
 			player.id = i;
@@ -69,7 +70,10 @@ function Game() {
 	};
 
 	this.toSerializable = function() {
-		var obj = {players: {}};
+		var obj = {
+			unique_id: that.unique_id,
+			players: {}
+		};
 		$.each(that.players, function(i, player) {
 			obj.players[i] = player.toSerializable();
 		});
