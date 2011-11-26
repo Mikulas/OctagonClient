@@ -181,6 +181,10 @@ table {
 	background-color: #DDD;
 }
 
+.counter-group {
+	display: inline-block;
+}
+
 .counter {
 	border: none;
 	width: 40px;

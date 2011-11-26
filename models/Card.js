@@ -92,7 +92,6 @@ function Card() {
 	};
 
 	this.render = function() {
-		console.log("card render A");
 		if (that.element == null) {
 			that.element = $("<div/>").attr("data-id", that.id).addClass("card");
 			that.element.disableSelection();

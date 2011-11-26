@@ -167,12 +167,6 @@ $(function() {
 		tolerance: "pointer"
 	});*/
 
-	// temporary
-	$("#draw-card").click(function() {
-		this_player.draw();
-		this_player.render();
-	});
-
 	function showNotification(content, persist) {
 		var $node = $('<div/>').addClass("notification").html(content).hide();
 		$("#notifications").append($node);

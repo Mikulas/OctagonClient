@@ -19,8 +19,9 @@ function Container() {
 		card.container = that;
 	};
 
-	this.render = function(type, player_id) {
-		if (that.element == null) {
+	this.render = function(type, player_id, element) {
+		that.element = $("[data-type=" + type + "][data-player-id=" + player_id + "]");
+		if (!that.element.size()) {
 			that.element = $('<div />');
 			that.element.attr("data-type", type).attr("data-player-id", player_id);
 			that.element.droppable({

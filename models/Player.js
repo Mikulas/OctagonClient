@@ -41,7 +41,7 @@ function Player() {
 
 	this.render = function() {
 		if (that.counter_container == null) {
-			that.counter_container = $("<div/>").attr("data-player-id", this.id);
+			that.counter_container = $("<div/>").attr("data-player-id", this.id).addClass("counter-group");
 			$("#counters").append(that.counter_container);
 			$.each(that.counters, function(i, v) {
 				var $input = $("<input type=\"number\"/>").addClass("counter " + i);
@@ -61,7 +61,11 @@ function Player() {
 			that.counter_container.children("." + i).val(that.counters[i]);
 		});
 		$.each(that.containers, function(i, container) {
-			$("#containers").append(container.render(i, that.id));
+			var entity = container.render(i, that.id);
+			if (!entity.parent().size()) {
+				console.log("container not connected: ", i);
+				$("#containers").append(entity);
+			}
 		});
 	};
 
