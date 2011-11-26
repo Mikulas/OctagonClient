@@ -12,11 +12,12 @@ function send(content) {
 }
 
 $(function() {
-	// Check for the various File API support.
-	if (window.File && window.FileReader && window.FileList && window.Blob) {
+	if (window.FileReader && window.WebSocket) {
 		// Great success! All the File APIs are supported.
 	} else {
-		alert("Please update your browser to the latest version. Otherwise Octagon might not work property.");
+		alert("Please update your browser to the latest version. Otherwise Octagon might not work property. Only latest Google Chrome is supported for the time being.");
+		showError("Chrome only now");
+		return false;
 	}
 
 	if (!localStorage.hasOwnProperty("client_id")) {
@@ -32,11 +33,11 @@ $(function() {
 	client_view = localStorage.client_view;
 
 	if (!localStorage.hasOwnProperty("player_name")) {
-		localStorage.player_name = prompt("Hey there, fellow card player! What's your name?", "Setup");
+		localStorage.player_name = prompt("Hey there, fellow card player! What's your name?", "");
 	}
 	player_name = localStorage.player_name;
 
-	console.log("This clients id = ", client_id + "-" + client_view, player_name);
+	console.log("id view name = ", client_id, client_view, player_name);
 
 	game = new Game; // defaults to empty if no broadcast is received upon connecting
 
@@ -128,6 +129,8 @@ $(function() {
 
 	function parseO8DXml(xmlString) {
 		var player = game.addPlayer();
+		player.containers.hand.client_id = client_id;
+		console.log("set to ", player.containers.hand.client_id);
 		player.name = player_name;
 		this_player = player;
 		$(xmlString).children().each(function(i, sec) {

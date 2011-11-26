@@ -36,6 +36,7 @@ function Game() {
 				} else if (i == "hand") {
 					Hand.prototype = new Container();
 					container = new Hand();
+					container.client_id = pi.cid;
 				} else {
 					Pile.prototype = new Container();
 					container = new Pile();

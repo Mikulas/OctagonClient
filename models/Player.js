@@ -64,7 +64,7 @@ function Player() {
 		});
 		$.each(that.containers, function(i, container) {
 			var entity = container.render(i, that.id);
-			if (!entity.parent().size()) {
+			if (entity && !entity.parent().size()) {
 				console.log("container not connected: ", i);
 				$("#containers").append(entity);
 			}
