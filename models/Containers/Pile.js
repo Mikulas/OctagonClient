@@ -14,11 +14,11 @@ function Pile() {
 
 	this.render = function(type, player_id) {
 		if (that.element == null) {
-			that.element = $("<div />");
-			that.element.attr("data-type", type).attr("data-player-id", player_id);
+			that.element = new Container().render.call(this, type, player_id);
 			that.element.dblclick(function(e) {
 				that.onDoubleClick(e);
 			});
+			that.element.children().remove();
 		}
 
 		if (that.cards.length == 0) {

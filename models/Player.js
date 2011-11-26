@@ -92,7 +92,8 @@ function Player() {
 			drawn++;
 			that.containers.hand.add(card);
 		}
-		this.render();
+		that.render();
+		game.broadcast();
 		console.log(that.name + " draws " + drawn + " card" + (drawn > 1 ? "s" : ""));
 	};
 

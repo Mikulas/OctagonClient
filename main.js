@@ -151,12 +151,11 @@ $(function() {
 			});
 		});
 
-		//player.containers.deck.shuffle();
-		//player.draw(7);
 		game.render();
 		game.broadcast();
 	}
 
+	/*
 	$(".card").live("mouseenter", function(e) {
 		if (!$(this).hasClass("face-down")) {
 			$("#magnifier").attr("src", $(this).children("img").attr("src")).stop(false, true).fadeIn();
@@ -166,6 +165,7 @@ $(function() {
 			$("#magnifier").fadeOut();
 		}
 	});
+	//*/
 
 	function showNotification(content, persist) {
 		var $node = $('<div/>').addClass("notification").html(content).hide();

@@ -253,6 +253,19 @@ table {
 	width: 100%;
 }
 
+[data-type=discard] .card,
+[data-type=death] .card,
+[data-type=plot] .card,
+[data-type=deck] .card {
+	display: none;
+}
+[data-type=discard] :last-child,
+[data-type=death] :last-child,
+[data-type=plot] :last-child,
+[data-type=deck] :last-child {
+	display: inline;
+}
+
 /**
  * ----------------------------------------------------------------------
  *  CONTEXT MENU
