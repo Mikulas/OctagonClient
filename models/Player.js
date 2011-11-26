@@ -4,6 +4,7 @@ function Player() {
 	this.counters = {power: 0, gold: 0};
 	this.containers = {};
 	this.name = null;
+	this.client_id = null;
 
 	var that = this;
 
@@ -62,11 +63,17 @@ function Player() {
 		$.each(that.counters, function(i, v) {
 			that.counter_container.children("." + i).val(that.counters[i]);
 		});
+
+		var $set = $(".set[data-player-id=" + that.id + "]");
+		if (!$set.size()) {
+			$set = $("<div/>").addClass("set").attr("data-player-id", that.id);
+			$("#containers").append($set);
+		}
+
 		$.each(that.containers, function(i, container) {
 			var entity = container.render(i, that.id);
 			if (entity && !entity.parent().size()) {
-				console.log("container not connected: ", i);
-				$("#containers").append(entity);
+				$set.append(entity);
 			}
 		});
 	};
@@ -85,7 +92,8 @@ function Player() {
 			drawn++;
 			that.containers.hand.add(card);
 		}
-		console.log("player draws " + drawn + " card" + (drawn > 1 ? "s" : ""));
+		this.render();
+		console.log(that.name + " draws " + drawn + " card" + (drawn > 1 ? "s" : ""));
 	};
 
 	this.updateCounter = function(data) {
@@ -97,6 +105,7 @@ function Player() {
 			id: that.id,
 			counters: that.counters,
 			name: that.name,
+			cid: that.client_id,
 			containers: {}
 		};
 		$.each(that.containers, function(i, container) {

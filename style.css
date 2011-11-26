@@ -216,16 +216,41 @@ table {
 	z-index: 9998;
 }
 
+[data-type=hand],
+[data-type=discard],
+[data-type=death],
+[data-type=plot],
+[data-type=deck]
+{
+	float: right;
+	display: inline-block;
+	width: 89px;
+	height: 128px;
+}
+
 [data-type=hand] {
+	float: none;
 	background-color: #BBFF99;
-	min-height: 128px;
-	width: 100%;
+	width: 500px; /*@TODO FIX*/
+}
+
+[data-type=discard] {
+	background-color: orange;
+}
+
+[data-type=death] {
+	background-color: red;
+}
+
+[data-type=deck] {
+	background-color: green;
 }
 
 [data-type=play] {
-	background-color: red;
+	background-color: #FFBB99;
 	min-height: 500px;
 	height: 100%;
+	width: 100%;
 }
 
 /**

@@ -28,6 +28,7 @@ function Game() {
 			player.id = i;
 			player.counters = pl.counters;
 			player.name = pl.name;
+			player.client_id = pl.cid;
 			$.each(pl.containers, function(i, pi) {
 				var container = null;
 				if (i == "play") {
@@ -69,6 +70,15 @@ function Game() {
 			}
 		});
 		return found;
+	};
+
+	this.getPlayer = function(client_id) {
+		var res = null;
+		$.each(that.players, function(i, player) {
+			if (player.client_id == client_id)
+				res = player;
+		});
+		return res;
 	};
 
 	this.toSerializable = function() {

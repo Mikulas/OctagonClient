@@ -16,12 +16,26 @@ function Pile() {
 		if (that.element == null) {
 			that.element = $("<div />");
 			that.element.attr("data-type", type).attr("data-player-id", player_id);
+			that.element.dblclick(function(e) {
+				that.onDoubleClick(e);
+			});
 		}
-		if (that.cards.length > 1) {
-			that.element.append($("<img/>").addClass("card small").attr("src", that.cards[0].getBackImageSrc()));
+
+		if (that.cards.length == 0) {
+			that.element.children().remove();
 		}
+		if (that.cards.length > 1 && that.element.children().size() == 0) {
+			that.element.append($("<img/>").addClass("card small face-down").attr("src", that.cards[0].getBackImageSrc()));
+		}
+		
 		return that.element;
-	}
+	};
+
+	this.onDoubleClick = function() {
+		if (that.element.attr("data-type") == "deck") {
+			game.getPlayer(client_id).draw();
+		}
+	};
 }
 
 Pile.prototype.constructor = Container;

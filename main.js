@@ -3,7 +3,6 @@ var game = null;
 var optimizations = {"~@0~": "a12af4e8-be4b-4cda-a6b6-534f97"};
 var client_id = null;
 var client_view = null;
-var this_player = null;
 var player_name = null;
 
 function send(content) {
@@ -129,10 +128,9 @@ $(function() {
 
 	function parseO8DXml(xmlString) {
 		var player = game.addPlayer();
+		player.client_id = client_id;
 		player.containers.hand.client_id = client_id;
-		console.log("set to ", player.containers.hand.client_id);
 		player.name = player_name;
-		this_player = player;
 		$(xmlString).children().each(function(i, sec) {
 			$(sec).children().each(function(i, ca) {
 				for (var qty = 0; qty < $(ca).attr('qty'); ++qty) {
