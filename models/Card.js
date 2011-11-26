@@ -85,7 +85,6 @@ function Card() {
 				stack: ".card[data-id!=" + that.id + "]",
 				start: function(e, ui) {
 					ui.helper.originalContainer = that.element.parent();
-					console.log("reset draggable revert");
 					that.element.draggable("option", "revert", true); // reset
 				}
 			});

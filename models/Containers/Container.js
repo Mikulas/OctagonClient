@@ -30,14 +30,21 @@ function Container() {
 					// revert to original position if not moved to another container
 					if (!this.isSameNode(ui.helper.originalContainer[0])) {
 						ui.draggable.draggable("option", "revert", false);
+
 						var cords = ui.draggable.offset();
 						$(this).append(ui.draggable);
-						ui.draggable.css(cords).css({position: "absolute"});
 
 						if (that.getType() == "hand") {
 							ui.draggable.addClass("small");
 						} else {
 							ui.draggable.removeClass("small");
+						}
+
+						if (that.getType() == "play") {
+							ui.draggable.css({position: "absolute"});
+							ui.draggable.css(cords);
+						} else {
+							ui.draggable.css({position: "relative", top: 0, left: 0});
 						}
 						//console.log("TODO: change card position in structure AND? DOM");
 					}
