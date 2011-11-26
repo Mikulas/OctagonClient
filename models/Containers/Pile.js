@@ -18,7 +18,7 @@ function Pile() {
 			that.element.attr("data-type", type).attr("data-player-id", player_id);
 		}
 		if (that.cards.length > 1) {
-			//that.element.append($("<img/>").addClass("card").attr("src", that.cards[0].getBackImageSrc()));
+			that.element.append($("<img/>").addClass("card small").attr("src", that.cards[0].getBackImageSrc()));
 		}
 		return that.element;
 	}

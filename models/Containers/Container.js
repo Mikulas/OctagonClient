@@ -45,6 +45,7 @@ function Container() {
 						$(this).append(ui.draggable);
 
 						if (that.getType() == "play") {
+							ui.draggable.removeClass("small");
 							ui.draggable.css({position: "absolute"});
 							ui.draggable.css({
 								left: cords.left - ui.helper.mouse.x / 2 - 20, // feels more natural with -20
@@ -52,12 +53,7 @@ function Container() {
 							});
 						} else {
 							ui.draggable.css({position: "relative", top: 0, left: 0});
-						}
-
-						if (that.getType() == "hand") {
 							ui.draggable.addClass("small");
-						} else {
-							ui.draggable.removeClass("small");
 						}
 
 						// change card position in logical structure

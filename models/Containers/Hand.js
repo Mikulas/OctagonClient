@@ -3,14 +3,14 @@ function Hand() {
 	var that = this;
 
 	this.render = function(type, player_id) {
-		console.log(window.client_id != that.client_id, window.client_id, that.client_id);
-		if (window.client_id != that.client_id) {
-			// this player cannot see other players hand
-			return false;
-		}
-
 		var element = new Container().render.call(this, type, player_id);
 		element.children().addClass("small");
+
+		if (window.client_id != that.client_id && that.cards.length > 0) {
+			// this player cannot see other players hand
+			element.children().attr("src", that.cards[0].getBackImageSrc());
+		}
+
 		return element;
 	};
 
