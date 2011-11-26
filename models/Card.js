@@ -84,6 +84,7 @@ function Card() {
 				scope: "body",
 				stack: ".card[data-id!=" + that.id + "]",
 				start: function(e, ui) {
+					ui.helper.mouse = {x: e.originalEvent.offsetX, y: e.originalEvent.offsetY};
 					ui.helper.originalContainer = that.element.parent();
 					that.element.draggable("option", "revert", true); // reset
 				}

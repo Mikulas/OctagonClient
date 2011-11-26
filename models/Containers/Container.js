@@ -34,19 +34,23 @@ function Container() {
 						var cords = ui.draggable.offset();
 						$(this).append(ui.draggable);
 
+						if (that.getType() == "play") {
+							ui.draggable.css({position: "absolute"});
+							console.log(cords, ui.helper.mouse);
+							ui.draggable.css({
+								left: cords.left - ui.helper.mouse.x / 2 - 20, // feels more natural with -20
+								top: cords.top - ui.draggable.height() - ui.helper.mouse.y / 2
+							});
+						} else {
+							ui.draggable.css({position: "relative", top: 0, left: 0});
+						}
+
 						if (that.getType() == "hand") {
 							ui.draggable.addClass("small");
 						} else {
 							ui.draggable.removeClass("small");
 						}
-
-						if (that.getType() == "play") {
-							ui.draggable.css({position: "absolute"});
-							ui.draggable.css(cords);
-						} else {
-							ui.draggable.css({position: "relative", top: 0, left: 0});
-						}
-						//console.log("TODO: change card position in structure AND? DOM");
+						//console.log("TODO: change card position in structure");
 					}
 				}
 			});
