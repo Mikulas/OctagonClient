@@ -141,7 +141,7 @@ $(function() {
 					card.card_id = $(ca).attr("id");
 					if ($.inArray($(sec).attr("name"), ["House", "Agenda"]) != -1) {
 						// put card directly to table
-						player.containers.play.add(card);
+						player.containers.hand.add(card);
 					} else if ($.inArray($(sec).attr("name"), ["Plots"]) != -1) {
 						// put card to unrevealed plot container
 						player.containers.plot.add(card);
@@ -153,8 +153,8 @@ $(function() {
 			});
 		});
 
-		player.containers.deck.shuffle();
-		player.draw(7);
+		//player.containers.deck.shuffle();
+		//player.draw(7);
 		game.render();
 		game.broadcast();
 	}
