@@ -79,9 +79,15 @@ function Card() {
 		return "http://192.168.100.77/OctgnWeb/images/facedown.jpg";
 	};
 
+	this.updatePositionFromDom = function() {
+		if (that.element == null)
+			return false;
+		that.position = that.element.position();
+		that.position.z = that.element.css("z-index");
+	};
+
 	this.render = function(revert) {
-		that.element = $(".card#" + that.id);
-		if (!that.element.size()) {
+		if (that.element == null) {
 			that.element = $("<div/>").attr("data-id", that.id).addClass("card");
 			that.element.disableSelection();
 			that.element.click(function(e) {
@@ -100,7 +106,7 @@ function Card() {
 					that.element.draggable("option", "revert", true); // reset
 				}
 			});
-
+			/*
 			that.element.contextMenu({menu: "context_menu"},
 				function(action, el, pos) {
 					switch(action) {
@@ -134,12 +140,9 @@ function Card() {
 					}
 				}
 			);
+			//*/
 
 			that.element.append($("<img/>").addClass("raw-card").attr("src", that.getImageSrc()));
-			that.element.css({
-				left: 0,
-				top: 0
-			});
 			return that.element;
 		}
 
@@ -155,6 +158,12 @@ function Card() {
 			that.turnFaceUp();
 		}
 
+		if (that.container.getType() == "play") {
+			that.element.css({position: "absolute"});
+		} else {
+			that.element.css({position: "static"});
+		}
+
 		that.element.css({"z-index": that.position.z});
 		if (that.position.left != null && that.position.top != null) {
 			that.element.stop(true).animate({
@@ -167,12 +176,14 @@ function Card() {
 	this.update = function(data) {
 		that.id = data.id;
 		that.card_id = data.cid;
-		if (data.hasOwnProperty("p"))
+		if (data.hasOwnProperty("p")) {
 			that.position = {
 				top: data.p.hasOwnProperty("t") ? data.p.t : 0,
 				left: data.p.hasOwnProperty("l") ? data.p.l : 0,
 				z: data.p.hasOwnProperty("z") ? data.p.z : 1
 			};
+			console.log(that.position);
+		}
 		that.kneeling = data.hasOwnProperty("k") ? data.k : false;
 		that.faceDown = data.hasOwnProperty("f") ? data.f : false;
 	};

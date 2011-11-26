@@ -27,9 +27,13 @@ function Container() {
 				accept: ".card",
 				scope: "body",
 				drop: function(event, ui) {
+					var card = game.getCard(ui.draggable.attr("data-id"));
+					
 					// move cards freely on board
 					if (this.isSameNode(ui.helper.originalContainer[0]) && that.getType() == "play") {
 						ui.draggable.draggable("option", "revert", false);
+						card.updatePositionFromDom();
+						card.broadcast();
 					}
 
 					// revert to original position if not moved to another container
@@ -56,8 +60,9 @@ function Container() {
 						}
 
 						// change card position in logical structure
-						var card = game.getCard(ui.draggable.attr("data-id"));
 						card.moveTo(game.players[$(this).attr("data-player-id")].containers[$(this).attr("data-type")]);
+						card.updatePositionFromDom();
+						game.broadcast(); // TODO optimize
 					}
 				}
 			});

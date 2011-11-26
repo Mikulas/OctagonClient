@@ -167,16 +167,6 @@ $(function() {
 		tolerance: "pointer"
 	});*/
 
-	/*
-	$("#board").droppable({
-		accept: '.card',
-		drop: function(event, ui) {
-			ui.draggable.data('dropped', true);
-			console.log("dropped");
-		}
-	});
-	*/
-
 	// temporary
 	$("#draw-card").click(function() {
 		this_player.draw();
