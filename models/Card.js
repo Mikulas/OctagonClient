@@ -80,9 +80,14 @@ function Card() {
 				that.onDoubleClick(e);
 			});
 			that.element.draggable({
-				revert: "invalid",
+				revert: true,
 				scope: "body",
-				stack: ".card[data-id!=" + that.id + "]"
+				stack: ".card[data-id!=" + that.id + "]",
+				start: function(e, ui) {
+					ui.helper.originalContainer = that.element.parent();
+					console.log("reset draggable revert");
+					that.element.draggable("option", "revert", true); // reset
+				}
 			});
 
 			that.element.contextMenu({menu: "context_menu"},

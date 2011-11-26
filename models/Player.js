@@ -40,7 +40,7 @@ function Player() {
 		return found;
 	};
 
-	this.render = function() {
+	this.render = function(player_id) {
 		if (that.counter_container == null) {
 			that.counter_container = $("<div/>").attr("data-player-id", this.id);
 			$("#counters").append(that.counter_container);
@@ -61,8 +61,9 @@ function Player() {
 		$.each(that.counters, function(i, v) {
 			that.counter_container.children("." + i).val(that.counters[i]);
 		});
-
-		$("#hand").append(that.containers.hand.render());
+		$.each(that.containers, function(i, container) {
+			$("#containers").append(container.render(i, player_id));
+		});
 	};
 
 	this.draw = function(count) {

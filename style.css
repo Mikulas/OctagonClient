@@ -207,8 +207,15 @@ table {
 	z-index: 9998;
 }
 
-#board {
+[data-type=hand] {
+	min-height: 128px;
+	width: 100%;
+}
+
+[data-type=play] {
 	background-color: #BBFF99;
+	min-height: 500px;
+	width: 100%;
 }
 
 /**

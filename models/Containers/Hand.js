@@ -1,10 +1,10 @@
 function Hand() {
 	var that = this;
 
-	this.render = function() {
-		var element = new Container().render.call(this);
+	this.render = function(type, player_id) {
+		var element = new Container().render.call(this, type, player_id);
 		element.children().addClass("small");
-		$("#hand").append(element);
+		return element;
 	}
 }
 

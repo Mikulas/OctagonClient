@@ -54,10 +54,7 @@ function Game() {
 
 	this.render = function() {
 		$.each(that.players, function(i, player) {
-			$.each(player.containers.play.render(), function(i, element) {
-				$("#board").append(element);
-			});
-			player.render();
+			player.render(i);
 		});
 	};
 
