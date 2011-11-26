@@ -19,12 +19,11 @@ function Player() {
 		Pile.prototype = new Container();
 		this.containers.death = new Pile();
 
-		Board.prototype = new Container();
-		this.containers.play = new Board();
-
 		Hand.prototype = new Container();
 		this.containers.hand = new Hand();
-		console.log(game);
+
+		Board.prototype = new Container();
+		this.containers.play = new Board();
 
 		this.counters = {power: 0, gold: 0};
 	};
@@ -78,7 +77,7 @@ function Player() {
 				break;
 			}
 			drawn++;
-			that.containers.hand.cards.push(card);
+			that.containers.hand.add(card);
 		}
 		console.log("player draws " + drawn + " card" + (drawn > 1 ? "s" : ""));
 	};

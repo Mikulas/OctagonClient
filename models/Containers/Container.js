@@ -14,6 +14,11 @@ function Container() {
 		return found;
 	};
 
+	this.add = function(card) {
+		that.cards.push(card);
+		card.container = that;
+	};
+
 	this.render = function(type, player_id) {
 		if (that.element == null) {
 			that.element = $('<div />');
@@ -50,7 +55,10 @@ function Container() {
 						} else {
 							ui.draggable.removeClass("small");
 						}
-						//console.log("TODO: change card position in structure");
+
+						// change card position in logical structure
+						var card = game.getCard(ui.draggable.attr("data-id"));
+						
 					}
 				}
 			});

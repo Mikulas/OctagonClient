@@ -5,6 +5,7 @@ function Card() {
 	this.position = {top: 0, left: 0, z: 1};
 	this.kneeling = false;
 	this.faceDown = false;
+	this.container = null;
 
 	var that = this;
 
@@ -73,6 +74,7 @@ function Card() {
 		that.element = $(".card#" + that.id);
 		if (!that.element.size()) {
 			that.element = $("<div/>").attr("data-id", that.id).addClass("card");
+			that.element.disableSelection();
 			that.element.click(function(e) {
 				that.onClick(e);
 			});

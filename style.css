@@ -208,14 +208,15 @@ table {
 }
 
 [data-type=hand] {
+	background-color: #BBFF99;
 	min-height: 128px;
 	width: 100%;
 }
 
 [data-type=play] {
-	background-color: #BBFF99;
+	background-color: red;
 	min-height: 500px;
-	width: 100%;
+	height: 100%;
 }
 
 /**

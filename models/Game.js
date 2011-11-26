@@ -42,7 +42,7 @@ function Game() {
 				$.each(pi.c, function(i, ca) {
 					var card = new Card();
 					card.update(ca);
-					container.cards.push(card);
+					container.add(card);
 				});
 				player.containers[i] = container;
 			});

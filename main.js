@@ -11,8 +11,6 @@ function send(content) {
 }
 
 $(function() {
-	$("#board").disableSelection();
-
 	if (!localStorage.hasOwnProperty("client_id")) {
 		localStorage.client_id = new Date().getTime() + "-" + Math.floor((Math.random() * 10e6));
 	}
@@ -132,13 +130,13 @@ $(function() {
 					card.card_id = $(ca).attr("id");
 					if ($.inArray($(sec).attr("name"), ["House", "Agenda"]) != -1) {
 						// put card directly to table
-						player.containers.play.cards.push(card);
+						player.containers.play.add(card);
 					} else if ($.inArray($(sec).attr("name"), ["Plots"]) != -1) {
 						// put card to unrevealed plot container
-						player.containers.plot.cards.push(card);
+						player.containers.plot.add(card);
 					} else {
 						// put card to deck
-						player.containers.deck.cards.push(card);
+						player.containers.deck.add(card);
 					}
 				}
 			});
