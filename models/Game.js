@@ -49,7 +49,6 @@ function Game() {
 			that.players.push(player);
 		});
 		that.render();
-		console.log(that);
 	};
 
 	this.render = function() {

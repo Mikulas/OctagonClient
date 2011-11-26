@@ -41,7 +41,6 @@ function Container() {
 
 						if (that.getType() == "play") {
 							ui.draggable.css({position: "absolute"});
-							console.log(cords, ui.helper.mouse);
 							ui.draggable.css({
 								left: cords.left - ui.helper.mouse.x / 2 - 20, // feels more natural with -20
 								top: cords.top - ui.draggable.height() - ui.helper.mouse.y / 2
@@ -58,7 +57,7 @@ function Container() {
 
 						// change card position in logical structure
 						var card = game.getCard(ui.draggable.attr("data-id"));
-						
+						card.moveTo(game.players[$(this).attr("data-player-id")].containers[$(this).attr("data-type")]);
 					}
 				}
 			});

@@ -13,6 +13,15 @@ function Card() {
 		
 	};
 
+	this.moveTo = function(container) {
+		$.each(that.container.cards, function(i, card) {
+			if (card.id == that.id) {
+				that.container.cards.splice(i, i + 1);
+			}
+		});
+		container.add(that);
+	};
+
 	this.focus = function() {
 		$(".focus").removeClass("focus");
 		that.element.addClass("focus");
