@@ -183,6 +183,11 @@ table {
 
 .counter-group {
 	display: inline-block;
+	padding: 0 5pt 0 10pt;
+}
+
+.counter-group .player-name {
+	font-family: "Verdana";
 }
 
 .counter {

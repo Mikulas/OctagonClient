@@ -3,6 +3,7 @@ function Player() {
 	this.id = null;
 	this.counters = {power: 0, gold: 0};
 	this.containers = {};
+	this.name = null;
 
 	var that = this;
 
@@ -42,6 +43,7 @@ function Player() {
 	this.render = function() {
 		if (that.counter_container == null) {
 			that.counter_container = $("<div/>").attr("data-player-id", this.id).addClass("counter-group");
+			that.counter_container.append($("<span/>").text(that.name).addClass("player-name"));
 			$("#counters").append(that.counter_container);
 			$.each(that.counters, function(i, v) {
 				var $input = $("<input type=\"number\"/>").addClass("counter " + i);
@@ -94,6 +96,7 @@ function Player() {
 		var obj = {
 			id: that.id,
 			counters: that.counters,
+			name: that.name,
 			containers: {}
 		};
 		$.each(that.containers, function(i, container) {

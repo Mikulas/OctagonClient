@@ -27,6 +27,7 @@ function Game() {
 			var player = new Player();
 			player.id = i;
 			player.counters = pl.counters;
+			player.name = pl.name;
 			$.each(pl.containers, function(i, pi) {
 				var container = null;
 				if (i == "play") {

@@ -4,6 +4,7 @@ var optimizations = {"~@0~": "a12af4e8-be4b-4cda-a6b6-534f97"};
 var client_id = null;
 var client_view = null;
 var this_player = null;
+var player_name = null;
 
 function send(content) {
 	var tampered = content.substr(0, content.length - 1) + ",\"client_id\":\"" + client_id + "-" + client_view + "\",\"time\":" + new Date().getTime() + "}";
@@ -11,6 +12,13 @@ function send(content) {
 }
 
 $(function() {
+	// Check for the various File API support.
+	if (window.File && window.FileReader && window.FileList && window.Blob) {
+		// Great success! All the File APIs are supported.
+	} else {
+		alert("Please update your browser to the latest version. Otherwise Octagon might not work property.");
+	}
+
 	if (!localStorage.hasOwnProperty("client_id")) {
 		localStorage.client_id = new Date().getTime() + "-" + Math.floor((Math.random() * 10e6));
 	}
@@ -22,14 +30,13 @@ $(function() {
 		localStorage.client_view++;
 	}
 	client_view = localStorage.client_view;
-	console.log("This clients id = ", client_id + "-" + client_view);
 
-	// Check for the various File API support.
-	if (window.File && window.FileReader && window.FileList && window.Blob) {
-		// Great success! All the File APIs are supported.
-	} else {
-		alert('The File APIs are not fully supported. Please update your browser to the latest version.');
+	if (!localStorage.hasOwnProperty("player_name")) {
+		localStorage.player_name = prompt("Hey there, fellow card player! What's your name?", "Setup");
 	}
+	player_name = localStorage.player_name;
+
+	console.log("This clients id = ", client_id + "-" + client_view, player_name);
 
 	game = new Game; // defaults to empty if no broadcast is received upon connecting
 
@@ -121,6 +128,7 @@ $(function() {
 
 	function parseO8DXml(xmlString) {
 		var player = game.addPlayer();
+		player.name = player_name;
 		this_player = player;
 		$(xmlString).children().each(function(i, sec) {
 			$(sec).children().each(function(i, ca) {
@@ -157,15 +165,6 @@ $(function() {
 			$("#magnifier").fadeOut();
 		}
 	});
-
-	/*$("#hand").sortable({
-		placeholder: "card small placeholder",
-		axis: "x",
-		forceHelperSize: true,
-		forcePlaceholderSize: true,
-		items: "img",
-		tolerance: "pointer"
-	});*/
 
 	function showNotification(content, persist) {
 		var $node = $('<div/>').addClass("notification").html(content).hide();
