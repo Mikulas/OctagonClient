@@ -7,7 +7,7 @@ function Hand() {
 		that.element = new Container().render.call(this, type, player_id);
 		if (register) {
 			$(window).resize(function() {
-				that.resizeHand();
+				that.resizeElement();
 			});
 		}
 
@@ -18,13 +18,13 @@ function Hand() {
 			that.element.children().attr("src", that.cards[0].getBackImageSrc());
 		}
 
-		that.resizeHand();
+		that.resizeElement();
 
 		return that.element;
 	};
 
-	this.resizeHand = function() {
-		var width = $(document).width() - $("[data-type=plot]").width() - $("[data-type=death]").width() - $("[data-type=discard]").width() - $("[data-type=death]").width();
+	this.resizeElement = function() {
+		var width = $(document).width() - $("[data-type=plot]").width() - $("[data-type=death]").width() - $("[data-type=discard]").width() - $("[data-type=death]").width() - 20; // 20 is scrollbar quickfix
 		that.element.width(width);
 	};
 

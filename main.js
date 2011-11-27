@@ -150,7 +150,6 @@ $(function() {
 				}
 			});
 		});
-
 		game.render();
 		game.broadcast();
 	}
