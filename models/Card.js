@@ -32,12 +32,18 @@ function Card() {
 	};
 
 	this.stand = function() {
-		that.element.removeClass("kneeling").addClass("standing");
+		that.element.removeClass("kneeling").addClass("standing").addClass("stand");
+		setTimeout(function() {
+			that.element.removeClass("stand");
+		}, 600);
 		that.kneeling = false;
 	};
 
 	this.kneel = function() {
-		that.element.removeClass("standing").addClass("kneeling");
+		that.element.removeClass("standing").addClass("kneeling").addClass("kneel");
+		setTimeout(function() {
+			that.element.removeClass("kneel");
+		}, 600);
 		that.kneeling = true;
 	};
 
@@ -51,7 +57,24 @@ function Card() {
 
 	this.turnFaceUp = function() {
 		that.element.removeClass("face-down").addClass("face-up");
-		// this animation takes .4 seconds, being at scale 0 at .2
+		if (!that.kneeling) {
+			that.element.addClass("turn-face-up");
+			setTimeout(function() {
+				that.element.removeClass("turn-face-up");
+			}, 400);
+
+		} else {
+			that.element.addClass("turn-face-up-kneeling");
+			setTimeout(function() {
+				that.element.removeClass("turn-face-up-kneeling");
+			}, 400);
+		}
+
+		setTimeout(function() {
+			that.element.removeClass("turn-face-up");
+		}, 400);
+
+		// these animations take .4 seconds, being at scale 0 at .2
 		setTimeout(function() {
 			that.element.children('img').attr('src', that.getImageSrc());
 		}, 200);
@@ -60,10 +83,24 @@ function Card() {
 
 	this.turnFaceDown = function() {
 		that.element.removeClass("face-up").addClass("face-down");
-		// this animation takes .4 seconds, being at scale 0 at .2
+		if (!that.kneeling) {
+			that.element.addClass("turn-face-down");
+			setTimeout(function() {
+				that.element.removeClass("turn-face-down");
+			}, 400);
+			
+		} else {
+			that.element.addClass("turn-face-down-kneeling");
+			setTimeout(function() {
+				that.element.removeClass("turn-face-down-kneeling");
+			}, 400);
+		}
+
+		// these animations take .4 seconds, being at scale 0 at .2
 		setTimeout(function() {
 			that.element.children('img').attr('src', that.getBackImageSrc());
 		}, 200);
+
 		that.faceDown = true;
 	};
 
@@ -121,7 +158,6 @@ function Card() {
 					that.element.fadeTo(0, 1);
 				}
 			});
-			/*
 			that.element.contextMenu({menu: "context_menu"},
 				function(action, el, pos) {
 					switch(action) {
@@ -139,6 +175,11 @@ function Card() {
 				// on show menu callback
 				function(e) {
 					var card = game.getCard($(e.srcElement).parent().attr("data-id"));
+
+					// only enable menu in play
+					if (card.container.getType() != "play")
+						return false;
+
 					if (card.kneeling) {
 						$("#context_menu [href=#kneel]").hide();
 						$("#context_menu [href=#stand]").show();
@@ -155,7 +196,6 @@ function Card() {
 					}
 				}
 			);
-			//*/
 
 			that.element.append($("<img/>").addClass("raw-card").attr("src", that.getImageSrc()));
 		}

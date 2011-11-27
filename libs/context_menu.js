@@ -66,8 +66,10 @@ if(jQuery)( function() {
 							(e.pageX) ? x = e.pageX : x = e.clientX + d.scrollLeft;
 							(e.pageY) ? y = e.pageY : y = e.clientY + d.scrollTop;
 
-							if (invoke != undefined)
-								invoke(e);
+							if (invoke != undefined) {
+								if (invoke(e) === false)
+									return false;
+							}
 
 							// Show the menu
 							$(document).unbind('click');

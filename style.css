@@ -24,6 +24,16 @@
 	50% {-webkit-transform: scaleX(0); opacity: 0.5;}
 	100% {-webkit-transform: scaleX(1); opacity: 1;}
 }
+@-webkit-keyframes flip-down-rotated {
+	0% {opacity: 1;}
+	50% {opacity: 0.5;}
+	100% {opacity: 1;}
+}
+@-webkit-keyframes flip-up-rotated {
+	0% {opacity: 1;}
+	50% {opacity: 0.5;}
+	100% {opacity: 1;}
+}
 @-webkit-keyframes pulse-error {
 	0% {color: #DB886B; -webkit-box-shadow: 0px 0px 5px red;}
 	75% {color: white;}
@@ -114,25 +124,43 @@ table {
 }
 
 .card.kneeling {
-	-webkit-animation-duration: .6s;
 	-webkit-transform: rotate(90deg);
+}
+.card.kneel {
+	-webkit-animation-duration: .6s; /* used in code */
 	-webkit-animation-name: kneel;
 }
 
 .card.standing {
-	-webkit-animation-duration: .6s;
 	-webkit-transform: rotate(0deg);
+}
+.card.stand {
+	-webkit-animation-duration: .6s; /* used in code */
 	-webkit-animation-name: stand;
 }
 
 .card.face-down {
-	-webkit-animation-duration: .4s;
+}
+.card.turn-face-down {
+	-webkit-animation-duration: .4s; /* used in code */
 	-webkit-animation-name: flip-down;
+}
+.card.turn-face-down-kneeling {
+	-webkit-transform: rotate(90deg);
+	-webkit-animation-duration: .4s; /* used in code */
+	-webkit-animation-name: flip-down-rotated;
 }
 
 .card.face-up {
-	-webkit-animation-duration: .4s;
+}
+.card.turn-face-up {
+	-webkit-animation-duration: .4s; /* used in code */
 	-webkit-animation-name: flip-up;
+}
+.card.turn-face-up-kneeling {
+	-webkit-transform: rotate(90deg);
+	-webkit-animation-duration: .4s; /* used in code */
+	-webkit-animation-name: flip-up-rotated;
 }
 
 .card.focus {
