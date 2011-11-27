@@ -29,7 +29,7 @@ function Container() {
 				scope: "body",
 				drop: function(event, ui) {
 					var card = game.getCard(ui.draggable.attr("data-id"));
-					
+
 					// move cards freely on board
 					if (this.isSameNode(ui.helper.originalContainer[0]) && that.getType() == "play") {
 						ui.draggable.draggable("option", "revert", false);
@@ -41,25 +41,28 @@ function Container() {
 					if (!this.isSameNode(ui.helper.originalContainer[0])) {
 						ui.draggable.draggable("option", "revert", false);
 
-						var cords = ui.draggable.offset();
 						$(this).append(ui.draggable);
 
 						if (that.getType() == "play") {
-							ui.draggable.removeClass("small");
 							ui.draggable.css({position: "absolute"});
-							ui.draggable.css({
-								left: cords.left - ui.helper.mouse.x / 2 - 20, // feels more natural with -20
-								top: cords.top - ui.draggable.height() - ui.helper.mouse.y / 2
-							});
 						} else {
 							ui.draggable.css({position: "relative", top: 0, left: 0});
-							ui.draggable.addClass("small");
 						}
 
 						// change card position in logical structure
 						card.moveTo(game.players[$(this).attr("data-player-id")].containers[$(this).attr("data-type")]);
 						card.updatePositionFromDom();
 						game.broadcast(); // TODO optimize
+					}
+				},
+				over: function(e, ui) {
+					if (that.getType() == "play") {
+						ui.draggable.removeClass("small");
+					}
+				},
+				out: function(e, ui) {
+					if (that.getType() == "play") {
+						ui.draggable.addClass("small");
 					}
 				}
 			});
