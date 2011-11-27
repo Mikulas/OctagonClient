@@ -249,7 +249,8 @@ function Card() {
 	};
 
 	this.onDoubleClick = function(e) {
-		that.toggleKneeling();
+		if (that.container.getType() == "play")
+			that.toggleKneeling();
 		that.broadcast();
 	};
 
