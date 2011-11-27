@@ -105,7 +105,12 @@ function Card() {
 				revert: true,
 				scope: "body",
 				stack: ".card[data-id!=" + that.id + "]",
-				helper: "clone",
+				helper: function() { // improved clone
+					var clone = that.element.clone(false);
+					clone.insertBefore(that.element);
+					return clone;
+				},
+				//containment: $("#containers"),
 				start: function(e, ui) {
 					that.element.fadeTo(100, 0.5);
 					ui.helper.css("z-index", 9997);

@@ -253,17 +253,24 @@ table {
 	width: 100%;
 }
 
-[data-type=discard] .card,
 [data-type=death] .card,
+[data-type=discard] .card,
 [data-type=plot] .card,
 [data-type=deck] .card {
 	display: none;
 }
-[data-type=discard] :last-child,
 [data-type=death] :last-child,
+[data-type=discard] :last-child,
 [data-type=plot] :last-child,
 [data-type=deck] :last-child {
-	display: inline;
+	display: inline-block;
+}
+
+[data-type=death] .card.ui-draggable-dragging,
+[data-type=discard] .card.ui-draggable-dragging,
+[data-type=plot] .card.ui-draggable-dragging,
+[data-type=deck] .card.ui-draggable-dragging {
+	display: inline-block;
 }
 
 /**
