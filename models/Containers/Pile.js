@@ -18,16 +18,26 @@ function Pile() {
 			that.element.dblclick(function(e) {
 				that.onDoubleClick(e);
 			});
-			that.element.children().remove();
+			that.element.children().addClass("small");
+			//that.element.children().remove();
 		}
-
+		if (that.cards.length >= 1 && !that.element.children("img.helper").size() && (type == "deck" || type == "plot")) {
+			that.element.append($("<img/>")
+				.addClass("card small face-down helper")
+				.attr("src", that.cards[0].getBackImageSrc()))
+				.css({"z-index": 9996, display: "inline-block !important"});
+		} else if (that.cards.length == 0) {
+			that.element.children("img.helper").remove();
+		}
+		/*
 		if (that.cards.length == 0) {
 			that.element.children().remove();
 		}
-		if (that.cards.length > 1 && that.element.children().size() == 0) {
+		if (that.cards.length >= 1 && that.element.children().size() == 0) {
 			that.element.append($("<img/>").addClass("card small face-down").attr("src", that.cards[0].getBackImageSrc()));
 		}
-		
+		*/
+
 		return that.element;
 	};
 

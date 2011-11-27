@@ -15,7 +15,6 @@ function Card() {
 
 	this.moveTo = function(container) {
 		// find this card's index in container's cards array
-		console.log(that.container.cards);
 		$.each(that.container.cards, function(i, card) {
 			if (card == undefined)
 				return false;
