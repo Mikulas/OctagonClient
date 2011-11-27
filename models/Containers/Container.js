@@ -30,16 +30,24 @@ function Container() {
 				drop: function(event, ui) {
 					var card = game.getCard(ui.draggable.attr("data-id"));
 
+					if (that.getType() == "play") {
+						ui.draggable.removeClass("small");
+					} else {
+						ui.draggable.addClass("small");
+					}
+
 					// move cards freely on board
 					if (this.isSameNode(ui.helper.originalContainer[0]) && that.getType() == "play") {
 						ui.draggable.draggable("option", "revert", false);
+						ui.draggable.css(ui.helper.offset());
 						card.updatePositionFromDom();
 						card.broadcast();
 					}
 
-					// revert to original position if not moved to another container
+					// moved to another container, do not revert position
 					if (!this.isSameNode(ui.helper.originalContainer[0])) {
 						ui.draggable.draggable("option", "revert", false);
+						ui.draggable.css(ui.helper.offset());
 
 						$(this).append(ui.draggable);
 
@@ -57,12 +65,12 @@ function Container() {
 				},
 				over: function(e, ui) {
 					if (that.getType() == "play") {
-						ui.draggable.removeClass("small");
+						ui.helper.removeClass("small");
 					}
 				},
 				out: function(e, ui) {
 					if (that.getType() == "play") {
-						ui.draggable.addClass("small");
+						ui.helper.addClass("small");
 					}
 				}
 			});

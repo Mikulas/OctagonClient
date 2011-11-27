@@ -105,10 +105,16 @@ function Card() {
 				revert: true,
 				scope: "body",
 				stack: ".card[data-id!=" + that.id + "]",
+				helper: "clone",
 				start: function(e, ui) {
+					that.element.fadeTo(100, 0.5);
+					ui.helper.css("z-index", 9997);
 					ui.helper.mouse = {x: e.originalEvent.offsetX, y: e.originalEvent.offsetY};
 					ui.helper.originalContainer = that.element.parent();
 					that.element.draggable("option", "revert", true); // reset
+				},
+				stop: function(e, ui) {
+					that.element.fadeTo(0, 1);
 				}
 			});
 			/*
