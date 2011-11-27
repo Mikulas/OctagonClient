@@ -54,6 +54,10 @@ function Container() {
 						if (that.getType() == "play") {
 							ui.draggable.css({position: "absolute"});
 						} else {
+							if (card.kneeling)
+								card.stand();
+							if (card.faceDown)
+								card.turnFaceUp();
 							ui.draggable.css({position: "relative", top: 0, left: 0});
 						}
 
