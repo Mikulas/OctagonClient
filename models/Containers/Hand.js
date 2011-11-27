@@ -3,16 +3,31 @@ function Hand() {
 	var that = this;
 
 	this.render = function(type, player_id) {
-		var element = new Container().render.call(this, type, player_id);
-		element.children().addClass("small");
+		var register = that.element == null;
+		that.element = new Container().render.call(this, type, player_id);
+		if (register) {
+			$(window).resize(function() {
+				that.resizeHand();
+			});
+		}
+
+		that.element.children().addClass("small");
 
 		if (window.client_id != that.client_id && that.cards.length > 0) {
 			// this player cannot see other players hand
-			element.children().attr("src", that.cards[0].getBackImageSrc());
+			that.element.children().attr("src", that.cards[0].getBackImageSrc());
 		}
 
-		return element;
+		that.resizeHand();
+
+		return that.element;
 	};
+
+	this.resizeHand = function() {
+		var width = $(document).width() - $("[data-type=plot]").width() - $("[data-type=death]").width() - $("[data-type=discard]").width() - $("[data-type=death]").width();
+		that.element.width(width);
+	};
+
 
 	this.toSerializable = function() {
 		var obj = {c: [], cid: that.client_id};
