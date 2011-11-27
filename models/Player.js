@@ -65,25 +65,16 @@ function Player() {
 		});
 
 		var $piles = $(".pile.set[data-player-id=" + that.id + "]");
-		var $boards = $(".board.set[data-player-id=" + that.id + "]");
 		if (!$piles.size()) {
 			$piles = $("<div/>").addClass("pile set").attr("data-player-id", that.id);
-			var last_pile = $("#containers .pile.set:last");
-			if (!last_pile.size()) {
-				$("#containers").append($piles);
-			} else {
-				last_pile.after($piles);
-			}
-
-			$boards = $("<div/>").addClass("board set").attr("data-player-id", that.id);
-			$("#containers").append($boards);
+			$("#containers .piles").append($piles);
 		}
 
 		$.each(that.containers, function(i, container) {
 			var entity = container.render(i, that.id);
 			if (entity && !entity.parent().size()) {
 				if (i == "play")
-					$boards.append(entity);
+					$("#containers").append(entity);
 				else
 					$piles.append(entity);
 			}

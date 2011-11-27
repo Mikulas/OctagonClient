@@ -22,6 +22,7 @@ function Game() {
 		that.players = []; // wipe
 		$("#containers").children().remove();
 		$("#counters").children().remove();
+
 		that.unique_id = data.unique_id;
 		$.each(data.players, function(i, pl) {
 			var player = new Player();
@@ -56,9 +57,34 @@ function Game() {
 	};
 
 	this.render = function() {
+		var $piles = $("#containers .piles");
+		if (!$piles.size()) {
+			$piles = $("<div/>").addClass("piles");
+			$("#containers").append($piles);
+
+			$nav = $("<ul/>");
+			$piles.append($nav);
+
+			$.each(that.players, function(i, player) {
+				$nav.append($("<li/>").addClass("tab").attr("data-player-id", i).text(player.name).click(function(e) {
+					var id = $(e.target).attr("data-player-id");
+					that.openTab(id);
+				}));
+			});
+		}
+		
 		$.each(that.players, function(i, player) {
 			player.render();
 		});
+
+		that.openTab(game.getPlayer(window.client_id).id);
+	};
+
+	this.openTab = function(player_id) {
+		$("#containers .pile.set").addClass("hidden");
+		$("#containers .pile.set[data-player-id=" + player_id + "]").removeClass("hidden");
+		$("#containers li.active").removeClass("active");
+		$("#containers li[data-player-id=" + player_id + "]").addClass("active");
 	};
 
 	this.getCard = function(id) {
