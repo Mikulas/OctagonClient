@@ -155,8 +155,13 @@ $(function() {
 		game.broadcast();
 	}
 
-	/*
 	$(".card").live("mouseenter", function(e) {
+		if ($(this).offset().left > $(window).width() / 2) {
+			$("#magnifier").css({left: 5, right: "auto"});
+		} else {
+			$("#magnifier").css({left: "auto", right: 5});
+		}
+
 		if (!$(this).hasClass("face-down")) {
 			$("#magnifier").attr("src", $(this).children("img").attr("src")).stop(false, true).fadeIn();
 		}
@@ -165,7 +170,6 @@ $(function() {
 			$("#magnifier").fadeOut();
 		}
 	});
-	//*/
 
 	function showNotification(content, persist) {
 		var $node = $('<div/>').addClass("notification").html(content).hide();

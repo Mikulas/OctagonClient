@@ -19,7 +19,6 @@ function Pile() {
 				that.onDoubleClick(e);
 			});
 			that.element.children().addClass("small");
-			//that.element.children().remove();
 		}
 		if (that.cards.length >= 1 && !that.element.children("img.helper").size() && (type == "deck" || type == "plot")) {
 			that.element.append($("<img/>")
@@ -29,14 +28,6 @@ function Pile() {
 		} else if (that.cards.length == 0) {
 			that.element.children("img.helper").remove();
 		}
-		/*
-		if (that.cards.length == 0) {
-			that.element.children().remove();
-		}
-		if (that.cards.length >= 1 && that.element.children().size() == 0) {
-			that.element.append($("<img/>").addClass("card small face-down").attr("src", that.cards[0].getBackImageSrc()));
-		}
-		*/
 
 		return that.element;
 	};
