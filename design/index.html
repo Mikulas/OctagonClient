@@ -68,6 +68,7 @@
 		height: 188px;
 		box-shadow: 4px 3px 3px rgba(0, 0, 0, 0.1);
 		border-radius: 12px;
+		text-align: center;
 	}
 	
 	.card img {
@@ -89,6 +90,25 @@
 		height: 150px;
 		border-radius: 9px;
 	}
+	
+	.title {
+		display: inline-block;
+		position: relative;
+		top: -70px;
+		width: 100%;
+		margin: auto;
+		padding-top: 10px;
+		color: rgba(255, 255, 255, .9);
+		opacity: 0;
+		-webkit-transition: opacity 100ms ease-in-out;
+	}
+	
+	.pile.deck:hover .title {
+		opacity: 1;
+		background-color: rgba(0, 0, 0, .6);
+		width: 100%;
+		height: 32px;
+	}
 	</style>
 </head>
 <body>
@@ -109,10 +129,21 @@
 		</span>
 	</header>
 	<div id="containers">
-		<div class="pile">
-			<div class="card small">
-				<img src="../images/facedown.jpg">
-			</div>
+		<div class="pile deck card small">
+			<img src="../images/facedown.jpg">
+			<div class="title">DECK</div>
+		</div>
+		<div class="pile deck card small">
+			<img src="../images/facedown.jpg">
+			<div class="title">PLOTS</div>
+		</div>
+		<div class="pile deck card small">
+			<img src="../images/facedown.jpg">
+			<div class="title">DEATH PILE</div>
+		</div>
+		<div class="pile deck card small">
+			<img src="../images/facedown.jpg">
+			<div class="title">DISCARD</div>
 		</div>
 	</div>
 	<div id="play">
