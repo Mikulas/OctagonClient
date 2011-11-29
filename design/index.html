@@ -21,7 +21,7 @@
 	header {
 		display: block;
 		background-color: gray;
-		height: 60px;
+		height: 40px;
 		
 		background: rgb(76,76,76);
 		background: -moz-linear-gradient(top, rgb(76,76,76) 1%, rgb(25,25,25) 100%);
@@ -36,9 +36,9 @@
 	}
 	
 	.icon {
-		width: 40px;
-		height: 40px;
-		margin: 10px;
+		width: 30px;
+		height: 30px;
+		margin: 5px;
 		border-radius: 30px; /* makes perfect circle */
 		box-shadow: 1px 2px 5px rgba(100, 100, 100, .3);
 	}
@@ -48,7 +48,7 @@
 		font-size: 25px;
 		padding-left: 60px;
 		position: relative;
-		top: -18px;
+		top: -10px;
 	}
 	
 	header input[type=number] {
@@ -56,27 +56,39 @@
 		font-size: 30px;
 		text-align: right;
 		position: relative;
-		top: -19px;
+		top: -9px;
 		border: none;
 		background-color: rgba(255, 255, 255, 0.9);
 	}
 	
 	.card {
 		display: inline-block;
-		border-radius: 12px;
 		overflow: hidden;
-		width: 164px; /* minus crop */
-		height: 236px;
+		width: 130px; /* minus crop */
+		height: 188px;
 		box-shadow: 4px 3px 3px rgba(0, 0, 0, 0.1);
+		border-radius: 12px;
 	}
 	
 	.card img {
 		margin-top: -2px; /* crop */
 		margin-left: -2px;
-		width: 168px;
-		height: 240px;
+		width: 134px;
+		height: 192px;
+		border-radius: 12px;
 	}
 	
+	.card.small {
+		width: 100px; /* minus crop */
+		height: 146px;
+		border-radius: 9px;
+	}
+	
+	.card.small img {
+		width: 104px;
+		height: 150px;
+		border-radius: 9px;
+	}
 	</style>
 </head>
 <body>
@@ -97,10 +109,14 @@
 		</span>
 	</header>
 	<div id="containers">
-		
+		<div class="pile">
+			<div class="card small">
+				<img src="../images/facedown.jpg">
+			</div>
+		</div>
 	</div>
 	<div id="play">
-		<div class="card">
+		<div class="card" style="position: absolute; top: 350px; left: 80px;">
 			<img src="../images/a12af4e8-be4b-4cda-a6b6-534f97003001.jpg">
 		</div>
 	</div>
