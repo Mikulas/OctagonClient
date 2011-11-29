@@ -1,0 +1,108 @@
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>Octagon Client</title>
+	<link href='http://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>
+	<style>
+	* {margin: 0; padding: 0;}
+	
+	::selection {
+		background-color: rgba(0, 0, 0, 0);
+	}
+	input::selection {
+		background-color: auto;
+	}
+	
+	body {
+		background-image: url("wood.jpg");
+		font-family: "Lato";
+	}
+	
+	header {
+		display: block;
+		background-color: gray;
+		height: 60px;
+		
+		background: rgb(76,76,76);
+		background: -moz-linear-gradient(top, rgb(76,76,76) 1%, rgb(25,25,25) 100%);
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,rgb(76,76,76)), color-stop(100%,rgb(25,25,25)));
+		background: -webkit-linear-gradient(top, rgb(76,76,76) 1%,rgb(25,25,25) 100%);
+		background: -o-linear-gradient(top, rgb(76,76,76) 1%,rgb(25,25,25) 100%);
+		background: -ms-linear-gradient(top, rgb(76,76,76) 1%,rgb(25,25,25) 100%);
+		background: linear-gradient(top, rgb(76,76,76) 1%,rgb(25,25,25) 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#191919',GradientType=0 );
+		
+		box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
+	}
+	
+	.icon {
+		width: 40px;
+		height: 40px;
+		margin: 10px;
+		border-radius: 30px; /* makes perfect circle */
+		box-shadow: 1px 2px 5px rgba(100, 100, 100, .3);
+	}
+	
+	header .name {
+		color: rgba(255, 255, 255, .9);
+		font-size: 25px;
+		padding-left: 60px;
+		position: relative;
+		top: -18px;
+	}
+	
+	header input[type=number] {
+		width: 2.3em;
+		font-size: 30px;
+		text-align: right;
+		position: relative;
+		top: -19px;
+		border: none;
+		background-color: rgba(255, 255, 255, 0.9);
+	}
+	
+	.card {
+		display: inline-block;
+		border-radius: 12px;
+		overflow: hidden;
+		width: 164px; /* minus crop */
+		height: 236px;
+		box-shadow: 4px 3px 3px rgba(0, 0, 0, 0.1);
+	}
+	
+	.card img {
+		margin-top: -2px; /* crop */
+		margin-left: -2px;
+		width: 168px;
+		height: 240px;
+	}
+	
+	</style>
+</head>
+<body>
+	<header>
+		<span>
+			<span class="name">Rullaf</span>
+			<img src="power.png" class="icon">
+			<input type="number" value="15" min="0" max="99">
+			<img src="gold.png" class="icon">
+			<input type="number" value="15" min="0" max="99">
+		</span>
+		<span>
+			<span class="name">Dawe [CZE]</span>
+			<img src="power.png" class="icon">
+			<input type="number" value="7" min="0" max="99">
+			<img src="gold.png" class="icon">
+			<input type="number" value="9" min="0" max="99">
+		</span>
+	</header>
+	<div id="containers">
+		
+	</div>
+	<div id="play">
+		<div class="card">
+			<img src="../images/a12af4e8-be4b-4cda-a6b6-534f97003001.jpg">
+		</div>
+	</div>
+</body>
+</html>
