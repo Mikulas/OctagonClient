@@ -13,6 +13,10 @@
 		background-color: auto;
 	}
 	
+	.hidden {
+		display: none;
+	}
+	
 	body {
 		background-image: url("wood.jpg");
 		font-family: "Lato";
@@ -57,7 +61,7 @@
 	
 	header .name.active {
 		background: rgba(100, 255, 130, .2);
-		border-bottom: 7px solid rgba(40, 150, 60, .6);
+		border-bottom: 7px solid rgba(40, 150, 60, .3);
 	}
 	
 	header input {
@@ -69,12 +73,20 @@
 		background: none;
 	}
 	
+	.set {
+		background: rgba(40, 150, 60, .4);
+		margin-top: 7px;
+		padding: 20px 30px 10px 30px;
+		box-shadow: 1px 2px 5px rgba(100, 100, 100, .3);
+		height: 146px;
+	}
+	
 	.card {
 		display: inline-block;
 		overflow: hidden;
 		width: 130px; /* minus crop */
 		height: 188px;
-		box-shadow: 4px 3px 3px rgba(0, 0, 0, 0.1);
+		box-shadow: 4px 3px 3px rgba(0, 0, 0, 0.05);
 		border-radius: 12px;
 		text-align: center;
 	}
@@ -111,6 +123,19 @@
 		-webkit-transition: opacity 100ms ease-in-out;
 	}
 	
+	.hand {
+		display: inline;
+	}
+	
+	.hand .card {
+		padding: 0 3px;
+	}
+	
+	.pile {
+		padding: 0 3px;
+		float: right;
+	}
+	
 	.pile.deck:hover .title {
 		opacity: 1;
 		background-color: rgba(0, 0, 0, .6);
@@ -138,7 +163,17 @@
 	</header>
 	<div id="containers">
 		<div class="set" data-player-id="0">
-			<!--<div class="pile deck card small">
+			<div class="hand">
+				<div class="card small">
+					<img src="../images/a12af4e8-be4b-4cda-a6b6-534f97003001.jpg">
+				</div>
+				<div class="card small"><img src="../images/a12af4e8-be4b-4cda-a6b6-534f97003001.jpg"></div>
+				<div class="card small"><img src="../images/a12af4e8-be4b-4cda-a6b6-534f97003001.jpg"></div>
+				<div class="card small"><img src="../images/a12af4e8-be4b-4cda-a6b6-534f97003001.jpg"></div>
+				<div class="card small"><img src="../images/a12af4e8-be4b-4cda-a6b6-534f97003001.jpg"></div>
+			</div>
+			
+			<div class="pile deck card small">
 				<img src="../images/facedown.jpg">
 				<div class="title">DECK</div>
 			</div>
@@ -153,7 +188,7 @@
 			<div class="pile deck card small">
 				<img src="../images/facedown.jpg">
 				<div class="title">DISCARD</div>
-			</div>-->
+			</div>
 		</div>
 	</div>
 	<div id="play">
