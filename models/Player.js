@@ -50,22 +50,32 @@ function Player() {
 				var $input = $("<input/>").addClass("counter " + i);
 				$input.bind("change click", function() {
 					that.counters[i] = $(this).val();
-					send(JSON.stringify({
-						"method": "update_counter",
-						"player_id": $input.parent().attr("data-player-id"),
-						"counter": i,
-						"value": $(this).val()
-					}));
+					that.broadcastCounter(i);
 				});
 				that.counter_element.append($input);
-				that.counter_element.append($("<img/>").attr("src", "icons/" + i + ".png").addClass("icon"));
+
+				var $icon = $("<img/>").attr("src", "icons/" + i + ".png").addClass("icon");
+				$icon.click(function(e) {
+					if ($input.val() < 99) {
+						$input.val(++that.counters[i]);
+						that.broadcastCounter(i);
+					}
+				}).contextmenu(function(e) {
+					if ($input.val() > 0) {
+						$input.val(--that.counters[i]);
+						that.broadcastCounter(i);
+					}
+					e.preventDefault();
+					return false;
+				});
+				that.counter_element.append($icon);
 			});
 		}
 		$.each(that.counters, function(i, v) {
 			that.counter_element.children("." + i).val(that.counters[i]);
 		});
 
-		var $piles = $(".pile.set[data-player-id=" + that.id + "]");
+		var $piles = $(".set[data-player-id=" + that.id + "]");
 		if (!$piles.size()) {
 			$piles = $("<div/>").addClass("set").attr("data-player-id", that.id);
 			$("#containers").append($piles);
@@ -74,10 +84,11 @@ function Player() {
 		$.each(that.containers, function(i, container) {
 			var entity = container.render(i, that.id);
 			if (entity && !entity.parent().size()) {
-				if (i == "play")
+				if (i == "play") {
 					$("#containers").append(entity);
-				else
+				} else {
 					$piles.append(entity);
+				}
 			}
 		});
 	};
@@ -103,6 +114,15 @@ function Player() {
 
 	this.updateCounter = function(data) {
 		that.counters[data.counter] = data.value;
+	};
+
+	this.broadcastCounter = function(counter) {
+		send(JSON.stringify({
+			"method": "update_counter",
+			"player_id": that.id,
+			"counter": counter,
+			"value": that.counters[counter]
+		}));
 	};
 
 	this.toSerializable = function() {
