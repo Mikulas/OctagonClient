@@ -38,27 +38,28 @@
 	.icon {
 		width: 30px;
 		height: 30px;
-		margin: 5px;
+		margin: 5px 0 0 0;
 		border-radius: 30px; /* makes perfect circle */
 		box-shadow: 1px 2px 5px rgba(100, 100, 100, .3);
 	}
 	
 	header .name {
 		color: rgba(255, 255, 255, .9);
-		font-size: 25px;
+		font-size: 20px;
 		padding-left: 60px;
 		position: relative;
-		top: -10px;
+		top: -7px;
 	}
 	
-	header input[type=number] {
+	header input {
 		width: 2.3em;
-		font-size: 30px;
+		font-size: 20px;
 		text-align: right;
 		position: relative;
-		top: -9px;
+		top: -7px;
 		border: none;
-		background-color: rgba(255, 255, 255, 0.9);
+		color: white;
+		background: none;
 	}
 	
 	.card {
@@ -115,17 +116,17 @@
 	<header>
 		<span>
 			<span class="name">Rullaf</span>
+			<input type="text" value="14" maxlength="2">
 			<img src="power.png" class="icon">
-			<input type="number" value="15" min="0" max="99">
+			<input type="text" value="1" maxlength="2">
 			<img src="gold.png" class="icon">
-			<input type="number" value="15" min="0" max="99">
 		</span>
 		<span>
 			<span class="name">Dawe [CZE]</span>
+			<input type="text" value="9" maxlength="2">
 			<img src="power.png" class="icon">
-			<input type="number" value="7" min="0" max="99">
+			<input type="text" value="0" maxlength="2">
 			<img src="gold.png" class="icon">
-			<input type="number" value="9" min="0" max="99">
 		</span>
 	</header>
 	<div id="containers">
