@@ -41,22 +41,29 @@
 		margin: 5px 0 0 0;
 		border-radius: 30px; /* makes perfect circle */
 		box-shadow: 1px 2px 5px rgba(100, 100, 100, .3);
+		cursor: pointer;
+		vertical-align: -7px;
 	}
 	
 	header .name {
 		color: rgba(255, 255, 255, .9);
 		font-size: 20px;
-		padding-left: 60px;
-		position: relative;
-		top: -7px;
+		margin-left: 50px;
+		padding: 8px 12px 0 10px;
+		cursor: pointer;
+		display: inline-block;
+		height: 32px;
+	}
+	
+	header .name.active {
+		background: rgba(100, 255, 130, .2);
+		border-bottom: 7px solid rgba(40, 150, 60, .6);
 	}
 	
 	header input {
 		width: 2.3em;
 		font-size: 20px;
 		text-align: right;
-		position: relative;
-		top: -7px;
 		border: none;
 		color: white;
 		background: none;
@@ -115,7 +122,7 @@
 <body>
 	<header>
 		<span>
-			<span class="name">Rullaf</span>
+			<span class="name active">Rullaf</span>
 			<input type="text" value="14" maxlength="2">
 			<img src="power.png" class="icon">
 			<input type="text" value="1" maxlength="2">
@@ -130,21 +137,23 @@
 		</span>
 	</header>
 	<div id="containers">
-		<div class="pile deck card small">
-			<img src="../images/facedown.jpg">
-			<div class="title">DECK</div>
-		</div>
-		<div class="pile deck card small">
-			<img src="../images/facedown.jpg">
-			<div class="title">PLOTS</div>
-		</div>
-		<div class="pile deck card small">
-			<img src="../images/facedown.jpg">
-			<div class="title">DEATH PILE</div>
-		</div>
-		<div class="pile deck card small">
-			<img src="../images/facedown.jpg">
-			<div class="title">DISCARD</div>
+		<div class="set" data-player-id="0">
+			<!--<div class="pile deck card small">
+				<img src="../images/facedown.jpg">
+				<div class="title">DECK</div>
+			</div>
+			<div class="pile deck card small">
+				<img src="../images/facedown.jpg">
+				<div class="title">PLOTS</div>
+			</div>
+			<div class="pile deck card small">
+				<img src="../images/facedown.jpg">
+				<div class="title">DEATH PILE</div>
+			</div>
+			<div class="pile deck card small">
+				<img src="../images/facedown.jpg">
+				<div class="title">DISCARD</div>
+			</div>-->
 		</div>
 	</div>
 	<div id="play">
