@@ -57,22 +57,6 @@ function Game() {
 	};
 
 	this.render = function() {
-		var $piles = $("#containers .piles");
-		if (!$piles.size()) {
-			$piles = $("<div/>").addClass("piles");
-			$("#containers").append($piles);
-
-			$nav = $("<ul/>");
-			$piles.append($nav);
-
-			$.each(that.players, function(i, player) {
-				$nav.append($("<li/>").addClass("tab").attr("data-player-id", i).text(player.name).click(function(e) {
-					var id = $(e.target).attr("data-player-id");
-					that.openTab(id);
-				}));
-			});
-		}
-		
 		$.each(that.players, function(i, player) {
 			player.render();
 		});
@@ -81,10 +65,10 @@ function Game() {
 	};
 
 	this.openTab = function(player_id) {
-		$("#containers .pile.set").addClass("hidden");
-		$("#containers .pile.set[data-player-id=" + player_id + "]").removeClass("hidden");
-		$("#containers li.active").removeClass("active");
-		$("#containers li[data-player-id=" + player_id + "]").addClass("active");
+		$("header .name.active").removeClass("active");
+		$("header [data-player-id=" + player_id + "] .name").addClass("active");
+		$("#containers .set").addClass("hidden");
+		$("#containers .set[data-player-id=" + player_id + "]").removeClass("hidden");
 	};
 
 	this.getCard = function(id) {

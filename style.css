@@ -2,7 +2,7 @@
 
 /**
  * ----------------------------------------------------------------------
- *  aNIMaTIONS
+ *  ANIMATIONS
  * ----------------------------------------------------------------------
  */
 
@@ -93,34 +93,147 @@ table {
 
 /**
  * ----------------------------------------------------------------------
- *  MaIN CSS
+ *  MAIN CSS
  * ----------------------------------------------------------------------
  */
 
-.card {
-	-webkit-animation-iteration-count: 1;
-	-webkit-transition-timing-function: ease-in-out;
-	-webkit-transform-origin: 50% 66%;
+* {margin: 0; padding: 0;}
+
+::selection {
+	background-color: rgba(0, 0, 0, 0);
+}
+input::selection {
+	background-color: auto;
+}
+
+.hidden {
+	display: none;
+}
+
+body {
+	background-image: url("wood.jpg");
+	font-family: "Lato";
+}
+
+header {
+	display: block;
+	background-color: gray;
+	height: 40px;
+
+	background: rgb(76,76,76);
+	background: -moz-linear-gradient(top, rgb(76,76,76) 1%, rgb(25,25,25) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,rgb(76,76,76)), color-stop(100%,rgb(25,25,25)));
+	background: -webkit-linear-gradient(top, rgb(76,76,76) 1%,rgb(25,25,25) 100%);
+	background: -o-linear-gradient(top, rgb(76,76,76) 1%,rgb(25,25,25) 100%);
+	background: -ms-linear-gradient(top, rgb(76,76,76) 1%,rgb(25,25,25) 100%);
+	background: linear-gradient(top, rgb(76,76,76) 1%,rgb(25,25,25) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4c4c4c', endColorstr='#191919', GradientType=0);
+
+	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
+}
+
+.icon {
+	width: 30px;
+	height: 30px;
+	margin: 5px 0 0 0;
+	border-radius: 30px; /* makes perfect circle */
+	box-shadow: 1px 2px 5px rgba(100, 100, 100, .3);
+	cursor: pointer;
+	vertical-align: -7px;
+}
+
+header .name {
+	color: rgba(255, 255, 255, .9);
+	font-size: 20px;
+	margin-left: 50px;
+	padding: 8px 12px 0 10px;
+	cursor: pointer;
 	display: inline-block;
-	width: 168px;
-	height: 240px;
+	height: 32px;
+}
+
+header .name.active {
+	background: rgba(100, 255, 130, .2);
+	border-bottom: 7px solid rgba(40, 150, 60, .3);
+}
+
+header input {
+	width: 2.3em;
+	font-size: 20px;
+	text-align: right;
+	border: none;
+	color: white;
+	background: none;
+}
+
+.set {
+	background: rgba(40, 150, 60, .4);
+	margin-top: 7px;
+	padding: 20px 30px 10px 30px;
+	box-shadow: 1px 2px 5px rgba(100, 100, 100, .3);
+	height: 146px;
+}
+
+.card {
+	display: inline-block;
+	overflow: hidden;
+	width: 130px; /* minus crop */
+	height: 188px;
+	box-shadow: 4px 3px 3px rgba(0, 0, 0, 0.05);
+	border-radius: 12px;
+	text-align: center;
 }
 
 .card img {
-	width: 168px;
-	height: 240px;
-	border: none;
+	margin-top: -2px; /* crop */
+	margin-left: -2px;
+	width: 134px;
+	height: 192px;
 	border-radius: 12px;
 }
 
-.card.small, .card.small img {
-	display: inline-block;
-	width: 89px;
-	height: 128px;
+.card.small {
+	width: 100px; /* minus crop */
+	height: 146px;
+	border-radius: 9px;
 }
 
-.card.placeholder {
+.card.small img {
+	width: 104px;
+	height: 150px;
+	border-radius: 9px;
+}
+
+.title {
 	display: inline-block;
+	position: relative;
+	top: -70px;
+	width: 100%;
+	margin: auto;
+	padding-top: 10px;
+	color: rgba(255, 255, 255, .9);
+	opacity: 0;
+	-webkit-transition: opacity 100ms ease-in-out;
+}
+
+.hand {
+	display: inline;
+}
+
+.hand .card {
+	padding: 0 3px;
+}
+
+.pile {
+	padding: 0 3px;
+	float: right;
+}
+
+.pile:hover .title {
+	opacity: 1;
+	background-color: rgba(0, 0, 0, .6);
+	width: 100%;
+	height: 32px;
 }
 
 .card.kneeling {
@@ -163,10 +276,6 @@ table {
 	-webkit-animation-name: flip-up-rotated;
 }
 
-.card.focus {
-	outline: 2px auto -webkit-focus-ring-color;
-}
-
 #notifications {
 	text-align: center;
 	width: 100%;
@@ -195,128 +304,12 @@ table {
 	-webkit-animation-name: pulse-error;
 }
 
-#drop_zone {
-	display: block;
-	width: 100%;
-	height: 60px;
-	background-color: #CCC;
-}
-
-#counters {
-	display: block;
-	width: 100%;
-	height: 30px;
-	background-color: #DDD;
-}
-
-.counter-group {
-	display: inline-block;
-	padding: 0 5pt 0 10pt;
-}
-
-.counter-group .player-name {
-	font-family: "Verdana";
-}
-
-.counter {
-	border: none;
-	width: 40px;
-	padding: 0 5px 0 29px;
-	text-align: right;
-	height: 30px;
-	font-size: 13pt;
-	margin: 0 5px 0 5px;
-}
-
-.counter.power {
-	background: white url("icons/power.png") no-repeat no-repeat 2px 2px;
-}
-
-.counter.gold {
-	background: white url("icons/gold.png") no-repeat no-repeat 2px 2px;
-}
-
 #magnifier {
 	position: absolute;
-	top: 5px;
+	top: 53px;
 	right: 5px;
 	border-radius: 18px;
 	z-index: 9998;
-}
-
-[data-type=hand],
-[data-type=discard],
-[data-type=death],
-[data-type=plot],
-[data-type=deck]
-{
-	float: right;
-	display: inline-block;
-	width: 89px;
-	height: 128px;
-}
-
-[data-type=hand] {
-	float: none;
-	background-color: #BBFF99;
-	width: 500px; /*@TODO FIX*/
-}
-
-[data-type=discard] {
-	background-color: orange;
-}
-
-[data-type=death] {
-	background-color: red;
-}
-
-[data-type=deck] {
-	background-color: green;
-}
-
-[data-type=play] {
-	background-color: #FFBB99;
-	min-height: 600px;
-	height: 100%;
-	width: 100%;
-}
-
-[data-type=death] .card,
-[data-type=discard] .card,
-[data-type=plot] .card,
-[data-type=deck] .card {
-	display: none;
-}
-[data-type=death] :last-child,
-[data-type=discard] :last-child,
-[data-type=plot] :last-child,
-[data-type=deck] :last-child {
-	display: inline-block;
-}
-
-[data-type=death] .card.ui-draggable-dragging,
-[data-type=discard] .card.ui-draggable-dragging,
-[data-type=plot] .card.ui-draggable-dragging,
-[data-type=deck] .card.ui-draggable-dragging {
-	display: inline-block;
-}
-
-.hidden {
-	display: none;
-}
-
-ul {
-	margin-top: 10px;
-}
-
-li.tab {
-	cursor: pointer;
-	display: inline;
-	padding: 0 5px 0 10px;
-}
-
-.active {
-	font-weight: bold;
 }
 
 /**

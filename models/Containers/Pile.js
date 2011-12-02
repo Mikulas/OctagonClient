@@ -14,19 +14,12 @@ function Pile() {
 
 	this.render = function(type, player_id) {
 		if (that.element == null) {
-			that.element = new Container().render.call(this, type, player_id);
+			that.element = $("<div/>").addClass("pile card small");
 			that.element.dblclick(function(e) {
 				that.onDoubleClick(e);
 			});
-			that.element.children().addClass("small");
-		}
-		if (that.cards.length >= 1 && !that.element.children("img.helper").size() && (type == "deck" || type == "plot")) {
-			that.element.append($("<img/>")
-				.addClass("card small face-down helper")
-				.attr("src", that.cards[0].getBackImageSrc()))
-				.css({"z-index": 9996, display: "inline-block !important"});
-		} else if (that.cards.length == 0) {
-			that.element.children("img.helper").remove();
+			that.element.append($("<img/>").attr("src", "images/facedown.jpg"));
+			that.element.append($("<div/>").addClass("title").text(type.toUpperCase()));
 		}
 
 		return that.element;

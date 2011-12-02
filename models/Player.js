@@ -1,5 +1,5 @@
 function Player() {
-	this.counter_container = null;
+	this.counter_element = null;
 	this.id = null;
 	this.counters = {power: 0, gold: 0};
 	this.containers = {};
@@ -42,12 +42,12 @@ function Player() {
 	};
 
 	this.render = function() {
-		if (that.counter_container == null) {
-			that.counter_container = $("<div/>").attr("data-player-id", this.id).addClass("counter-group");
-			that.counter_container.append($("<span/>").text(that.name).addClass("player-name"));
-			$("#counters").append(that.counter_container);
+		if (that.counter_element == null) {
+			that.counter_element = $("<span/>").attr("data-player-id", this.id).addClass("counter-group");
+			that.counter_element.append($("<span/>").text(that.name).addClass("name"));
+			$("header").append(that.counter_element);
 			$.each(that.counters, function(i, v) {
-				var $input = $("<input type=\"number\"/>").addClass("counter " + i);
+				var $input = $("<input/>").addClass("counter " + i);
 				$input.bind("change click", function() {
 					that.counters[i] = $(this).val();
 					send(JSON.stringify({
@@ -57,17 +57,18 @@ function Player() {
 						"value": $(this).val()
 					}));
 				});
-				that.counter_container.append($input);
+				that.counter_element.append($input);
+				that.counter_element.append($("<img/>").attr("src", "icons/" + i + ".png").addClass("icon"));
 			});
 		}
 		$.each(that.counters, function(i, v) {
-			that.counter_container.children("." + i).val(that.counters[i]);
+			that.counter_element.children("." + i).val(that.counters[i]);
 		});
 
 		var $piles = $(".pile.set[data-player-id=" + that.id + "]");
 		if (!$piles.size()) {
-			$piles = $("<div/>").addClass("pile set").attr("data-player-id", that.id);
-			$("#containers .piles").append($piles);
+			$piles = $("<div/>").addClass("set").attr("data-player-id", that.id);
+			$("#containers").append($piles);
 		}
 
 		$.each(that.containers, function(i, container) {
