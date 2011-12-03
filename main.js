@@ -154,6 +154,7 @@ $(function() {
 		game.broadcast();
 	}
 
+	/*
 	$(".card").live("mouseenter", function(e) {
 		console.log($(this).offset().left > $(window).width() / 2 ? "left" : "right");
 		if ($(this).offset().left > $(window).width() / 2) {
@@ -170,6 +171,7 @@ $(function() {
 			$("#magnifier").fadeOut();
 		}
 	});
+	//*/
 
 	function showNotification(content, persist) {
 		var $node = $('<div/>').addClass("notification").html(content).hide();

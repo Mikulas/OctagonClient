@@ -24,9 +24,6 @@ function Player() {
 		Hand.prototype = new Container();
 		this.containers.hand = new Hand();
 
-		Board.prototype = new Container();
-		this.containers.play = new Board();
-
 		this.counters = {power: 0, gold: 0};
 	};
 

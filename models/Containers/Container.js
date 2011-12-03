@@ -23,7 +23,11 @@ function Container() {
 		that.element = $("[data-type=" + type + "][data-player-id=" + player_id + "]");
 		if (!that.element.size()) {
 			that.element = $('<div />');
-			that.element.attr("data-type", type).attr("data-player-id", player_id);
+			that.element.attr("data-type", type);
+
+			if (player_id != undefined)
+				that.element.attr("data-player-id", player_id);
+
 			that.element.droppable({
 				accept: ".card",
 				scope: "body",
@@ -62,7 +66,11 @@ function Container() {
 						}
 
 						// change card position in logical structure
-						card.moveTo(game.players[$(this).attr("data-player-id")].containers[$(this).attr("data-type")]);
+						if ($(this).attr("data-type") != "play") {
+							card.moveTo(game.players[$(this).attr("data-player-id")].containers[$(this).attr("data-type")]);
+						} else {
+							card.moveTo(game.play);
+						}
 						card.updatePositionFromDom();
 						game.broadcast(); // TODO optimize
 					}

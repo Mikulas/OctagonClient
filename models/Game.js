@@ -5,10 +5,13 @@
 function Game() {
 	this.players = [];
 	this.unique_id = 1;
+	this.play = null;
 
 	var that = this;
 
 	this._init = function() {
+		Board.prototype = new Container();
+		this.play = new Board();
 	};
 
 	this.addPlayer = function() {
@@ -28,6 +31,14 @@ function Game() {
 		$("#counters").children().remove();
 
 		that.unique_id = data.unique_id;
+		Board.prototype = new Container();
+		that.play = new Board();
+		$.each(data.play.c, function(i, ca) {
+			var card = new Card();
+			card.update(ca);
+			that.play.add(card);
+		});
+
 		$.each(data.players, function(i, pl) {
 			var player = new Player();
 			player.id = i;
@@ -36,10 +47,7 @@ function Game() {
 			player.client_id = pl.cid;
 			$.each(pl.containers, function(i, pi) {
 				var container = null;
-				if (i == "play") {
-					Board.prototype = new Container();
-					container = new Board();
-				} else if (i == "hand") {
+				if (i == "hand") {
 					Hand.prototype = new Container();
 					container = new Hand();
 					container.client_id = pi.cid;
@@ -61,6 +69,11 @@ function Game() {
 	};
 
 	this.render = function() {
+		var $entity = that.play.render("play");
+		if (!$("[data-type=play]").size()) {
+			$("body").append($entity);
+		}
+
 		$.each(that.players, function(i, player) {
 			player.render();
 		});
@@ -77,6 +90,10 @@ function Game() {
 
 	this.getCard = function(id) {
 		var found = null;
+		found = that.play.getCard(id);
+		if (found)
+			return found;
+
 		$.each(that.players, function(i, player) {
 			var card = player.getCard(id);
 			if (card != null) {
@@ -98,6 +115,7 @@ function Game() {
 	this.toSerializable = function() {
 		var obj = {
 			unique_id: that.unique_id,
+			play: that.play.toSerializable(),
 			players: {}
 		};
 		$.each(that.players, function(i, player) {

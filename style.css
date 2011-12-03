@@ -237,6 +237,12 @@ header input {
 	height: 32px;
 }
 
+[data-type=play] {
+	display: block;
+	width: 100%;
+	height: 600px;
+}
+
 .card.kneeling {
 	-webkit-transform: rotate(90deg);
 }

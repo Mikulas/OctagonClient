@@ -129,8 +129,8 @@ function Card() {
 
 	this.render = function() {
 		if (that.element == null) {
-			that.element = $("<div/>").attr("data-id", that.id).addClass("card");
-			that.element.disableSelection();
+			that.element = $("<div/>").addClass("card");
+			that.element.disableSelection().attr("data-id", that.id);
 			that.element.click(function(e) {
 				that.onClick(e);
 			});
