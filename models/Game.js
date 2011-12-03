@@ -1,3 +1,7 @@
+/**
+ * @TODO remove all player play zones and add one global play zone
+ */
+
 function Game() {
 	this.players = [];
 	this.unique_id = 1;
