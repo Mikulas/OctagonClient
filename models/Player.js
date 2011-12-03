@@ -41,7 +41,13 @@ function Player() {
 	this.render = function() {
 		if (that.counter_element == null) {
 			that.counter_element = $("<span/>").attr("data-player-id", this.id).addClass("counter-group");
-			that.counter_element.append($("<span/>").text(that.name).addClass("name"));
+
+			var $name = $("<span/>").text(that.name).addClass("name");
+			$name.click(function() {
+				game.openTab(that.id);
+			});
+			that.counter_element.append($name);
+
 			$("header").append(that.counter_element);
 			$.each(that.counters, function(i, v) {
 				var $input = $("<input/>").addClass("counter " + i);
