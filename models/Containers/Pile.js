@@ -14,7 +14,7 @@ function Pile() {
 
 	this.render = function(type, player_id) {
 		if (that.element == null) {
-			that.element = $("<div/>").addClass("pile card small");
+			that.element = $("<div/>").addClass("pile card small").attr("data-type", type);
 			that.element.dblclick(function(e) {
 				that.onDoubleClick(e);
 			});
@@ -27,6 +27,7 @@ function Pile() {
 
 	this.onDoubleClick = function() {
 		if (that.element.attr("data-type") == "deck") {
+			console.log("draw");
 			game.getPlayer(client_id).draw();
 		}
 	};
