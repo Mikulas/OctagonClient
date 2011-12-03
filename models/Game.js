@@ -1,7 +1,3 @@
-/**
- * @TODO remove all player play zones and add one global play zone
- */
-
 function Game() {
 	this.players = [];
 	this.unique_id = 1;
@@ -27,8 +23,7 @@ function Game() {
 
 	this.updateFromBroadcast = function(data) {
 		that.players = []; // wipe
-		$("#containers").children().remove();
-		$("#counters").children().remove();
+		$("header").add("#containers").add("[data-type=play]").children().remove();
 
 		that.unique_id = data.unique_id;
 		Board.prototype = new Container();

@@ -89,6 +89,7 @@ function Container() {
 		}
 
 		$.each(this.cards, function(i, card) {
+			card.container = that; // TODO: why is this necessary?
 			that.element.append(card.render());
 		});
 		return that.element;

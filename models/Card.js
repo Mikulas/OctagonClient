@@ -127,7 +127,7 @@ function Card() {
 		that.position.z = that.element.css("z-index");
 	};
 
-	this.render = function() {
+	this.render = function(type) {
 		if (that.element == null) {
 			that.element = $("<div/>").addClass("card");
 			that.element.disableSelection().attr("data-id", that.id);
@@ -137,6 +137,7 @@ function Card() {
 			that.element.dblclick(function(e) {
 				that.onDoubleClick(e);
 			});
+
 			that.element.draggable({
 				revert: true,
 				scope: "body",
