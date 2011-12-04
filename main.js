@@ -38,7 +38,7 @@ $(function() {
 	client_view = localStorage.client_view;
 
 	if (!localStorage.hasOwnProperty("player_name")) {
-		localStorage.player_name = prompt("Hey there, fellow card player! What's your name?", "");
+		localStorage.player_name = "";
 	}
 	player_name = localStorage.player_name;
 
