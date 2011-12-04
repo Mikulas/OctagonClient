@@ -4,6 +4,7 @@ var optimizations = {"~@0~": "a12af4e8-be4b-4cda-a6b6-534f97"};
 var client_id = null;
 var client_view = null;
 var player_name = null;
+var connected = false;
 
 function send(content) {
 	var tampered = content.substr(0, content.length - 1) + ",\"client_id\":\"" + client_id + "-" + client_view + "\",\"time\":" + new Date().getTime() + "}";
@@ -45,8 +46,8 @@ $(function() {
 
 	game = new Game; // defaults to empty if no broadcast is received upon connecting
 
-	//var host = "ws://31.31.72.76:4723";
-	var host = "ws://192.168.100.77:4723";
+	var host = "ws://31.31.72.76:4723";
+	//var host = "ws://192.168.100.77:4723";
 	try {
 		socket = new WebSocket(host);
 		socket.onopen = function(msg) {
@@ -61,7 +62,7 @@ $(function() {
 				var regex = new RegExp(i, "g");
 				data = data.replace(regex, v);
 			});
-			console.log(data);
+			
 			data = JSON.parse(data);
 			if (data.client_id == client_id + "-" + client_view) {
 				return false;
@@ -70,6 +71,7 @@ $(function() {
 			if (data.method == "connect_response") {
 				console.info("connect response received:", data);
 				if (data.response == "created" || data.response == "connected") {
+					connected = true;
 					showNotification("Connected");
 					$("#connect").css({position: "relative"}).animate({
 						opacity: 0,
@@ -126,6 +128,11 @@ $(function() {
 	function handleFileSelect(evt) {
 		evt.stopPropagation();
 		evt.preventDefault();
+
+		if (!connected) {
+			showNotification("Not connected yet");
+			return false;
+		}
 
 		var files = evt.dataTransfer.files; // FileList object.
 		if (files.length > 1) {
@@ -219,6 +226,8 @@ $(function() {
 	$("#help").hide();
 
 	function connect() {
+		player_name = localStorage.player_name = $("#username").val();
+		localStorage.last_server = $("#server").val();
 		send(JSON.stringify({"method": "connect",
 			"instance": $("#server").val(),
 			"password": $("#password").val()
@@ -227,6 +236,7 @@ $(function() {
 	}
 	$("#connect-button").click(connect);
 	$("#connect-form").submit(connect);
+	$("#server").val(last_server);
 
 	$(document)[0].addEventListener('dragover', handleDragOver, false);
 	$(document)[0].addEventListener('drop', handleFileSelect, false);

@@ -25,7 +25,7 @@ function Game() {
 		that.players = []; // wipe
 
 		if (!$.isEmptyObject(data.players))
-			$("#help").stop().fadeOut(0).hide();
+			$("#help").add("#connect").stop().fadeOut(0).hide();
 		
 		$("header").add("#containers").add("[data-type=play]").children().remove();
 
