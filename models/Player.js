@@ -9,19 +9,19 @@ function Player() {
 	var that = this;
 
 	this._init = function() {
-		Pile.prototype = new Container();
+		Pile.prototype = new Container("deck");
 		this.containers.deck = new Pile();
 
-		Pile.prototype = new Container();
+		Pile.prototype = new Container("plot");
 		this.containers.plot = new Pile();
 
-		Pile.prototype = new Container();
+		Pile.prototype = new Container("discard");
 		this.containers.discard = new Pile();
 
-		Pile.prototype = new Container();
+		Pile.prototype = new Container("death");
 		this.containers.death = new Pile();
 
-		Hand.prototype = new Container();
+		Hand.prototype = new Container("hand");
 		this.containers.hand = new Hand();
 
 		this.counters = {power: 0, gold: 0};
@@ -85,7 +85,7 @@ function Player() {
 		}
 
 		$.each(that.containers, function(i, container) {
-			var entity = container.render(i, that.id);
+			var entity = container.render(that.id);
 			if (entity && !entity.parent().size()) {
 				if (i == "play") {
 					$("#containers").append(entity);

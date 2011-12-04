@@ -1,8 +1,8 @@
 function Board() {
 	var that = this;
 
-	this.render = function(type) {
-		that.element = new Container().render.call(this, type);
+	this.render = function() {
+		that.element = new Container("play").render.call(this);
 		return that.element;
 	};
 }

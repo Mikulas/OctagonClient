@@ -6,7 +6,7 @@ function Game() {
 	var that = this;
 
 	this._init = function() {
-		Board.prototype = new Container();
+		Board.prototype = new Container("play");
 		this.play = new Board();
 	};
 
@@ -30,7 +30,7 @@ function Game() {
 		$("header").add("#containers").add("[data-type=play]").children().remove();
 
 		that.unique_id = data.unique_id;
-		Board.prototype = new Container();
+		Board.prototype = new Container("board");
 		that.play = new Board();
 		$.each(data.play.c, function(i, ca) {
 			var card = new Card();
@@ -47,11 +47,11 @@ function Game() {
 			$.each(pl.containers, function(i, pi) {
 				var container = null;
 				if (i == "hand") {
-					Hand.prototype = new Container();
+					Hand.prototype = new Container(i);
 					container = new Hand();
 					container.client_id = pi.cid;
 				} else {
-					Pile.prototype = new Container();
+					Pile.prototype = new Container(i);
 					container = new Pile();
 				}
 
@@ -68,7 +68,7 @@ function Game() {
 	};
 
 	this.render = function() {
-		var $entity = that.play.render("play");
+		var $entity = that.play.render();
 		if (!$("[data-type=play]").size()) {
 			$("body").append($entity);
 		}

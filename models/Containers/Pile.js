@@ -12,14 +12,14 @@ function Pile() {
 		console.log("pile shuffled");
 	};
 
-	this.render = function(type, player_id) {
+	this.render = function(player_id) {
 		if (that.element == null) {
-			that.element = $("<div/>").addClass("pile card small").attr("data-type", type);
+			that.element = $("<div/>").addClass("pile card small").attr("data-type", that.type);
 			that.element.dblclick(function(e) {
 				that.onDoubleClick(e);
 			});
 			that.element.append($("<img/>").attr("src", "images/facedown.jpg"));
-			that.element.append($("<div/>").addClass("title").text(type.toUpperCase()));
+			that.element.append($("<div/>").addClass("title").text(that.type.toUpperCase()));
 		}
 
 		return that.element;
@@ -27,7 +27,6 @@ function Pile() {
 
 	this.onDoubleClick = function() {
 		if (that.element.attr("data-type") == "deck") {
-			console.log("draw");
 			game.getPlayer(client_id).draw();
 		}
 	};

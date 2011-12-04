@@ -1,7 +1,8 @@
-function Container() {
+function Container(type) {
 	this.element = null;
 	this.cards = [];
 
+	this.type = type;
 	var that = this;
 
 	this.getCard = function(id) {
@@ -19,7 +20,7 @@ function Container() {
 		card.container = that;
 	};
 
-	this.render = function(type, player_id, element) {
+	this.render = function(player_id, element) {
 		that.element = $("[data-type=" + type + "][data-player-id=" + player_id + "]");
 		if (!that.element.size()) {
 			that.element = $('<div />');
@@ -34,14 +35,14 @@ function Container() {
 				drop: function(event, ui) {
 					var card = game.getCard(ui.draggable.attr("data-id"));
 
-					if (that.getType() == "play") {
+					if (type == "play") {
 						ui.draggable.removeClass("small");
 					} else {
 						ui.draggable.addClass("small");
 					}
 
 					// move cards freely on board
-					if (this.isSameNode(ui.helper.originalContainer[0]) && that.getType() == "play") {
+					if (this.isSameNode(ui.helper.originalContainer[0]) && type == "play") {
 						ui.draggable.draggable("option", "revert", false);
 						ui.draggable.css(ui.helper.offset());
 						card.updatePositionFromDom();
@@ -55,7 +56,7 @@ function Container() {
 
 						$(this).append(ui.draggable);
 
-						if (that.getType() == "play") {
+						if (type == "play") {
 							ui.draggable.css({position: "absolute"});
 						} else {
 							if (card.kneeling)
@@ -76,12 +77,12 @@ function Container() {
 					}
 				},
 				over: function(e, ui) {
-					if (that.getType() == "play") {
+					if (type == "play") {
 						ui.helper.removeClass("small");
 					}
 				},
 				out: function(e, ui) {
-					if (that.getType() == "play") {
+					if (type == "play") {
 						ui.helper.addClass("small");
 					}
 				}
@@ -89,17 +90,9 @@ function Container() {
 		}
 
 		$.each(this.cards, function(i, card) {
-			card.container = that; // TODO: why is this necessary?
 			that.element.append(card.render());
 		});
 		return that.element;
-	};
-
-	this.getType = function() {
-		if (that.element == null)
-			return false;
-
-		return that.element.attr("data-type");
 	};
 
 	this.toSerializable = function() {

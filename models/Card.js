@@ -177,7 +177,7 @@ function Card() {
 					var card = game.getCard($(e.srcElement).parent().attr("data-id"));
 
 					// only enable menu in play
-					if (card.container.getType() != "play")
+					if (card.container.type != "play")
 						return false;
 
 					if (card.kneeling) {
@@ -212,7 +212,7 @@ function Card() {
 			that.turnFaceUp();
 		}
 
-		if (that.container.getType() == "play") {
+		if (that.container.type == "play") {
 			that.element.css({
 				position: "absolute",
 				"z-index": that.position.z
@@ -249,7 +249,7 @@ function Card() {
 	};
 
 	this.onDoubleClick = function(e) {
-		if (that.container.getType() == "play")
+		if (that.container.type == "play")
 			that.toggleKneeling();
 		that.broadcast();
 	};

@@ -11,6 +11,11 @@ function send(content) {
 	socket.send(tampered);
 }
 
+function d() {
+	console.log(game.players[0].containers.hand.cards);
+	console.log(game.play.cards);
+}
+
 $(function() {
 	if (window.FileReader && window.WebSocket) {
 		// Great success! All the File APIs are supported.

@@ -2,9 +2,9 @@ function Hand() {
 	var client_id = null;
 	var that = this;
 
-	this.render = function(type, player_id) {
+	this.render = function(player_id) {
 		var register = that.element == null;
-		that.element = new Container().render.call(this, type, player_id);
+		that.element = new Container(that.type).render.call(this, player_id);
 		if (register) {
 			$(window).resize(function() {
 				that.resizeElement();
