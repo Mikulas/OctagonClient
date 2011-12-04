@@ -71,8 +71,14 @@ $(function() {
 				console.info("connect response received:", data);
 				if (data.response == "created" || data.response == "connected") {
 					showNotification("Connected");
-					$("#connect").fadeOut(500);
-					$("#help").fadeIn(1000);
+					$("#connect").css({position: "relative"}).animate({
+						opacity: 0,
+						top: -1000
+					}, 1500);
+					$("#help").show().css({position: "relative", opacity: 0, top: 500}).animate({
+						opacity: 1,
+						top: -400
+					}, 1500);
 				} else {
 					showNotification("Invalid password");
 				}
