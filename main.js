@@ -173,7 +173,7 @@ $(function() {
 				}
 			});
 		});
-		$("#help").hide();
+		$("#help").add("#connect").hide();
 		game.render();
 		game.broadcast();
 	}
