@@ -150,6 +150,7 @@ $(function() {
 				}
 			});
 		});
+		$("#help").hide();
 		game.render();
 		game.broadcast();
 	}
@@ -188,6 +189,8 @@ $(function() {
 	function showError(content) {
 		return showNotification(content, true).addClass('error');
 	}
+
+	$("#help").hide().delay(500).fadeIn(1000);
 
 	$(document)[0].addEventListener('dragover', handleDragOver, false);
 	$(document)[0].addEventListener('drop', handleFileSelect, false);

@@ -23,6 +23,7 @@ function Game() {
 
 	this.updateFromBroadcast = function(data) {
 		that.players = []; // wipe
+		$("#help").stop().fadeOut(0).hide();
 		$("header").add("#containers").add("[data-type=play]").children().remove();
 
 		that.unique_id = data.unique_id;

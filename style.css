@@ -319,6 +319,35 @@ header input {
 	z-index: 9998;
 }
 
+#help {
+	width: 900px;
+	margin: 50px auto 0 auto;
+}
+
+#help h1 {
+	font-size: 200%;
+	margin-bottom: 30px;
+}
+
+#help h2 {
+	color: green;
+	margin-bottom: 10px;
+}
+
+#help li {
+	padding-left: 1em;
+	text-indent: 1.5em;
+	margin-bottom: 10px;
+}
+
+#help ol {
+	margin-bottom: 20px;
+}
+
+#draganddrop {
+	margin-top: 100px;
+}
+
 /**
  * ----------------------------------------------------------------------
  *  CONTEXT MENU
