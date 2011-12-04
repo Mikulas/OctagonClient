@@ -36,11 +36,17 @@ $(function() {
 	}
 	player_name = localStorage.player_name;
 
+	if (!localStorage.hasOwnProperty("last_server")) {
+		localStorage.last_server = "";
+	}
+	var last_server = localStorage.last_server;
+
 	console.log("id view name = ", client_id, client_view, player_name);
 
 	game = new Game; // defaults to empty if no broadcast is received upon connecting
 
-	var host = "ws://31.31.72.76:4723";
+	//var host = "ws://31.31.72.76:4723";
+	var host = "ws://192.168.100.77:4723";
 	try {
 		socket = new WebSocket(host);
 		socket.onopen = function(msg) {
@@ -55,12 +61,23 @@ $(function() {
 				var regex = new RegExp(i, "g");
 				data = data.replace(regex, v);
 			});
+			console.log(data);
 			data = JSON.parse(data);
 			if (data.client_id == client_id + "-" + client_view) {
 				return false;
 			}
 
-			if (data.method == "announce_join") {
+			if (data.method == "connect_response") {
+				console.info("connect response received:", data);
+				if (data.response == "created" || data.response == "connected") {
+					showNotification("Connected");
+					$("#connect").fadeOut(500);
+					$("#help").fadeIn(1000);
+				} else {
+					showNotification("Invalid password");
+				}
+
+			} else if (data.method == "announce_join") {
 				// dump whole game for new client
 				console.info("CLIENT JOINED (" + data.count + ")");
 				showNotification("Player joined game");
@@ -190,7 +207,20 @@ $(function() {
 		return showNotification(content, true).addClass('error');
 	}
 
-	$("#help").hide().delay(500).fadeIn(1000);
+	$("#username").val(last_server);
+	$("#username").val(player_name);
+
+	$("#help").hide();
+
+	function connect() {
+		send(JSON.stringify({"method": "connect",
+			"instance": $("#server").val(),
+			"password": $("#password").val()
+		}));
+		return false;
+	}
+	$("#connect-button").click(connect);
+	$("#connect-form").submit(connect);
 
 	$(document)[0].addEventListener('dragover', handleDragOver, false);
 	$(document)[0].addEventListener('drop', handleFileSelect, false);

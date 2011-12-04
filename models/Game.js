@@ -23,7 +23,10 @@ function Game() {
 
 	this.updateFromBroadcast = function(data) {
 		that.players = []; // wipe
-		$("#help").stop().fadeOut(0).hide();
+
+		if (!$.isEmptyObject(data.players))
+			$("#help").stop().fadeOut(0).hide();
+		
 		$("header").add("#containers").add("[data-type=play]").children().remove();
 
 		that.unique_id = data.unique_id;
@@ -74,7 +77,9 @@ function Game() {
 			player.render();
 		});
 
-		that.openTab(game.getPlayer(window.client_id).id);
+		var player = game.getPlayer(window.client_id);
+		if (player != null)
+			that.openTab(player.id);
 	};
 
 	this.openTab = function(player_id) {

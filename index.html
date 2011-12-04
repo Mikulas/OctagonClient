@@ -27,7 +27,22 @@
 	<div id="containers"></div>
 	<div id="notifications"></div>
 	<img id="magnifier"></img>
-	<div id="help">
+
+	<div id="connect" class="static">
+		<h1>Octagon client</h1>
+		<h2>&mdash; Create a new game or join existing</h2>
+		
+		<form id="connect-form">
+		<fieldset>
+			<input type="text" name="server" id="server" placeholder="Server" />
+			<input type="password" name="password" id="password" value="" placeholder="Password" />
+			<input type="text" name="username" id="username" value="" placeholder="Your nick" />
+			<input type="submit" id="connect-button" value="Connect" />
+		</fieldset>
+		</form>
+	</div>
+
+	<div id="help" class="static">
 		<h1>Octagon client &mdash; Getting started</h1>
 		<h2>Deck creation</h2>
 		<ol>

@@ -319,33 +319,98 @@ header input {
 	z-index: 9998;
 }
 
-#help {
+.static {
 	width: 900px;
 	margin: 50px auto 0 auto;
 }
 
-#help h1 {
+.static h1 {
 	font-size: 200%;
 	margin-bottom: 30px;
 }
 
-#help h2 {
+.static h2 {
 	color: green;
 	margin-bottom: 10px;
 }
 
-#help li {
+.static li {
 	padding-left: 1em;
 	text-indent: 1.5em;
 	margin-bottom: 10px;
 }
 
-#help ol {
+.static ol {
 	margin-bottom: 20px;
+}
+
+.static fieldset {
+	width: 100%;
+}
+
+.static input {
+	margin-left: 2em;
+	margin-bottom: 30px;
+	width: 300px;
+	font-size: 18pt;
+	display: block;
+	border: none;
+	padding: 5px;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, .3);
+}
+
+.static input[type=submit] {
+	margin-left: 45px;
+	padding: 6px 24px;
+	width: 315px;
+	height: 40px;
+}
+
+#connect h2 {
+	color: black;
+	font-size: 150%;
+	margin-bottom: 50px;
 }
 
 #draganddrop {
 	margin-top: 100px;
+}
+
+/**
+ * ----------------------------------------------------------------------
+ *  FORM BUTTON
+ * ----------------------------------------------------------------------
+ */
+
+input[type=submit] {
+	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
+	background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
+	background-color:#ededed;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	color:#777777;
+	font-size:15px;
+	font-weight:bold;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #ffffff;
+	cursor: pointer;
+}
+input[type=submit]:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
+	background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+	background-color:#dfdfdf;
+}
+input[type=submit]:active {
+	position:relative;
+	top:1px;
 }
 
 /**
