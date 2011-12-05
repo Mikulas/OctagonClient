@@ -9,17 +9,17 @@ function Player() {
 	var that = this;
 
 	this._init = function() {
-		Pile.prototype = new Container("deck");
-		this.containers.deck = new Pile();
+		Pile.prototype = new Container("discard");
+		this.containers.discard = new Pile();
+		
+		Pile.prototype = new Container("death");
+		this.containers.death = new Pile();
 
 		Pile.prototype = new Container("plot");
 		this.containers.plot = new Pile();
 
-		Pile.prototype = new Container("discard");
-		this.containers.discard = new Pile();
-
-		Pile.prototype = new Container("death");
-		this.containers.death = new Pile();
+		Pile.prototype = new Container("deck");
+		this.containers.deck = new Pile();
 
 		Hand.prototype = new Container("hand");
 		this.containers.hand = new Hand();

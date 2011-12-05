@@ -222,6 +222,7 @@ header input {
 [data-type=hand] {
 	display: inline-block;
 	height: 147px;
+	margin-left: 20px;
 }
 
 [data-type=hand] .card {
@@ -231,7 +232,7 @@ header input {
 
 .pile {
 	padding: 0 3px;
-	float: right;
+	float: left;
 }
 
 .pile:hover .title {
