@@ -219,8 +219,9 @@ header input {
 	-webkit-transition: opacity 100ms ease-in-out;
 }
 
-.hand {
-	display: inline;
+[data-type=hand] {
+	display: inline-block;
+	height: 147px;
 }
 
 [data-type=hand] .card {

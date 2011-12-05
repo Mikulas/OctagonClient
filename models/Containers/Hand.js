@@ -24,7 +24,7 @@ function Hand() {
 	};
 
 	this.resizeElement = function() {
-		var width = $(document).width() - $("[data-type=plot]").width() - $("[data-type=death]").width() - $("[data-type=discard]").width() - $("[data-type=death]").width() - 20; // 20 is scrollbar quickfix
+		var width = $(document).width() - $("[data-type=plot]").width() - $("[data-type=death]").width() - $("[data-type=discard]").width() - $("[data-type=death]").width() - 20 - 90; // 20 is scrollbar quickfix, 90 is for padding (not a failsafe solution)
 		that.element.width(width);
 	};
 
