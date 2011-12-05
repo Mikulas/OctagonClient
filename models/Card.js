@@ -174,24 +174,24 @@ function Card() {
 				},
 				// on show menu callback
 				function(e) {
+					console.log("trigger");
 					var card = game.getCard($(e.srcElement).parent().attr("data-id"));
 
 					// only enable menu in play
 					if (card.container.type != "play")
 						return false;
 
+					$("#context_menu a").hide();
+					$("#context_menu [data-group=card] a").show();
+
 					if (card.kneeling) {
 						$("#context_menu [href=#kneel]").hide();
-						$("#context_menu [href=#stand]").show();
 					} else {
-						$("#context_menu [href=#kneel]").show();
 						$("#context_menu [href=#stand]").hide();
 					}
 					if (card.faceDown) {
 						$("#context_menu [href=#face-down]").hide();
-						$("#context_menu [href=#face-up]").show();
 					} else {
-						$("#context_menu [href=#face-down]").show();
 						$("#context_menu [href=#face-up]").hide();
 					}
 				}

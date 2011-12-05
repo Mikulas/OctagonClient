@@ -20,6 +20,25 @@ function Pile() {
 			});
 			that.element.append($("<img/>").attr("src", "images/facedown.jpg"));
 			that.element.append($("<div/>").addClass("title").text(that.type.toUpperCase()));
+
+			that.element.contextMenu({menu: "context_menu"},
+				function(action, el, pos) {
+					switch(action) {
+						case "shuffle":
+							that.shuffle(); break;
+						case "draw-many":
+							alert("not implemented"); break; // @TODO IMPLEMENT
+						case "browse":
+							alert("not implemented"); break; // @TODO IMPLEMENT
+					}
+					that.broadcast(); // @TODO FIX
+				},
+				// on show menu callback
+				function(e) {
+					$("#context_menu a").hide();
+					$("#context_menu [data-group=pile] a").show();
+				}
+			);
 		}
 
 		return that.element;
