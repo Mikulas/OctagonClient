@@ -169,6 +169,30 @@ header input {
 	background: none;
 }
 
+#status {
+	float: right;
+	color: white;
+	margin-right: 2em;
+	margin-top: 11px;
+	color: #F62817;
+}
+
+#status .bullet {
+	margin-right: 7px;
+}
+
+#status.connected {
+	opacity: .5;
+}
+
+#status.connected .text {
+	color: white;
+}
+
+#status.connected .bullet {
+	color: green;
+}
+
 .set {
 	background: rgba(40, 150, 60, .4);
 	margin-top: 7px;

@@ -27,7 +27,7 @@ function Game() {
 		if (!$.isEmptyObject(data.players))
 			$("#help").add("#connect").stop().fadeOut(0).hide();
 		
-		$("header").add("#containers").add("[data-type=play]").children().remove();
+		$("header :not(#status)").add("#containers").add("[data-type=play]").children().remove();
 
 		that.unique_id = data.unique_id;
 		Board.prototype = new Container("board");

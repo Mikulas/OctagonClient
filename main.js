@@ -119,8 +119,10 @@ $(function() {
 		};
 
 		socket.onclose = function(msg) {
-			showError("Server not available");
+			showError("Server closed");
 			console.info("connection closed");
+			$("#status").removeClass("connected");
+			$("#status .text").text("not connected");
 		};
 		socket.onerror = function(error) {
 			console.error(error);
@@ -237,6 +239,8 @@ $(function() {
 			"instance": $("#server").val(),
 			"password": $("#password").val()
 		}));
+		$("#status").addClass("connected");
+		$("#status .text").text("connected » " + $("#server").val());
 		return false;
 	}
 	$("#connect-button").click(connect);
