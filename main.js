@@ -51,7 +51,7 @@ $(function() {
 
 	game = new Game; // defaults to empty if no broadcast is received upon connecting
 
-	var host = "ws://31.31.72.76:4723";
+	var host = "ws://thrones.eu:4723";
 	//var host = "ws://192.168.100.77:4723";
 	try {
 		socket = new WebSocket(host);

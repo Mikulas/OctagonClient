@@ -113,11 +113,11 @@ function Card() {
 	};
 
 	this.getImageSrc = function() {
-		return "http://192.168.100.77/OctgnWeb/images/" + that.card_id + ".jpg";
+		return "images/" + that.card_id + ".jpg";
 	};
 
 	this.getBackImageSrc = function() {
-		return "http://192.168.100.77/OctgnWeb/images/facedown.jpg";
+		return "images/facedown.jpg";
 	};
 
 	this.updatePositionFromDom = function() {
