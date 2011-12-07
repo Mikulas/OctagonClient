@@ -1,6 +1,7 @@
 <?php
 
 $files = array(
+	"modernizr.custom.36126.js",
 	"jquery.1.7.1.min.js",
 	"jquery-ui.1.8.16.min.js",
 	"json2.js",
