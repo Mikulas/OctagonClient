@@ -407,6 +407,16 @@ header input {
 	margin-top: 100px;
 }
 
+input[type=file] {
+	color: white;
+	font-size: 13pt;
+	border: none;
+	box-shadow: none;
+	margin: 0 0 0 7px;
+	padding: 0;
+	display: inline;
+}
+
 /**
  * ----------------------------------------------------------------------
  *  FORM BUTTON
