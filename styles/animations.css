@@ -1,0 +1,48 @@
+/**
+ * ----------------------------------------------------------------------
+ *  ANIMATIONS
+ * ----------------------------------------------------------------------
+ */
+
+@-webkit-keyframes kneel {
+	from {-webkit-transform: rotate(0deg);}
+	to {-webkit-transform: rotate(90deg);}
+}
+
+@-webkit-keyframes stand {
+	from {-webkit-transform: rotate(90deg);}
+	to {-webkit-transform: rotate(0deg);}
+}
+
+
+@-webkit-keyframes flip-down {
+	0% {-webkit-transform: scaleX(1); opacity: 1;}
+	50% {-webkit-transform: scaleX(0); opacity: 0.5;}
+	100% {-webkit-transform: scaleX(1); opacity: 1;}
+}
+
+@-webkit-keyframes flip-up {
+	0% {-webkit-transform: scaleX(1); opacity: 1;}
+	50% {-webkit-transform: scaleX(0); opacity: 0.5;}
+	100% {-webkit-transform: scaleX(1); opacity: 1;}
+}
+
+@-webkit-keyframes flip-down-rotated {
+	0% {opacity: 1;}
+	50% {opacity: 0.5;}
+	100% {opacity: 1;}
+}
+
+@-webkit-keyframes flip-up-rotated {
+	0% {opacity: 1;}
+	50% {opacity: 0.5;}
+	100% {opacity: 1;}
+}
+
+
+@-webkit-keyframes pulse-error {
+	0% {color: #DB886B; -webkit-box-shadow: 0px 0px 5px red;}
+	75% {color: white;}
+	85% {-webkit-box-shadow: 0px 0px 0px white;}
+	100% {color: #DB886B; -webkit-box-shadow: 0px 0px 5px red;}
+}

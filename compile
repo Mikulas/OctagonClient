@@ -1,6 +1,6 @@
 <?php
 
-$files = array(
+$js = array(
 	"modernizr.custom.36126.js",
 	"jquery.1.7.1.min.js",
 	"jquery-ui.1.8.16.min.js",
@@ -18,8 +18,15 @@ $files = array(
 	"main.js",
 );
 
+$css = array(
+	"normalize.css",
+	"context_menu.css",
+	"animations.css",
+	"style.css",
+);
+
 $file = fopen("compiled.js", "w");
-foreach ($files as $filename) {
+foreach ($js as $filename) {
 	foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(".")) as $path => $info) {
 		if ($info->getFilename() == $filename) {
 			fwrite($file, "\n" . file_get_contents($path));
@@ -27,4 +34,14 @@ foreach ($files as $filename) {
 	}
 }
 
+fclose($file);
+
+$file = fopen("compiled.css", "w");
+foreach ($css as $filename) {
+	foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(".")) as $path => $info) {
+		if ($info->getFilename() == $filename) {
+			fwrite($file, "\n" . file_get_contents($path));
+		}
+	}
+}
 fclose($file);
