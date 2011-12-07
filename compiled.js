@@ -1237,11 +1237,11 @@ function Card() {
 	};
 
 	this.getImageSrc = function() {
-		return "http://192.168.100.77/OctgnWeb/images/" + that.card_id + ".jpg";
+		return "images/" + that.card_id + ".jpg";
 	};
 
 	this.getBackImageSrc = function() {
-		return "http://192.168.100.77/OctgnWeb/images/facedown.jpg";
+		return "images/facedown.jpg";
 	};
 
 	this.updatePositionFromDom = function() {
@@ -1977,7 +1977,7 @@ $(function() {
 
 	game = new Game; // defaults to empty if no broadcast is received upon connecting
 
-	var host = "ws://31.31.72.76:4723";
+	var host = "ws://thrones.eu:4723";
 	//var host = "ws://192.168.100.77:4723";
 	try {
 		socket = new WebSocket(host);
@@ -2067,7 +2067,7 @@ $(function() {
 			return false;
 		}
 
-		var files = evt.dataTransfer.files; // FileList object.
+		var files = evt.target.files || evt.dataTransfer.files; // FileList object
 		if (files.length > 1) {
 			alert("Please pick only one deck.");
 			return false;
@@ -2175,4 +2175,5 @@ $(function() {
 
 	$(document)[0].addEventListener('dragover', handleDragOver, false);
 	$(document)[0].addEventListener('drop', handleFileSelect, false);
+	$("#file")[0].addEventListener('change', handleFileSelect, false);
 });

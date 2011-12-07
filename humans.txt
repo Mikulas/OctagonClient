@@ -1,0 +1,18 @@
+/* the humans responsible & colophon */
+/* humanstxt.org */
+
+
+/* TEAM */
+  Lead developer: Mikuláš Dítě
+  Site: fb.com/mikulas
+  Twitter: MikulasDite
+  Location: Prague, Czech republic
+
+/* THANKS */
+  Jods, the original author of desktop version of Octgn
+        - http://octgn.sourceforge.net, http://www.octgn.net/
+
+/* SITE */
+  Standards: HTML5, CSS3
+  Components: jQuery, WebSockets
+  Software: PhpStorm
