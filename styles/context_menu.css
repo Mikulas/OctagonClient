@@ -13,6 +13,7 @@
 	display: none;
 	font-family: "Verdana";
 	font-size: 10pt;
+	padding: 0;
 }
 
 .contextMenu li {

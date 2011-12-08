@@ -174,7 +174,6 @@ function Card() {
 				},
 				// on show menu callback
 				function(e) {
-					console.log("trigger");
 					var card = game.getCard($(e.srcElement).parent().attr("data-id"));
 
 					// only enable menu in play
