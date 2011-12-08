@@ -27,11 +27,12 @@ function Pile() {
 						case "shuffle":
 							that.shuffle(); break;
 						case "draw-many":
-							alert("not implemented"); break; // @TODO IMPLEMENT
+							game.getPlayer(client_id).draw(prompt("How many cards you want to draw?", 2));
+							break;
 						case "browse":
 							alert("not implemented"); break; // @TODO IMPLEMENT
 					}
-					that.broadcast(); // @TODO FIX
+					game.broadcast(); // @TODO FIX
 				},
 				// on show menu callback
 				function(e) {
