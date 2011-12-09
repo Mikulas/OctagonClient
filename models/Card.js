@@ -211,6 +211,7 @@ function Card() {
 			that.turnFaceUp();
 		}
 
+		console.log(that.container, that.container.type);
 		if (that.container.type == "play") {
 			that.element.css({
 				position: "absolute",

@@ -27,7 +27,7 @@ function Container(type) {
 		} else {
 			that.element = $("[data-player-id=" + player_id + "] [data-type=" + type + "]");
 		}
-		console.log(that.element);
+
 		if (!that.element.size()) {
 			that.element = $('<div />');
 			that.element.attr("data-type", type);

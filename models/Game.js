@@ -30,7 +30,7 @@ function Game() {
 		$("header :not(#status)").add("#containers").add("[data-type=play]").children().remove();
 
 		that.unique_id = data.unique_id;
-		Board.prototype = new Container("board");
+		Board.prototype = new Container("play");
 		that.play = new Board();
 		$.each(data.play.c, function(i, ca) {
 			var card = new Card();
