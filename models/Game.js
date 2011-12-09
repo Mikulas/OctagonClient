@@ -2,8 +2,10 @@ function Game() {
 	this.players = [];
 	this.unique_id = 1;
 	this.play = null;
+	this.logData = [];
 
 	var that = this;
+	this.logList = null;
 
 	this._init = function() {
 		Board.prototype = new Container("play");
@@ -21,15 +23,21 @@ function Game() {
 		return this.unique_id++;
 	};
 
+	this.log = function(text) {
+		that.logData.push(text);
+		that.logList.append($("<li></li>").text(text));
+	};
+
 	this.updateFromBroadcast = function(data) {
 		that.players = []; // wipe
 
 		if (!$.isEmptyObject(data.players))
 			$("#help").add("#connect").stop().fadeOut(0).hide();
 		
-		$("header :not(#status)").add("#containers").add("[data-type=play]").children().remove();
+		$("header :not(.donotremove)").add("#containers").add("[data-type=play]").children().remove();
 
 		that.unique_id = data.unique_id;
+		that.logData = data.logData;
 		Board.prototype = new Container("play");
 		that.play = new Board();
 		$.each(data.play.c, function(i, ca) {
@@ -68,6 +76,8 @@ function Game() {
 	};
 
 	this.render = function() {
+		that.renderLog();
+
 		var $entity = that.play.render();
 		if (!$("[data-type=play]").size()) {
 			$("body").append($entity);
@@ -80,6 +90,13 @@ function Game() {
 		var player = game.getPlayer(window.client_id);
 		if (player != null)
 			that.openTab(player.id);
+	};
+
+	this.renderLog = function() {
+		that.logList.children().remove();
+		$.each(that.logData, function(i, t) {
+			that.logList.append($("<li></li>").text(t));
+		});
 	};
 
 	this.openTab = function(player_id) {
@@ -117,7 +134,8 @@ function Game() {
 		var obj = {
 			unique_id: that.unique_id,
 			play: that.play.toSerializable(),
-			players: {}
+			players: {},
+			logData: that.logData
 		};
 		$.each(that.players, function(i, player) {
 			obj.players[i] = player.toSerializable();

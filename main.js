@@ -259,4 +259,13 @@ $(function() {
 			game.getPlayer(client_id).draw();
 		}
 	});
+
+	// popup log window
+	$("#log img").click(function() {
+		var win = window.open("log.html", "Octagon Log", "menubar=no,width=640,height=480,toolbar=no,directories=no,status=no,location=no");
+		$(win).load(function() {
+			game.logList = $($(win.document).find("ul"));
+			game.renderLog();
+		});
+	});
 });

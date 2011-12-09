@@ -74,6 +74,17 @@ header input {
 	background: none;
 }
 
+header #log img {
+	position: absolute;
+	top: 3px;
+	opacity: .5;
+	cursor: pointer;
+}
+
+header #log img:hover {
+	opacity: 1;
+}
+
 #status {
 	float: right;
 	color: white;
