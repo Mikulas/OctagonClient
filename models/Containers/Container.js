@@ -21,7 +21,13 @@ function Container(type) {
 	};
 
 	this.render = function(player_id, element) {
-		that.element = $("[data-type=" + type + "][data-player-id=" + player_id + "]");
+		console.log("\trender ", type);
+		if (type == "play") {
+			that.element = $("[data-type=" + type + "]");
+		} else {
+			that.element = $("[data-player-id=" + player_id + "] [data-type=" + type + "]");
+		}
+		console.log(that.element);
 		if (!that.element.size()) {
 			that.element = $('<div />');
 			that.element.attr("data-type", type);
@@ -91,6 +97,7 @@ function Container(type) {
 
 		$.each(this.cards, function(i, card) {
 			that.element.append(card.render());
+			console.log("\t\trendered card", that.element);
 		});
 		return that.element;
 	};
