@@ -9,6 +9,26 @@ function Hand() {
 			$(window).resize(function() {
 				that.resizeElement();
 			});
+
+			that.element.contextMenu({menu: "context_menu"},
+				function(action, el, pos) {
+					switch(action) {
+						case "random-discard":
+							that.discardRandom(player_id); break;
+					}
+					game.broadcast(); // @todo fixme
+				},
+				// on show menu callback
+				function(e) {
+					var card = game.getCard($(e.srcElement).parent().attr("data-id"));
+
+					$("#context_menu a").hide();
+					$("#context_menu [data-group=hand] a").show();
+					if (that.cards.length <= 0) {
+						$("#context_menu [href=#random-discard]").hide();
+					}
+				}
+			);
 		}
 
 		that.element.children().addClass("small");
@@ -35,6 +55,17 @@ function Hand() {
 			obj.c.push(card.toSerializable());
 		});
 		return obj;
+	};
+
+	this.discard = function(player_id, card_internal_index) {
+		var card = that.cards[card_internal_index];
+		card.element.remove(); // remove from current container (usually play)
+		var container = game.players[player_id].containers["discard"];
+		card.moveTo(container);
+	};
+
+	this.discardRandom = function(player_id) {
+		that.discard(player_id, Math.floor(Math.random() * that.cards.length));
 	};
 }
 

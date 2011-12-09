@@ -20,8 +20,7 @@ function Container(type) {
 		card.container = that;
 	};
 
-	this.render = function(player_id, element) {
-		console.log("\trender ", type);
+	this.render = function(player_id) {
 		if (type == "play") {
 			that.element = $("[data-type=" + type + "]");
 		} else {
