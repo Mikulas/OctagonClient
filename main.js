@@ -250,4 +250,13 @@ $(function() {
 	$(document)[0].addEventListener('dragover', handleDragOver, false);
 	$(document)[0].addEventListener('drop', handleFileSelect, false);
 	$("#file")[0].addEventListener('change', handleFileSelect, false);
+
+	// key handlers
+	$(document).keydown(function(e) {
+		//console.log(e.keyCode, e);
+
+		if (e.keyCode == 68) { // d
+			game.getPlayer(client_id).draw();
+		}
+	});
 });
