@@ -1,8 +1,11 @@
 function Hand() {
 	var client_id = null;
 	var that = this;
+	
+	var player_id = null;
 
 	this.render = function(player_id) {
+		that.player_id = player_id;
 		var register = that.element == null;
 		that.element = new Container(that.type).render.call(this, player_id);
 		if (register) {
@@ -10,24 +13,10 @@ function Hand() {
 				that.resizeElement();
 			});
 
-			that.element.contextMenu({menu: "context_menu"},
-				function(action, el, pos) {
-					switch(action) {
-						case "random-discard":
-							that.discardRandom(player_id); break;
-					}
-					game.broadcast(); // @todo fixme
-				},
-				// on show menu callback
-				function(e) {
-					var card = game.getCard($(e.srcElement).parent().attr("data-id"));
-
-					$("#context_menu a").hide();
-					$("#context_menu [data-group=hand] a").show();
-					if (that.cards.length <= 0) {
-						$("#context_menu [href=#random-discard]").hide();
-					}
-				}
+			that.element.contextMenu(
+				{menu: "context_menu"},
+				that.handleContextMenu,
+				that.showContextMenu
 			);
 		}
 
@@ -41,6 +30,24 @@ function Hand() {
 		that.resizeElement();
 
 		return that.element;
+	};
+
+	this.handleContextMenu = function(action, el, pos) {
+		switch(action) {
+			case "random-discard":
+				that.discardRandom(that.player_id); break;
+		}
+		game.broadcast(); // @todo fixme
+	};
+
+	this.showContextMenu = function(e) {
+		var card = game.getCard($(e.srcElement).parent().attr("data-id"));
+
+		$("#context_menu a").hide();
+		$("#context_menu [data-group=hand] a").show();
+		if (that.cards.length <= 0) {
+			$("#context_menu [href=#random-discard]").hide();
+		}
 	};
 
 	this.resizeElement = function() {

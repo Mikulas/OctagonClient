@@ -158,40 +158,27 @@ function Card() {
 					that.element.fadeTo(0, 1);
 				}
 			});
-			that.element.contextMenu({menu: "context_menu"},
+			that.element.contextMenu(
+				{menu: "context_menu"},
 				function(action, el, pos) {
-					switch(action) {
-						case "kneel":
-							that.kneel(); break;
-						case "stand":
-							that.stand(); break;
-						case "face-down":
-							that.turnFaceDown(); break;
-						case "face-up":
-							that.turnFaceUp(); break;
+					if (that.container.type == "play") {
+						that.handleContextMenu(action, el, pos);
+
+					} else if (that.container.type == "hand") {
+						that.container.handleContextMenu(action, el, pos);
 					}
-					that.broadcast();
 				},
 				// on show menu callback
 				function(e) {
-					var card = game.getCard($(e.srcElement).parent().attr("data-id"));
+					if (that.container.type == "play") {
+						that.showContextMenu(e);
 
-					// only enable menu in play
-					if (card.container.type != "play")
+					} else if (that.container.type == "hand") {
+						// defaults to correct settings
+						return true;
+
+					} else {
 						return false;
-
-					$("#context_menu a").hide();
-					$("#context_menu [data-group=card] a").show();
-
-					if (card.kneeling) {
-						$("#context_menu [href=#kneel]").hide();
-					} else {
-						$("#context_menu [href=#stand]").hide();
-					}
-					if (card.faceDown) {
-						$("#context_menu [href=#face-down]").hide();
-					} else {
-						$("#context_menu [href=#face-up]").hide();
 					}
 				}
 			);
@@ -211,7 +198,6 @@ function Card() {
 			that.turnFaceUp();
 		}
 
-		console.log(that.container, that.container.type);
 		if (that.container.type == "play") {
 			that.element.css({
 				position: "absolute",
@@ -228,6 +214,36 @@ function Card() {
 		}
 
 		return that.element;
+	};
+
+	this.handleContextMenu = function(action, el, pos) {
+		switch(action) {
+			case "kneel":
+				that.kneel(); break;
+			case "stand":
+				that.stand(); break;
+			case "face-down":
+				that.turnFaceDown(); break;
+			case "face-up":
+				that.turnFaceUp(); break;
+		}
+		that.broadcast();
+	};
+
+	this.showContextMenu = function(e) {
+		$("#context_menu a").hide();
+		$("#context_menu [data-group=card] a").show();
+
+		if (that.kneeling) {
+			$("#context_menu [href=#kneel]").hide();
+		} else {
+			$("#context_menu [href=#stand]").hide();
+		}
+		if (that.faceDown) {
+			$("#context_menu [href=#face-down]").hide();
+		} else {
+			$("#context_menu [href=#face-up]").hide();
+		}
 	};
 
 	this.update = function(data) {
