@@ -111,8 +111,8 @@ function Player() {
 			that.containers.hand.add(card);
 		}
 		that.render();
+		game.log(player_name + " draws " + drawn + " card" + (drawn > 1 ? "s" : ""));
 		game.broadcast();
-		console.log(that.name + " draws " + drawn + " card" + (drawn > 1 ? "s" : ""));
 	};
 
 	this.updateCounter = function(data) {

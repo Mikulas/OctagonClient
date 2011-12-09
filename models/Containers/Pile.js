@@ -9,7 +9,7 @@ function Pile() {
 			that.cards[current] = that.cards[top];
 			that.cards[top] = tmp;
 		}
-		console.log("pile shuffled");
+		game.log(player_name + " shuffles " + (that.type == "deck" ? that.type : that.type + " pile"));
 	};
 
 	this.render = function(player_id) {

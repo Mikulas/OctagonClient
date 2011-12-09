@@ -24,6 +24,8 @@ function Card() {
 			}
 		});
 		container.add(that);
+
+		game.log(player_name + " moves *card* to " + container.type);
 	};
 
 	this.focus = function() {
@@ -37,6 +39,7 @@ function Card() {
 			that.element.removeClass("stand");
 		}, 600);
 		that.kneeling = false;
+		game.log(player_name + " stands *card*");
 	};
 
 	this.kneel = function() {
@@ -45,6 +48,7 @@ function Card() {
 			that.element.removeClass("kneel");
 		}, 600);
 		that.kneeling = true;
+		game.log(player_name + " kneels *card*");
 	};
 
 	this.toggleKneeling = function() {
@@ -79,6 +83,8 @@ function Card() {
 			that.element.children('img').attr('src', that.getImageSrc());
 		}, 200);
 		that.faceDown = false;
+
+		game.log(player_name + " turns *card* face up");
 	};
 
 	this.turnFaceDown = function() {
@@ -102,6 +108,8 @@ function Card() {
 		}, 200);
 
 		that.faceDown = true;
+
+		game.log(player_name + " turns *card* face down");
 	};
 
 	this.toggleFaceDown = function() {

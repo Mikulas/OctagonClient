@@ -25,7 +25,9 @@ function Game() {
 
 	this.log = function(text) {
 		that.logData.push(text);
-		that.logList.append($("<li></li>").text(text));
+		
+		if (that.logList)
+			that.logList.append($("<li></li>").text(text));
 	};
 
 	this.updateFromBroadcast = function(data) {
@@ -93,6 +95,9 @@ function Game() {
 	};
 
 	this.renderLog = function() {
+		if (!that.logList)
+			return false;
+		
 		that.logList.children().remove();
 		$.each(that.logData, function(i, t) {
 			that.logList.append($("<li></li>").text(t));
