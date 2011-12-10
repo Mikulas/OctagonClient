@@ -255,7 +255,7 @@ $(function() {
 	// key handlers
 	$(document).keydown(function(e) {
 		if (!connected) {
-			return false;
+			return true;
 		}
 		//console.log(e.keyCode, e);
 
