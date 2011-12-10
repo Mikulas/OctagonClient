@@ -230,7 +230,7 @@ $(function() {
 	$("#username").val(last_server);
 	$("#username").val(player_name);
 
-	$("#help").hide();
+	$("#help").add("#log").hide();
 
 	function connect() {
 		player_name = localStorage.player_name = $("#username").val();
@@ -241,6 +241,7 @@ $(function() {
 		}));
 		$("#status").addClass("connected");
 		$("#status .text").text("connected » " + $("#server").val());
+		$("#log").show();
 		return false;
 	}
 	$("#connect-button").click(connect);
