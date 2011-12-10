@@ -53,6 +53,7 @@ function Player() {
 				var $input = $("<input/>").addClass("counter " + i);
 				$input.bind("change click", function() {
 					that.counters[i] = $(this).val();
+					game.log(that.name + "'s " + i + " counter set to " + that.counters[i]); // @TODO broadcast
 					that.broadcastCounter(i);
 				});
 				that.counter_element.append($input);
@@ -61,11 +62,13 @@ function Player() {
 				$icon.click(function(e) {
 					if ($input.val() < 99) {
 						$input.val(++that.counters[i]);
+						game.log(that.name + "'s " + i + " counter set to " + that.counters[i]); // @TODO broadcast
 						that.broadcastCounter(i);
 					}
 				}).contextmenu(function(e) {
 					if ($input.val() > 0) {
 						$input.val(--that.counters[i]);
+						game.log(that.name + "'s " + i + " counter set to " + that.counters[i]); // @TODO broadcast
 						that.broadcastCounter(i);
 					}
 					e.preventDefault();
