@@ -48,6 +48,12 @@ function Pile() {
 			);
 		}
 
+		if (that.cards.length == 0) {
+			that.element.find("img").attr("src", "images/empty.jpg");
+		} else {
+			that.element.find("img").attr("src", "images/facedown.jpg");
+		}
+
 		return that.element;
 	};
 
