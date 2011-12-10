@@ -254,11 +254,19 @@ $(function() {
 
 	// key handlers
 	$(document).keydown(function(e) {
+		if (!connected) {
+			return false;
+		}
 		//console.log(e.keyCode, e);
 
 		if (e.keyCode == 68) { // d
-			game.getPlayer(client_id).draw();
+			if (e.shiftKey) { // capital D
+				game.getPlayer(client_id).draw(prompt("How many cards you want to draw?", 2));
+			} else {
+				game.getPlayer(client_id).draw();
+			}
 		}
+		e.stopPropagation();
 	});
 
 	// popup log window
