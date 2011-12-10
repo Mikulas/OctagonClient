@@ -26,6 +26,9 @@ function Pile() {
 					switch(action) {
 						case "shuffle":
 							that.shuffle(); break;
+						case "draw":
+							game.getPlayer(client_id).draw(1);
+							break;
 						case "draw-many":
 							game.getPlayer(client_id).draw(prompt("How many cards you want to draw?", 2));
 							break;
@@ -38,6 +41,9 @@ function Pile() {
 				function(e) {
 					$("#context_menu a").hide();
 					$("#context_menu [data-group=pile] a").show();
+					if (that.type != "deck") {
+						$("#context_menu [href^=#draw]").hide();
+					}
 				}
 			);
 		}
