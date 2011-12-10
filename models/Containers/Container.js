@@ -40,7 +40,7 @@ function Container(type) {
 				drop: function(event, ui) {
 					var card = game.getCard(ui.draggable.attr("data-id"));
 
-					if (type == "play") {
+					if (that.type == "play") {
 						ui.draggable.removeClass("small");
 					} else {
 						ui.draggable.addClass("small");
@@ -73,7 +73,9 @@ function Container(type) {
 
 						// change card position in logical structure
 						if ($(this).attr("data-type") != "play") {
-							card.moveTo(game.players[$(this).attr("data-player-id")].containers[$(this).attr("data-type")]);
+							var container = game.players[$(this).parent().attr("data-player-id")].containers[$(this).attr("data-type")];
+							card.moveTo(container);
+							container.render();
 						} else {
 							card.moveTo(game.play);
 						}

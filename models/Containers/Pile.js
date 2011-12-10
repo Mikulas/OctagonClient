@@ -14,10 +14,13 @@ function Pile() {
 
 	this.render = function(player_id) {
 		if (that.element == null) {
-			that.element = $("<div/>").addClass("pile card small").attr("data-type", that.type);
+			that.element = new Container(that.type).render();
+			that.element.children().remove();
+			that.element.addClass("pile card small").attr("data-type", that.type);
 			that.element.dblclick(function(e) {
 				that.onDoubleClick(e);
 			});
+
 			that.element.append($("<img/>").attr("src", "images/facedown.jpg"));
 			that.element.append($("<div/>").addClass("title").text(that.type.toUpperCase()).append($("<div></div>").addClass("count").text("20 cards")));
 
@@ -49,7 +52,7 @@ function Pile() {
 		}
 
 		that.element.find("img").attr("src", that.cards.length == 0 ? "images/empty.jpg" : "images/facedown.jpg");
-		that.element.find(".count").text(that.cards.length == 0 ? "empty" : that.cards.length == 1 ? "one cards" : that.cards.length + " cards");
+		that.element.find(".count").text(that.cards.length == 0 ? "empty" : that.cards.length == 1 ? "one card" : that.cards.length + " cards");
 
 		return that.element;
 	};

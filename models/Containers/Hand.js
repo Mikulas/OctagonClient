@@ -69,6 +69,7 @@ function Hand() {
 		card.element.remove(); // remove from current container (usually play)
 		var container = game.players[player_id].containers["discard"];
 		card.moveTo(container);
+		container.render();
 	};
 
 	this.discardRandom = function(player_id) {
