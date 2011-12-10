@@ -153,10 +153,15 @@ header #log img:hover {
 	top: -70px;
 	width: 100%;
 	margin: auto;
-	padding-top: 10px;
+	padding-top: 5px;
+	margin-bottom: 5px;
 	color: rgba(255, 255, 255, .9);
 	opacity: 0;
 	-webkit-transition: opacity 100ms ease-in-out;
+}
+
+.title .count {
+	margin-top: 2px;
 }
 
 [data-type=hand] {
