@@ -118,6 +118,13 @@ function Player() {
 		game.broadcast();
 	};
 
+	this.drawMany = function() {
+		var count = prompt("How many cards you want to draw?", 2);
+		console.log(count);
+		if (count)
+			that.draw(count);
+	};
+
 	this.updateCounter = function(data) {
 		that.counters[data.counter] = data.value;
 	};

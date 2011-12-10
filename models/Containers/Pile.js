@@ -30,7 +30,7 @@ function Pile() {
 							game.getPlayer(client_id).draw(1);
 							break;
 						case "draw-many":
-							game.getPlayer(client_id).draw(prompt("How many cards you want to draw?", 2));
+							game.getPlayer(client_id).drawMany();
 							break;
 						case "browse":
 							alert("not implemented"); break; // @TODO IMPLEMENT
@@ -42,7 +42,7 @@ function Pile() {
 					$("#context_menu a").hide();
 					$("#context_menu [data-group=pile] a").show();
 					if (that.type != "deck") {
-						$("#context_menu [href^=#draw]").hide();
+						$("#context_menu [href^=#draw]").add("#context_menu [href=#shuffle]").hide();
 					}
 				}
 			);

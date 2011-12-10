@@ -261,7 +261,7 @@ $(function() {
 
 		if (e.keyCode == 68) { // d
 			if (e.shiftKey) { // capital D
-				game.getPlayer(client_id).draw(prompt("How many cards you want to draw?", 2));
+				game.getPlayer(client_id).drawMany();
 			} else {
 				game.getPlayer(client_id).draw();
 			}

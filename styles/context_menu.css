@@ -6,7 +6,6 @@
 
 .contextMenu {
 	position: absolute;
-	width: 150px;
 	z-index: 99999;
 	border: solid 1px #CCC;
 	background: #EEE;
@@ -31,6 +30,7 @@
 	outline: none;
 	padding: 1px 5px;
 	padding-left: 28px;
+	padding-right: 20px;
 }
 
 .contextMenu li.hover a {
@@ -49,6 +49,10 @@
 
 .contextMenu li.separator {
 	border-top: solid 1px #CCC;
+}
+
+.contextMenu li a i {
+	float: right;
 }
 
 /* .contextMenu li.kneel a {background-image: url(images/page_white_edit.png);} */
