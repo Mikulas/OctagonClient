@@ -132,13 +132,13 @@ td { vertical-align: top; }
 
 .contextMenu {
 	position: absolute;
-	width: 150px;
 	z-index: 99999;
 	border: solid 1px #CCC;
 	background: #EEE;
 	display: none;
 	font-family: "Verdana";
 	font-size: 10pt;
+	padding: 0;
 }
 
 .contextMenu li {
@@ -156,6 +156,7 @@ td { vertical-align: top; }
 	outline: none;
 	padding: 1px 5px;
 	padding-left: 28px;
+	padding-right: 20px;
 }
 
 .contextMenu li.hover a {
@@ -174,6 +175,10 @@ td { vertical-align: top; }
 
 .contextMenu li.separator {
 	border-top: solid 1px #CCC;
+}
+
+.contextMenu li a i {
+	float: right;
 }
 
 /* .contextMenu li.kneel a {background-image: url(images/page_white_edit.png);} */
@@ -245,7 +250,7 @@ input::selection {
 }
 
 body {
-	background-image: url("wood.jpg");
+	/*background-image: url("wood.jpg");*/
 	font-family: "Lato";
 }
 
@@ -301,6 +306,17 @@ header input {
 	border: none;
 	color: white;
 	background: none;
+}
+
+header #log img {
+	position: absolute;
+	top: 3px;
+	opacity: .5;
+	cursor: pointer;
+}
+
+header #log img:hover {
+	opacity: 1;
 }
 
 #status {
@@ -371,10 +387,15 @@ header input {
 	top: -70px;
 	width: 100%;
 	margin: auto;
-	padding-top: 10px;
+	padding-top: 5px;
+	margin-bottom: 5px;
 	color: rgba(255, 255, 255, .9);
 	opacity: 0;
 	-webkit-transition: opacity 100ms ease-in-out;
+}
+
+.title .count {
+	margin-top: 2px;
 }
 
 [data-type=hand] {
@@ -549,6 +570,23 @@ input[type=file] {
 	margin: 0 0 0 7px;
 	padding: 0;
 	display: inline;
+}
+
+#browser {
+	display: none;
+	position: absolute;
+	z-index: 9997;
+	background-color: rgba(0, 0, 0, .8);
+	width: 100%;
+	padding: 10px 0;
+}
+
+#browser .card:first-of-type {
+	margin-left: 50px;
+}
+
+#browser .card {
+	margin-right: 5px;
 }
 
 /**

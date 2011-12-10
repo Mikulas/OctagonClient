@@ -943,7 +943,7 @@ if(jQuery)( function() {
 				// Simulate a true right click
 				$(this).mousedown( function(e) {
 					var evt = e;
-					evt.stopPropagation();
+//evt.stopPropagation();
 					$(this).mouseup( function(e) {
 //e.stopPropagation();
 						var srcElement = $(this);
@@ -1136,9 +1136,10 @@ function Card() {
 	this.container = null;
 
 	var that = this;
+	this.name = null;
 
 	this._init = function() {
-		
+		that.grabName();
 	};
 
 	this.moveTo = function(container) {
@@ -1152,6 +1153,19 @@ function Card() {
 			}
 		});
 		container.add(that);
+
+		game.log(player_name + " moves " + that.name + " to " + container.type);
+	};
+
+	this.grabName = function() {
+		$.ajax({
+			url: "cards.json",
+			dataType: "json",
+			type: "GET",
+			success: function(data) {
+				that.name = data[that.card_id];
+			}
+		});
 	};
 
 	this.focus = function() {
@@ -1165,6 +1179,7 @@ function Card() {
 			that.element.removeClass("stand");
 		}, 600);
 		that.kneeling = false;
+		game.log(player_name + " stands " + that.name + "");
 	};
 
 	this.kneel = function() {
@@ -1173,6 +1188,7 @@ function Card() {
 			that.element.removeClass("kneel");
 		}, 600);
 		that.kneeling = true;
+		game.log(player_name + " kneels " + that.name + "");
 	};
 
 	this.toggleKneeling = function() {
@@ -1207,6 +1223,8 @@ function Card() {
 			that.element.children('img').attr('src', that.getImageSrc());
 		}, 200);
 		that.faceDown = false;
+
+		game.log(player_name + " turns " + that.name + " face up");
 	};
 
 	this.turnFaceDown = function() {
@@ -1230,6 +1248,8 @@ function Card() {
 		}, 200);
 
 		that.faceDown = true;
+
+		game.log(player_name + " turns " + that.name + " face down");
 	};
 
 	this.toggleFaceDown = function() {
@@ -1286,41 +1306,27 @@ function Card() {
 					that.element.fadeTo(0, 1);
 				}
 			});
-			that.element.contextMenu({menu: "context_menu"},
+			that.element.contextMenu(
+				{menu: "context_menu"},
 				function(action, el, pos) {
-					switch(action) {
-						case "kneel":
-							that.kneel(); break;
-						case "stand":
-							that.stand(); break;
-						case "face-down":
-							that.turnFaceDown(); break;
-						case "face-up":
-							that.turnFaceUp(); break;
+					if (that.container.type == "play") {
+						that.handleContextMenu(action, el, pos);
+
+					} else if (that.container.type == "hand") {
+						that.container.handleContextMenu(action, el, pos);
 					}
-					that.broadcast();
 				},
 				// on show menu callback
 				function(e) {
-					console.log("trigger");
-					var card = game.getCard($(e.srcElement).parent().attr("data-id"));
+					if (that.container.type == "play") {
+						that.showContextMenu(e);
 
-					// only enable menu in play
-					if (card.container.type != "play")
+					} else if (that.container.type == "hand") {
+						// defaults to correct settings
+						return true;
+
+					} else {
 						return false;
-
-					$("#context_menu a").hide();
-					$("#context_menu [data-group=card] a").show();
-
-					if (card.kneeling) {
-						$("#context_menu [href=#kneel]").hide();
-					} else {
-						$("#context_menu [href=#stand]").hide();
-					}
-					if (card.faceDown) {
-						$("#context_menu [href=#face-down]").hide();
-					} else {
-						$("#context_menu [href=#face-up]").hide();
 					}
 				}
 			);
@@ -1328,19 +1334,19 @@ function Card() {
 			that.element.append($("<img/>").addClass("raw-card").attr("src", that.getImageSrc()));
 		}
 
-		if (that.kneeling && !that.element.hasClass("kneeling")) {
-			that.kneel();
-		} else if (!that.kneeling && that.element.hasClass("kneeling")) {
-			that.stand();
-		}
-
-		if (that.faceDown && !that.element.hasClass("face-down")) {
-			that.turnFaceDown();
-		} else if (!that.faceDown && that.element.hasClass("face-down")) {
-			that.turnFaceUp();
-		}
-
 		if (that.container.type == "play") {
+			if (that.kneeling && !that.element.hasClass("kneeling")) {
+				that.kneel();
+			} else if (!that.kneeling && that.element.hasClass("kneeling")) {
+				that.stand();
+			}
+
+			if (that.faceDown && !that.element.hasClass("face-down")) {
+				that.turnFaceDown();
+			} else if (!that.faceDown && that.element.hasClass("face-down")) {
+				that.turnFaceUp();
+			}
+
 			that.element.css({
 				position: "absolute",
 				"z-index": that.position.z
@@ -1356,6 +1362,36 @@ function Card() {
 		}
 
 		return that.element;
+	};
+
+	this.handleContextMenu = function(action, el, pos) {
+		switch(action) {
+			case "kneel":
+				that.kneel(); break;
+			case "stand":
+				that.stand(); break;
+			case "face-down":
+				that.turnFaceDown(); break;
+			case "face-up":
+				that.turnFaceUp(); break;
+		}
+		that.broadcast();
+	};
+
+	this.showContextMenu = function(e) {
+		$("#context_menu a").hide();
+		$("#context_menu [data-group=card] a").show();
+
+		if (that.kneeling) {
+			$("#context_menu [href=#kneel]").hide();
+		} else {
+			$("#context_menu [href=#stand]").hide();
+		}
+		if (that.faceDown) {
+			$("#context_menu [href=#face-down]").hide();
+		} else {
+			$("#context_menu [href=#face-up]").hide();
+		}
 	};
 
 	this.update = function(data) {
@@ -1422,8 +1458,10 @@ function Game() {
 	this.players = [];
 	this.unique_id = 1;
 	this.play = null;
+	this.logData = [];
 
 	var that = this;
+	this.logList = null;
 
 	this._init = function() {
 		Board.prototype = new Container("play");
@@ -1441,15 +1479,23 @@ function Game() {
 		return this.unique_id++;
 	};
 
+	this.log = function(text) {
+		that.logData.push(text);
+		
+		if (that.logList)
+			that.logList.append($("<li></li>").text(text));
+	};
+
 	this.updateFromBroadcast = function(data) {
 		that.players = []; // wipe
 
 		if (!$.isEmptyObject(data.players))
 			$("#help").add("#connect").stop().fadeOut(0).hide();
 		
-		$("header :not(#status)").add("#containers").add("[data-type=play]").children().remove();
+		$("header :not(.donotremove)").add("#containers").add("[data-type=play]").children().remove();
 
 		that.unique_id = data.unique_id;
+		that.logData = data.logData;
 		Board.prototype = new Container("play");
 		that.play = new Board();
 		$.each(data.play.c, function(i, ca) {
@@ -1488,6 +1534,8 @@ function Game() {
 	};
 
 	this.render = function() {
+		that.renderLog();
+
 		var $entity = that.play.render();
 		if (!$("[data-type=play]").size()) {
 			$("body").append($entity);
@@ -1500,6 +1548,16 @@ function Game() {
 		var player = game.getPlayer(window.client_id);
 		if (player != null)
 			that.openTab(player.id);
+	};
+
+	this.renderLog = function() {
+		if (!that.logList)
+			return false;
+		
+		that.logList.children().remove();
+		$.each(that.logData, function(i, t) {
+			that.logList.append($("<li></li>").text(t));
+		});
 	};
 
 	this.openTab = function(player_id) {
@@ -1537,7 +1595,8 @@ function Game() {
 		var obj = {
 			unique_id: that.unique_id,
 			play: that.play.toSerializable(),
-			players: {}
+			players: {},
+			logData: that.logData
 		};
 		$.each(that.players, function(i, player) {
 			obj.players[i] = player.toSerializable();
@@ -1622,6 +1681,7 @@ function Player() {
 				var $input = $("<input/>").addClass("counter " + i);
 				$input.bind("change click", function() {
 					that.counters[i] = $(this).val();
+					game.log(that.name + "'s " + i + " counter set to " + that.counters[i]); // @TODO broadcast
 					that.broadcastCounter(i);
 				});
 				that.counter_element.append($input);
@@ -1630,11 +1690,13 @@ function Player() {
 				$icon.click(function(e) {
 					if ($input.val() < 99) {
 						$input.val(++that.counters[i]);
+						game.log(that.name + "'s " + i + " counter set to " + that.counters[i]); // @TODO broadcast
 						that.broadcastCounter(i);
 					}
 				}).contextmenu(function(e) {
 					if ($input.val() > 0) {
 						$input.val(--that.counters[i]);
+						game.log(that.name + "'s " + i + " counter set to " + that.counters[i]); // @TODO broadcast
 						that.broadcastCounter(i);
 					}
 					e.preventDefault();
@@ -1680,8 +1742,15 @@ function Player() {
 			that.containers.hand.add(card);
 		}
 		that.render();
+		game.log(player_name + " draws " + drawn + " card" + (drawn > 1 ? "s" : ""));
 		game.broadcast();
-		console.log(that.name + " draws " + drawn + " card" + (drawn > 1 ? "s" : ""));
+	};
+
+	this.drawMany = function() {
+		var count = prompt("How many cards you want to draw?", 2);
+		console.log(count);
+		if (count)
+			that.draw(count);
 	};
 
 	this.updateCounter = function(data) {
@@ -1718,6 +1787,7 @@ function Board() {
 	var that = this;
 
 	this.render = function() {
+		console.log("render play");
 		that.element = new Container("play").render.call(this);
 		return that.element;
 	};
@@ -1747,8 +1817,13 @@ function Container(type) {
 		card.container = that;
 	};
 
-	this.render = function(player_id, element) {
-		that.element = $("[data-type=" + type + "][data-player-id=" + player_id + "]");
+	this.render = function(player_id) {
+		if (type == "play") {
+			that.element = $("[data-type=" + type + "]");
+		} else {
+			that.element = $("[data-player-id=" + player_id + "] [data-type=" + type + "]");
+		}
+
 		if (!that.element.size()) {
 			that.element = $('<div />');
 			that.element.attr("data-type", type);
@@ -1762,7 +1837,7 @@ function Container(type) {
 				drop: function(event, ui) {
 					var card = game.getCard(ui.draggable.attr("data-id"));
 
-					if (type == "play") {
+					if (that.type == "play") {
 						ui.draggable.removeClass("small");
 					} else {
 						ui.draggable.addClass("small");
@@ -1795,7 +1870,9 @@ function Container(type) {
 
 						// change card position in logical structure
 						if ($(this).attr("data-type") != "play") {
-							card.moveTo(game.players[$(this).attr("data-player-id")].containers[$(this).attr("data-type")]);
+							var container = game.players[$(this).parent().attr("data-player-id")].containers[$(this).attr("data-type")];
+							card.moveTo(container);
+							container.render();
 						} else {
 							card.moveTo(game.play);
 						}
@@ -1818,6 +1895,7 @@ function Container(type) {
 
 		$.each(this.cards, function(i, card) {
 			that.element.append(card.render());
+			console.log("\t\trendered card", that.element);
 		});
 		return that.element;
 	};
@@ -1834,14 +1912,23 @@ function Container(type) {
 function Hand() {
 	var client_id = null;
 	var that = this;
+	
+	var player_id = null;
 
 	this.render = function(player_id) {
+		that.player_id = player_id;
 		var register = that.element == null;
 		that.element = new Container(that.type).render.call(this, player_id);
 		if (register) {
 			$(window).resize(function() {
 				that.resizeElement();
 			});
+
+			that.element.contextMenu(
+				{menu: "context_menu"},
+				that.handleContextMenu,
+				that.showContextMenu
+			);
 		}
 
 		that.element.children().addClass("small");
@@ -1856,6 +1943,24 @@ function Hand() {
 		return that.element;
 	};
 
+	this.handleContextMenu = function(action, el, pos) {
+		switch(action) {
+			case "random-discard":
+				that.discardRandom(that.player_id); break;
+		}
+		game.broadcast(); // @todo fixme
+	};
+
+	this.showContextMenu = function(e) {
+		var card = game.getCard($(e.srcElement).parent().attr("data-id"));
+
+		$("#context_menu a").hide();
+		$("#context_menu [data-group=hand] a").show();
+		if (that.cards.length <= 0) {
+			$("#context_menu [href=#random-discard]").hide();
+		}
+	};
+
 	this.resizeElement = function() {
 		var width = $(document).width() - $("[data-type=plot]").width() - $("[data-type=death]").width() - $("[data-type=discard]").width() - $("[data-type=death]").width() - 20 - 90; // 20 is scrollbar quickfix, 90 is for padding (not a failsafe solution)
 		that.element.width(width);
@@ -1868,6 +1973,18 @@ function Hand() {
 			obj.c.push(card.toSerializable());
 		});
 		return obj;
+	};
+
+	this.discard = function(player_id, card_internal_index) {
+		var card = that.cards[card_internal_index];
+		card.element.remove(); // remove from current container (usually play)
+		var container = game.players[player_id].containers["discard"];
+		card.moveTo(container);
+		container.render();
+	};
+
+	this.discardRandom = function(player_id) {
+		that.discard(player_id, Math.floor(Math.random() * that.cards.length));
 	};
 }
 
@@ -1884,39 +2001,61 @@ function Pile() {
 			that.cards[current] = that.cards[top];
 			that.cards[top] = tmp;
 		}
-		console.log("pile shuffled");
+		game.log(player_name + " shuffles " + (that.type == "deck" ? that.type : that.type + " pile"));
 	};
 
 	this.render = function(player_id) {
 		if (that.element == null) {
-			that.element = $("<div/>").addClass("pile card small").attr("data-type", that.type);
+			that.element = new Container(that.type).render();
+			that.element.children().remove();
+			that.element.addClass("pile card small").attr("data-type", that.type);
 			that.element.dblclick(function(e) {
 				that.onDoubleClick(e);
 			});
+
 			that.element.append($("<img/>").attr("src", "images/facedown.jpg"));
-			that.element.append($("<div/>").addClass("title").text(that.type.toUpperCase()));
+			that.element.append($("<div/>").addClass("title").text(that.type.toUpperCase()).append($("<div></div>").addClass("count").text("20 cards")));
 
 			that.element.contextMenu({menu: "context_menu"},
 				function(action, el, pos) {
 					switch(action) {
 						case "shuffle":
 							that.shuffle(); break;
+						case "draw":
+							game.getPlayer(client_id).draw(1);
+							break;
 						case "draw-many":
-							alert("not implemented"); break; // @TODO IMPLEMENT
+							game.getPlayer(client_id).drawMany();
+							break;
 						case "browse":
-							alert("not implemented"); break; // @TODO IMPLEMENT
+							that.renderBrowse();
+							break;
 					}
-					that.broadcast(); // @TODO FIX
+					game.broadcast(); // @TODO FIX
 				},
 				// on show menu callback
 				function(e) {
 					$("#context_menu a").hide();
 					$("#context_menu [data-group=pile] a").show();
+					if (that.type != "deck") {
+						$("#context_menu [href^=#draw]").add("#context_menu [href=#shuffle]").hide();
+					}
 				}
 			);
 		}
 
+		that.element.find("img").attr("src", that.cards.length == 0 ? "images/empty.jpg" : "images/facedown.jpg");
+		that.element.find(".count").text(that.cards.length == 0 ? "empty" : that.cards.length == 1 ? "one card" : that.cards.length + " cards");
+
 		return that.element;
+	};
+
+	this.renderBrowse = function() {
+		// @TODO implement
+		$("#browser").children().remove();
+		$.each(that.cards, function(i, card) {
+			$("#browser").append(card.render("browser").addClass("small"));
+		});
 	};
 
 	this.onDoubleClick = function() {
@@ -2160,7 +2299,7 @@ $(function() {
 	$("#username").val(last_server);
 	$("#username").val(player_name);
 
-	$("#help").hide();
+	$("#help").add("#log").hide();
 
 	function connect() {
 		player_name = localStorage.player_name = $("#username").val();
@@ -2171,6 +2310,7 @@ $(function() {
 		}));
 		$("#status").addClass("connected");
 		$("#status .text").text("connected » " + $("#server").val());
+		$("#log").show();
 		return false;
 	}
 	$("#connect-button").click(connect);
@@ -2180,4 +2320,30 @@ $(function() {
 	$(document)[0].addEventListener('dragover', handleDragOver, false);
 	$(document)[0].addEventListener('drop', handleFileSelect, false);
 	$("#file")[0].addEventListener('change', handleFileSelect, false);
+
+	// key handlers
+	$(document).keydown(function(e) {
+		if (!connected) {
+			return false;
+		}
+		//console.log(e.keyCode, e);
+
+		if (e.keyCode == 68) { // d
+			if (e.shiftKey) { // capital D
+				game.getPlayer(client_id).drawMany();
+			} else {
+				game.getPlayer(client_id).draw();
+			}
+		}
+		e.stopPropagation();
+	});
+
+	// popup log window
+	$("#log img").click(function() {
+		var win = window.open("log.html", "Octagon Log", "menubar=no,width=640,height=480,toolbar=no,directories=no,status=no,location=no");
+		$(win).load(function() {
+			game.logList = $($(win.document).find("ul"));
+			game.renderLog();
+		});
+	});
 });

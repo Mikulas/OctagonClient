@@ -36,7 +36,8 @@ function Pile() {
 							game.getPlayer(client_id).drawMany();
 							break;
 						case "browse":
-							alert("not implemented"); break; // @TODO IMPLEMENT
+							that.renderBrowse();
+							break;
 					}
 					game.broadcast(); // @TODO FIX
 				},
@@ -55,6 +56,14 @@ function Pile() {
 		that.element.find(".count").text(that.cards.length == 0 ? "empty" : that.cards.length == 1 ? "one card" : that.cards.length + " cards");
 
 		return that.element;
+	};
+
+	this.renderBrowse = function() {
+		// @TODO implement
+		$("#browser").children().remove();
+		$.each(that.cards, function(i, card) {
+			$("#browser").append(card.render("browser").addClass("small"));
+		});
 	};
 
 	this.onDoubleClick = function() {

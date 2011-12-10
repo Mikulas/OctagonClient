@@ -338,6 +338,22 @@ input[type=file] {
 	display: inline;
 }
 
+#browser {
+	position: absolute;
+	z-index: 9997;
+	background-color: rgba(0, 0, 0, .8);
+	width: 100%;
+	padding: 10px 0;
+}
+
+#browser .card:first-of-type {
+	margin-left: 50px;
+}
+
+#browser .card {
+	margin-right: 5px;
+}
+
 /**
  * ----------------------------------------------------------------------
  *  FORM BUTTON

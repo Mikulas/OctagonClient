@@ -206,19 +206,19 @@ function Card() {
 			that.element.append($("<img/>").addClass("raw-card").attr("src", that.getImageSrc()));
 		}
 
-		if (that.kneeling && !that.element.hasClass("kneeling")) {
-			that.kneel();
-		} else if (!that.kneeling && that.element.hasClass("kneeling")) {
-			that.stand();
-		}
-
-		if (that.faceDown && !that.element.hasClass("face-down")) {
-			that.turnFaceDown();
-		} else if (!that.faceDown && that.element.hasClass("face-down")) {
-			that.turnFaceUp();
-		}
-
 		if (that.container.type == "play") {
+			if (that.kneeling && !that.element.hasClass("kneeling")) {
+				that.kneel();
+			} else if (!that.kneeling && that.element.hasClass("kneeling")) {
+				that.stand();
+			}
+
+			if (that.faceDown && !that.element.hasClass("face-down")) {
+				that.turnFaceDown();
+			} else if (!that.faceDown && that.element.hasClass("face-down")) {
+				that.turnFaceUp();
+			}
+
 			that.element.css({
 				position: "absolute",
 				"z-index": that.position.z
