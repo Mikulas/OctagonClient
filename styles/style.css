@@ -301,7 +301,6 @@ header #log img:hover {
 }
 
 .static input {
-	margin-left: 2em;
 	margin-bottom: 30px;
 	width: 300px;
 	font-size: 18pt;
@@ -312,10 +311,13 @@ header #log img:hover {
 }
 
 .static input[type=submit] {
-	margin-left: 45px;
 	padding: 6px 24px;
 	width: 315px;
 	height: 40px;
+}
+
+.static input[name=username] {
+	box-shadow: none;
 }
 
 #connect h2 {
@@ -336,6 +338,15 @@ input[type=file] {
 	margin: 0 0 0 7px;
 	padding: 0;
 	display: inline;
+}
+
+#connect-form input {
+	display: inline;
+}
+
+#connect-form [data-for] {
+	margin-left: 25px;
+	font-size: 120%;
 }
 
 #browser {

@@ -50,10 +50,21 @@
 		
 		<form id="connect-form">
 		<fieldset>
-			<input type="text" name="server" id="server" placeholder="Server" />
-			<input type="password" name="password" id="password" value="a" placeholder="Password" />
-			<input type="text" name="username" id="username" value="a" placeholder="Your nick" />
-			<input type="submit" id="connect-button" value="Connect" />
+			<div>
+				<input type="text" name="server" id="server" placeholder="Server" />
+				<span data-for="server">Server &mdash; either existing or your custom server name</span>
+			</div>
+			<div>
+				<input type="password" name="password" id="password" value="a" placeholder="Password" />
+				<span data-for="password">Password of the server (pick a new one when creating a new game)</span>
+			</div>
+			<div>
+				<input type="text" name="username" id="username" value="a" placeholder="Your nick" />
+				<span data-for="username">Nick name &mdash; displayed in-game</span>
+			</div>
+			<div>
+				<input type="submit" id="connect-button" value="Connect" />
+			</div>
 		</fieldset>
 		</form>
 	</div>

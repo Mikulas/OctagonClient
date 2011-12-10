@@ -230,7 +230,15 @@ $(function() {
 	$("#username").val(last_server);
 	$("#username").val(player_name);
 
-	$("#help").add("#log").hide();
+	$("#help").add("#log").add("#connect-form [data-for]").hide();
+
+	$("#connect-form input").mouseenter(function() {
+		$("[data-for=" + $(this).attr("id") + "]").stop(true).fadeIn(500);
+
+	}).mouseout(function() {
+		$("[data-for=" + $(this).attr("id") + "]").stop(true).css({opacity: "1"}).delay(500).fadeOut(500);
+
+	});
 
 	function connect() {
 		player_name = localStorage.player_name = $("#username").val();
