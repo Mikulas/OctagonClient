@@ -8,9 +8,10 @@ function Card() {
 	this.container = null;
 
 	var that = this;
+	this.name = null;
 
 	this._init = function() {
-		
+		that.grabName();
 	};
 
 	this.moveTo = function(container) {
@@ -25,7 +26,18 @@ function Card() {
 		});
 		container.add(that);
 
-		game.log(player_name + " moves *card* to " + container.type);
+		game.log(player_name + " moves " + that.name + " to " + container.type);
+	};
+
+	this.grabName = function() {
+		$.ajax({
+			url: "cards.json",
+			dataType: "json",
+			type: "GET",
+			success: function(data) {
+				that.name = data[that.card_id];
+			}
+		});
 	};
 
 	this.focus = function() {
@@ -39,7 +51,7 @@ function Card() {
 			that.element.removeClass("stand");
 		}, 600);
 		that.kneeling = false;
-		game.log(player_name + " stands *card*");
+		game.log(player_name + " stands " + that.name + "");
 	};
 
 	this.kneel = function() {
@@ -48,7 +60,7 @@ function Card() {
 			that.element.removeClass("kneel");
 		}, 600);
 		that.kneeling = true;
-		game.log(player_name + " kneels *card*");
+		game.log(player_name + " kneels " + that.name + "");
 	};
 
 	this.toggleKneeling = function() {
@@ -84,7 +96,7 @@ function Card() {
 		}, 200);
 		that.faceDown = false;
 
-		game.log(player_name + " turns *card* face up");
+		game.log(player_name + " turns " + that.name + " face up");
 	};
 
 	this.turnFaceDown = function() {
@@ -109,7 +121,7 @@ function Card() {
 
 		that.faceDown = true;
 
-		game.log(player_name + " turns *card* face down");
+		game.log(player_name + " turns " + that.name + " face down");
 	};
 
 	this.toggleFaceDown = function() {
