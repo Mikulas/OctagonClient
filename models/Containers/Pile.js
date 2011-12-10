@@ -60,7 +60,7 @@ function Pile() {
 
 	this.renderBrowse = function() {
 		// @TODO implement
-		$("#browser").children().remove();
+		$("#browser").removeClass("hidden").children().remove();
 		$.each(that.cards, function(i, card) {
 			$("#browser").append(card.render("browser").addClass("small"));
 		});
