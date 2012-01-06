@@ -1469,6 +1469,28 @@ function LandscapeCard() {
 		return false;
 	};
 
+	this.onDoubleClick = function(e) {
+		return false;
+	};
+
+	this.moveTo = function(container) {
+		if (container.type != "play" && container.type != "hand" && container.type != "plot")
+			return false;
+
+		// find this card's index in container's cards array
+		$.each(that.container.cards, function(i, card) {
+			if (card == undefined)
+				return false;
+
+			if (card.id == that.id) {
+				that.container.cards.splice(i, i + 1);
+			}
+		});
+		container.add(that);
+
+		game.log(player_name + " moves " + that.name + " to " + container.type);
+	};
+
 	this.render = function(type) {
 		if (that.element == null) {
 			that.element = $("<div/>").addClass("card landscape");
@@ -1548,7 +1570,7 @@ function LandscapeCard() {
 		} else {
 			that.element.css({position: "relative", top: 0, left: 0});
 		}
-		
+
 		return that.element;
 	};
 
