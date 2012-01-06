@@ -179,7 +179,8 @@ $(function() {
 						player.containers.hand.add(card);
 					} else if ($.inArray($(sec).attr("name"), ["Plots"]) != -1) {
 						// put card to unrevealed plot container
-						player.containers.plot.add(card);
+						LandscapeCard.prototype = card;
+						player.containers.plot.add(new LandscapeCard());
 					} else {
 						// put card to deck
 						player.containers.deck.add(card);

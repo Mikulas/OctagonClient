@@ -361,6 +361,11 @@ header #log img:hover {
 	text-align: center;
 }
 
+.card.landscape {
+	height: 130px;
+	width: 188px;
+}
+
 .card img {
 	margin-top: -2px; /* crop */
 	margin-left: -2px;
@@ -369,16 +374,31 @@ header #log img:hover {
 	border-radius: 12px;
 }
 
+.card.landscape img {
+	width: 192px;
+	height: 134px;
+}
+
 .card.small {
 	width: 100px; /* minus crop */
 	height: 146px;
 	border-radius: 9px;
 }
 
+.card.landscape.small {
+	width: 146px;
+	height: 100px;
+}
+
 .card.small img {
 	width: 104px;
 	height: 150px;
 	border-radius: 9px;
+}
+
+.card.landscape.small img {
+	width: 150px;
+	height: 104px;
 }
 
 .title {
@@ -535,7 +555,6 @@ header #log img:hover {
 }
 
 .static input {
-	margin-left: 2em;
 	margin-bottom: 30px;
 	width: 300px;
 	font-size: 18pt;
@@ -546,10 +565,13 @@ header #log img:hover {
 }
 
 .static input[type=submit] {
-	margin-left: 45px;
 	padding: 6px 24px;
 	width: 315px;
 	height: 40px;
+}
+
+.static input[name=username] {
+	box-shadow: none;
 }
 
 #connect h2 {
@@ -572,8 +594,16 @@ input[type=file] {
 	display: inline;
 }
 
+#connect-form input {
+	display: inline;
+}
+
+#connect-form [data-for] {
+	margin-left: 25px;
+	font-size: 120%;
+}
+
 #browser {
-	display: none;
 	position: absolute;
 	z-index: 9997;
 	background-color: rgba(0, 0, 0, .8);

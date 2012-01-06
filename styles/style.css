@@ -127,6 +127,11 @@ header #log img:hover {
 	text-align: center;
 }
 
+.card.landscape {
+	height: 130px;
+	width: 188px;
+}
+
 .card img {
 	margin-top: -2px; /* crop */
 	margin-left: -2px;
@@ -135,16 +140,31 @@ header #log img:hover {
 	border-radius: 12px;
 }
 
+.card.landscape img {
+	width: 192px;
+	height: 134px;
+}
+
 .card.small {
 	width: 100px; /* minus crop */
 	height: 146px;
 	border-radius: 9px;
 }
 
+.card.landscape.small {
+	width: 146px;
+	height: 100px;
+}
+
 .card.small img {
 	width: 104px;
 	height: 150px;
 	border-radius: 9px;
+}
+
+.card.landscape.small img {
+	width: 150px;
+	height: 104px;
 }
 
 .title {

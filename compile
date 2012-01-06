@@ -8,6 +8,7 @@ $js = array(
 	"context_menu.js",
 
 	"Card.js",
+	"LandscapeCard.js",
 	"Game.js",
 	"Player.js",
 	"Board.js",
