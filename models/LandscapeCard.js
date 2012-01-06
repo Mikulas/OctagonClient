@@ -32,7 +32,7 @@ function LandscapeCard() {
 		});
 		container.add(that);
 
-		game.log(player_name + " moves " + that.name + " to " + container.type);
+		game.log(player_name + " moves " + (!that.faceDown ? that.name : "hidden plot") + " to " + container.type);
 	};
 
 	this.render = function(type) {

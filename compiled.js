@@ -1154,7 +1154,7 @@ function Card() {
 		});
 		container.add(that);
 
-		game.log(player_name + " moves " + that.name + " to " + container.type);
+		game.log(player_name + " moves " + (!that.faceDown ? that.name : "hidden card") + " to " + container.type);
 	};
 
 	this.grabName = function() {
@@ -1173,90 +1173,97 @@ function Card() {
 		that.element.addClass("focus");
 	};
 
-	this.stand = function() {
+	this.stand = function(raw) {
 		that.element.removeClass("kneeling").addClass("standing").addClass("stand");
 		setTimeout(function() {
 			that.element.removeClass("stand");
 		}, 600);
 		that.kneeling = false;
-		game.log(player_name + " stands " + that.name + "");
+
+		if (!raw)
+			game.log(player_name + " stands " + (!that.faceDown ? that.name : "hidden card") + "");
 	};
 
-	this.kneel = function() {
+	this.kneel = function(raw) {
 		that.element.removeClass("standing").addClass("kneeling").addClass("kneel");
 		setTimeout(function() {
 			that.element.removeClass("kneel");
 		}, 600);
 		that.kneeling = true;
-		game.log(player_name + " kneels " + that.name + "");
+
+		if (!raw)
+			game.log(player_name + " kneels " + (!that.faceDown ? that.name : "hidden card") + "");
 	};
 
-	this.toggleKneeling = function() {
+	this.toggleKneeling = function(raw) {
 		if (that.kneeling) {
-			that.stand();
+			that.stand(raw);
 		} else {
-			that.kneel();
+			that.kneel(raw);
 		}
 	};
 
-	this.turnFaceUp = function() {
+	this.turnFaceUp = function(raw) {
 		that.element.removeClass("face-down").addClass("face-up");
-		if (!that.kneeling) {
-			that.element.addClass("turn-face-up");
-			setTimeout(function() {
-				that.element.removeClass("turn-face-up");
-			}, 400);
+		if (!raw) {
+			if (!that.kneeling) {
+				that.element.addClass("turn-face-up");
+				setTimeout(function() {
+					that.element.removeClass("turn-face-up");
+				}, 400);
 
-		} else {
-			that.element.addClass("turn-face-up-kneeling");
-			setTimeout(function() {
-				that.element.removeClass("turn-face-up-kneeling");
-			}, 400);
+			} else {
+				that.element.addClass("turn-face-up-kneeling");
+				setTimeout(function() {
+					that.element.removeClass("turn-face-up-kneeling");
+				}, 400);
+			}
 		}
-
-		setTimeout(function() {
-			that.element.removeClass("turn-face-up");
-		}, 400);
 
 		// these animations take .4 seconds, being at scale 0 at .2
 		setTimeout(function() {
 			that.element.children('img').attr('src', that.getImageSrc());
-		}, 200);
+		}, raw ? 0 : 200);
+
 		that.faceDown = false;
 
-		game.log(player_name + " turns " + that.name + " face up");
+		if (!raw)
+			game.log(player_name + " turns " + that.name + " face up");
 	};
 
-	this.turnFaceDown = function() {
+	this.turnFaceDown = function(raw) {
 		that.element.removeClass("face-up").addClass("face-down");
-		if (!that.kneeling) {
-			that.element.addClass("turn-face-down");
-			setTimeout(function() {
-				that.element.removeClass("turn-face-down");
-			}, 400);
-			
-		} else {
-			that.element.addClass("turn-face-down-kneeling");
-			setTimeout(function() {
-				that.element.removeClass("turn-face-down-kneeling");
-			}, 400);
+		if (!raw) {
+			if (!that.kneeling) {
+				that.element.addClass("turn-face-down");
+				setTimeout(function() {
+					that.element.removeClass("turn-face-down");
+				}, 400);
+
+			} else {
+				that.element.addClass("turn-face-down-kneeling");
+				setTimeout(function() {
+					that.element.removeClass("turn-face-down-kneeling");
+				}, 400);
+			}
 		}
 
 		// these animations take .4 seconds, being at scale 0 at .2
 		setTimeout(function() {
 			that.element.children('img').attr('src', that.getBackImageSrc());
-		}, 200);
+		}, raw ? 200 : 0);
 
 		that.faceDown = true;
 
-		game.log(player_name + " turns " + that.name + " face down");
+		if (!raw)
+			game.log(player_name + " turns " + that.name + " face down");
 	};
 
-	this.toggleFaceDown = function() {
+	this.toggleFaceDown = function(raw) {
 		if (that.faceDown) {
-			that.turnFaceUp();
+			that.turnFaceUp(raw);
 		} else {
-			that.turnFaceDown();
+			that.turnFaceDown(raw);
 		}
 	};
 
@@ -1488,7 +1495,7 @@ function LandscapeCard() {
 		});
 		container.add(that);
 
-		game.log(player_name + " moves " + that.name + " to " + container.type);
+		game.log(player_name + " moves " + (!that.faceDown ? that.name : "hidden plot") + " to " + container.type);
 	};
 
 	this.render = function(type) {
@@ -1994,14 +2001,9 @@ function Container(type) {
 
 						$(this).append(ui.draggable);
 
-						if (type == "play") {
-							ui.draggable.css({position: "absolute"});
-						} else {
-							if (card.kneeling)
-								card.stand();
-							if (card.faceDown)
-								card.turnFaceUp();
-							ui.draggable.css({position: "relative", top: 0, left: 0});
+						// playing card face down
+						if ($(this).attr("data-type") == "play" && event.shiftKey) {
+							card.turnFaceDown(true);
 						}
 
 						// change card position in logical structure
@@ -2012,6 +2014,18 @@ function Container(type) {
 						} else {
 							card.moveTo(game.play);
 						}
+
+						// reset
+						if (type == "play") {
+							ui.draggable.css({position: "absolute"});
+						} else {
+							if (card.kneeling)
+								card.stand(true);
+							if (card.faceDown)
+								card.turnFaceUp(true);
+							ui.draggable.css({position: "relative", top: 0, left: 0});
+						}
+
 						card.updatePositionFromDom();
 						game.broadcast(); // TODO optimize
 					}

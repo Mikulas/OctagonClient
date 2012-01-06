@@ -61,14 +61,9 @@ function Container(type) {
 
 						$(this).append(ui.draggable);
 
-						if (type == "play") {
-							ui.draggable.css({position: "absolute"});
-						} else {
-							if (card.kneeling)
-								card.stand();
-							if (card.faceDown)
-								card.turnFaceUp();
-							ui.draggable.css({position: "relative", top: 0, left: 0});
+						// playing card face down
+						if ($(this).attr("data-type") == "play" && event.shiftKey) {
+							card.turnFaceDown(true);
 						}
 
 						// change card position in logical structure
@@ -79,6 +74,18 @@ function Container(type) {
 						} else {
 							card.moveTo(game.play);
 						}
+
+						// reset
+						if (type == "play") {
+							ui.draggable.css({position: "absolute"});
+						} else {
+							if (card.kneeling)
+								card.stand(true);
+							if (card.faceDown)
+								card.turnFaceUp(true);
+							ui.draggable.css({position: "relative", top: 0, left: 0});
+						}
+
 						card.updatePositionFromDom();
 						game.broadcast(); // TODO optimize
 					}
