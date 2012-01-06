@@ -5,6 +5,8 @@ function Hand() {
 	var player_id = null;
 
 	this.render = function(player_id) {
+		console.log(this, "render container");
+
 		that.player_id = player_id;
 		var register = that.element == null;
 		that.element = new Container(that.type).render.call(this, player_id);
@@ -23,7 +25,7 @@ function Hand() {
 		that.element.children().addClass("small");
 
 		if (window.client_id != that.client_id && that.cards.length > 0) {
-			// this player cannot see other players hand
+			// this player cannot the other player's hand
 			that.element.children().attr("src", that.cards[0].getBackImageSrc());
 		}
 

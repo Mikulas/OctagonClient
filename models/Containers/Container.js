@@ -70,7 +70,9 @@ function Container(type) {
 						if ($(this).attr("data-type") != "play") {
 							var container = game.players[$(this).parent().attr("data-player-id")].containers[$(this).attr("data-type")];
 							card.moveTo(container);
-							container.render();
+
+							console.log("rendering container:", container);
+							//container.render(); // TODO why was that there?
 						} else {
 							card.moveTo(game.play);
 						}
