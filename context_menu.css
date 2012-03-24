@@ -1,0 +1,58 @@
+/**
+ * ----------------------------------------------------------------------
+ *  CONTEXT MENU
+ * ----------------------------------------------------------------------
+ */
+
+.contextMenu {
+	position: absolute;
+	z-index: 99999;
+	border: solid 1px #CCC;
+	background: #EEE;
+	display: none;
+	font-family: "Verdana";
+	font-size: 10pt;
+	padding: 0;
+}
+
+.contextMenu li {
+	list-style: none;
+}
+
+.contextMenu a {
+	color: #333;
+	text-decoration: none;
+	display: block;
+	line-height: 20px;
+	height: 20px;
+	background-position: 6px center;
+	background-repeat: no-repeat;
+	outline: none;
+	padding: 1px 5px;
+	padding-left: 28px;
+	padding-right: 20px;
+}
+
+.contextMenu li.hover a {
+	color: #FFF;
+	background-color: #3399FF;
+}
+
+.contextMenu li.disabled a {
+	color: #aaa;
+	cursor: default;
+}
+
+.contextMenu li.hover.disabled a {
+	background-color: transparent;
+}
+
+.contextMenu li.separator {
+	border-top: solid 1px #CCC;
+}
+
+.contextMenu li a i {
+	float: right;
+}
+
+/* .contextMenu li.kneel a {background-image: url(images/page_white_edit.png);} */

@@ -1,0 +1,16 @@
+* {padding: 0; margin: 0;}
+
+[data-type=player] {border-bottom: 5px solid blue;}
+
+[data-type=container] {display: block; background: #CCC; width: 100%; min-height: 150px; border-bottom: 1px dashed #888;}
+
+[data-type=container].hand:before {content: "hand";}
+[data-type=container].stacked:before {content: "stacked";}
+[data-type=container].play:before {content: "play";}
+
+[data-type=container].stacked [data-type=card] {display: none;}
+[data-type=container].stacked [data-type=card]:first-of-type {display: inherit !important; background: gray;}
+
+[data-type=card] {background-color: rgba(200, 170, 160, .8); border-bottom: 1px solid rgba(0, 0, 0, .3);}
+[data-type=card].kneeling:after {content: " kneeling";}
+[data-type=card].standing:after {content: " standing";}
