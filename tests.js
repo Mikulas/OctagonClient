@@ -27,9 +27,6 @@ function _reset() {
 	Container.uniqueId = 0;
 }
 
-// - - - - - - - GLOBALS TO TAMPER - - - - - - - - - - - - 
-var con = null;
-
 // - - - - - - - TESTS - - - - - - - - - - - - 
 $(function() {
 
@@ -63,13 +60,6 @@ $(function() {
 	expect("StackedContainer.add()", Object.keys(k.cards).length == 1 && k.order.length == 1);
 })();
 
-// Game and Player construction
-(function() {
-	var g = new Game();
-	var p = new Player();
-	g.add(p);
-})();
-
 // Card visibility
 (function() {
 	var p = new Player();
@@ -87,7 +77,7 @@ $(function() {
 	expect("Card.showTo()", c.visibleTo.length == 2);
 })();
 
-// Render whole tree
+// Normal setup
 (function() {
 	_reset();
 	var p = new Player();
@@ -99,16 +89,11 @@ $(function() {
 	for (var i = 0; i < 5; ++i)
 		p.containers.deck.add(new Card());
 
-	var g = new Game();
+	var g = new Game(new Connection());
 	g.add(p);
 	
 	g.renderer.createNode();
 	g.renderer.render();
-})();
-
-// Server connection
-(function() {
-	con = new Connection();
 })();
 
 // - - - - - - - WRAP UP - - - - - - - - - - - - 

@@ -60,6 +60,23 @@ var Card = function() {
 		else
 			this.container.order.splice(0, 0, this.id);
 	};
+
+	/** function(call, arg1, arg2, ...) */
+	this.broadcast = function(call) {
+		var args = [];
+		for (var i in arguments) {
+			args.push(arguments[i]);
+		}
+		args.shift();
+
+		this.container.player.game.connection.send({
+			method: "invoke",
+			type: "card",
+			id: this.id,
+			call: call,
+			args: args
+		});
+	};
 };
 Card.uniqueId = 0;
 
@@ -142,9 +159,15 @@ var Player = function() {
 }
 Player.uniqueId = 0;
 
-var Game = function() {
+var Game = function(connection) {
 	this.players = {};
 	this.renderer = new GameRenderer(this);
+
+	if (!(connection instanceof Connection)) {
+		throw TypeError("Only Connection instance can be passed to Game.");
+	}
+	this.connection = connection;
+	this.connection.game = this;
 
 	this.getCard = function(id) {
 		for (var pid in this.players) {

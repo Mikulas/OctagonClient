@@ -63,11 +63,13 @@ var CardRenderer = function(card) {
 						console.info("Player knelt card #" + that.content.id);
 						that.content.kneel();
 						that.kneel();
+						that.content.broadcast("kneel");
 						break;
 					case "stand":
 						console.info("Player stood card #" + that.content.id);
 						that.content.stand();
 						that.stand();
+						that.content.broadcast("stand");
 						break;
 				}
 			},
