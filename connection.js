@@ -54,12 +54,41 @@ var Connection = function() {
 			object = that.game.getCard(data.id);
 
 		} else {
-			throw Error("update " + data.type + " not implemented");
+			throw Error("invoke on " + data.type + " not implemented");
 		}
 
-		object[data.call].apply(object, data.args);
-		object.renderer[data.call].apply(object.renderer, data.args);
+		// replace textual pointer with actual pointers
+		var args = data.args;
+		for (var i in args) {
+			if (typeof args[i] === "object" && args[i].hasOwnProperty("pointer")) {
+				if (args[i].type === "container")
+					args[i] = that.game.getContainer(args[i].id);
+				else
+					throw Error("not implemented");
+			}
+		}
+
+		object[data.call].apply(object, args);
+		if (data.render === true)
+			object.renderer[data.call].apply(object.renderer, args);
+
 		console.log("invoke", data);
+	};
+
+	that.onUpdate = function(data) {
+		var object = null;
+		if (data.type === "container") {
+			object = that.game.getContainer(data.id);
+
+		} else {
+			throw Error("update on " + data.type + " not implemented");
+		}
+
+		object[data.property] = data.value;
+		if (data.render === true)
+			object.renderer.render();
+
+		console.log("update", data);
 	};
  
 	that.send = function(data) {

@@ -27,6 +27,8 @@ function _reset() {
 	Container.uniqueId = 0;
 }
 
+var g;
+
 // - - - - - - - TESTS - - - - - - - - - - - - 
 $(function() {
 
@@ -89,7 +91,7 @@ $(function() {
 	for (var i = 0; i < 5; ++i)
 		p.containers.deck.add(new Card());
 
-	var g = new Game(new Connection());
+	g = new Game(new Connection());
 	g.add(p);
 	
 	g.renderer.createNode();

@@ -63,13 +63,13 @@ var CardRenderer = function(card) {
 						console.info("Player knelt card #" + that.content.id);
 						that.content.kneel();
 						that.kneel();
-						that.content.broadcast("kneel");
+						that.content.broadcastInvoke("kneel", true);
 						break;
 					case "stand":
 						console.info("Player stood card #" + that.content.id);
 						that.content.stand();
 						that.stand();
-						that.content.broadcast("stand");
+						that.content.broadcastInvoke("stand", true);
 						break;
 				}
 			},
@@ -129,6 +129,8 @@ var ContainerRenderer = function(container) {
 				// remove from original position
 				card.container.order.splice(card.container.order.indexOf(card.id), 1);
 				card.container.order.splice(newPosition, 0, card.id);
+
+				card.container.broadcastUpdate("order");
 			},
 			receive: function(event, ui) {
 				var cid = ui.item.data("id");
@@ -137,6 +139,8 @@ var ContainerRenderer = function(container) {
 				var newContainer = that.content.player.game.getContainer(kid);
 				
 				card.moveTo(newContainer);
+
+				card.broadcastInvoke("moveTo", false, [{pointer: true, type: "container", id: newContainer.id}]);
 			}
 		}).disableSelection();
 
@@ -149,11 +153,13 @@ var ContainerRenderer = function(container) {
 
 	that.render = function() {
 		that._render();
+		var node = that.getNode();
+		
 		$.each(that.content.order, function(o, id) {
 			var card = that.content.cards[id].renderer.render();
-			that.getNode().append(card);
+			node.append(card);
 		});
-		return that.getNode();
+		return node;
 	};
 
 	return that;

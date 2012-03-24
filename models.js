@@ -50,9 +50,10 @@ var Card = function() {
 
 		container.cards[this.id] = this;
 		// remove card id from original container order array
-		delete this.container.order[this.container.order.indexOf(this.id)];
+		this.container.order.splice(this.container.order.indexOf(this.id), 1);
 		// remove card itself
 		delete this.container.cards[this.id];
+		
 		this.container = container;
 		
 		if (typeof append === "undefined" || !append)
@@ -61,19 +62,15 @@ var Card = function() {
 			this.container.order.splice(0, 0, this.id);
 	};
 
-	/** function(call, arg1, arg2, ...) */
-	this.broadcast = function(call) {
-		var args = [];
-		for (var i in arguments) {
-			args.push(arguments[i]);
-		}
-		args.shift();
+	this.broadcastInvoke = function(call, render, args) {
+		args = typeof args === "undefined" ? [] : args;
 
 		this.container.player.game.connection.send({
 			method: "invoke",
 			type: "card",
 			id: this.id,
 			call: call,
+			render: render,
 			args: args
 		});
 	};
@@ -116,6 +113,17 @@ var Container = function(Renderer, player) {
 				return this.cards[id];
 		}
 		return null;
+	};
+
+	this.broadcastUpdate = function(property) {
+		this.player.game.connection.send({
+			method: "update",
+			type: "container",
+			id: this.id,
+			render: true,
+			property: property,
+			value: this[property]
+		});
 	};
 };
 Container.uniqueId = 0;
