@@ -48,6 +48,10 @@ var Card = function(image) {
 		this.visibleTo.push(player.id); // @todo if does not exist yet
 	};
 
+	this.discard = function() {
+		this.moveTo(this.container.player.containers["discard"]);
+	};
+
 	this.moveTo = function(container, append) {
 		if (!(container instanceof Container)) {
 			throw TypeError("Card can only be moved to Container.");

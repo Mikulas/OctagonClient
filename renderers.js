@@ -98,25 +98,50 @@ var CardRenderer = function(card) {
 						break;
 					case "discard":
 						console.info("Player discards card #" + that.content.id);
-						var discard = that.content.container.player.containers["discard"];
-						that.content.moveTo(discard);
-						that.content.renderer.moveTo(discard);
-						that.content.broadcastInvoke("moveTo", true, [{pointer: true, type: "container", id: discard.id}]);
+						console.log(that.content);
+						that.content.discard();
+						that.content.renderer.discard();
+						that.content.broadcastInvoke("discard", true);
+						break;
+					case "discard-random":
+						var cards = that.content.container.cards;
+						var key = Math.floor(Math.random() * Object.keys(cards).length);
+						var i = 0;
+						var card = null;
+						for (var cid in cards) {
+							if (i++ === key) {
+								card = cards[cid];
+								break;
+							}
+						}
+						console.info("Player discards card #" + card.id + " at random");
+						console.log(card);
+						card.discard();
+						card.renderer.discard();
+						card.broadcastInvoke("discard", true);
+						break;
 				}
 			},
 			// on show menu callback
 			function(e) {
 				clearMenu();
-				if (that.content.container.type === "play")
+				if (that.content.container.type === "play") {
 					that.content.kneeling ? addMenuItem("stand", "Stand") : addMenuItem("kneel", "Kneel");
-				else if (that.content.container.type === "hand")
+
+				} else if (that.content.container.type === "hand") {
 					addMenuItem("discard", "Discard");
+					addMenuItem("discard-random", "Discard random");
+				}
 			}
 		);
 
 		node.addClass(that.content.kneeling ? "kneeling" : "standing");
 
 		return node;
+	};
+
+	that.discard = function() {
+		that.moveTo(that.content.container.player.containers["discard"]);
 	};
 
 	that.kneel = function() {
