@@ -85,19 +85,19 @@ var CardRenderer = function(card) {
 			function(action, el, pos) {
 				switch (action) {
 					case "kneel":
-						console.info("Player knelt card #" + that.content.id);
+						that.content.container.player.game.log("Player knelt card #" + that.content.id);
 						that.content.kneel();
 						that.kneel();
 						that.content.broadcastInvoke("kneel", true);
 						break;
 					case "stand":
-						console.info("Player stood card #" + that.content.id);
+						that.content.container.player.game.log("Player stood card #" + that.content.id);
 						that.content.stand();
 						that.stand();
 						that.content.broadcastInvoke("stand", true);
 						break;
 					case "discard":
-						console.info("Player discards card #" + that.content.id);
+						that.content.container.player.game.log("Player discards card #" + that.content.id);
 						console.log(that.content);
 						that.content.discard();
 						that.content.renderer.discard();
@@ -114,7 +114,7 @@ var CardRenderer = function(card) {
 								break;
 							}
 						}
-						console.info("Player discards card #" + card.id + " at random");
+						that.content.container.player.game.log("Player discards card #" + card.id + " at random");
 						console.log(card);
 						card.discard();
 						card.renderer.discard();

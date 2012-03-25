@@ -224,6 +224,7 @@ Player.uniqueId = 0;
 var Game = function(connection) {
 	this.players = {};
 	this.renderer = new GameRenderer(this);
+	this.logMessages = [];
 
 	if (!(connection instanceof Connection)) {
 		throw TypeError("Only Connection instance can be passed to Game.");
@@ -255,5 +256,19 @@ var Game = function(connection) {
 		}
 		this.players[player.id] = player;
 		player.game = this;
+	};
+
+	this.log = function(message, invoked) {
+		this.logMessages.push(message);
+		console.info("LOG", message);
+		if (typeof invoked === "undefined" || invoked === false)
+			this.broadcastLog(message);
+	};
+
+	this.broadcastLog = function(message) {
+		this.connection.send({
+			method: "log",
+			message: message
+		});
 	};
 };

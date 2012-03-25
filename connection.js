@@ -102,6 +102,10 @@ var Connection = function() {
 		console.log("update", data);
 	};
  
+ 	that.onLog = function(data) {
+ 		that.game.log(data.message, true);
+ 	};
+
 	that.send = function(data) {
 		// TODO dynamic;
 		client_id = "1323193943817-9565945";
