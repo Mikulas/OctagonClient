@@ -52,9 +52,31 @@ var CardRenderer = function(card) {
 	}
 	that.content = card;
 
+	that.getCounterNode = function(counter) {
+		return that.getNode().children('[data-type=counter][data-id="' + counter + '"]');
+	};
+
+	that.createCounterNode = function(counter, value) {
+		return $('<input type="number" data-type="counter" data-id="' + counter + '" value="' + (typeof value === "undefined" ? 0 : value) + '">')
+		.on("change input", function(e) {
+			var val = $(this).val();
+			if (val < 0) {
+				$(this).val(0);
+				val = 0;
+			}
+			that.content.broadcastInvoke("updateCounter", true, [counter, val]);
+		});
+	};
+
 	that.createNode = function() {
 		var node = that._createNode();
+
 		node.text(that.content.id);
+		
+		for (var counter in that.content.counters) {
+			node.append(that.createCounterNode(counter));
+		}
+
 		node.contextMenu(
 			{menu: "context_menu"},
 			function(action, el, pos) {
@@ -80,7 +102,9 @@ var CardRenderer = function(card) {
 				that.content.kneeling ? addMenuItem("stand", "Stand") : addMenuItem("kneel", "Kneel");
 			}
 		);
+
 		node.addClass(that.content.kneeling ? "kneeling" : "standing");
+
 		return node;
 	};
 
@@ -90,6 +114,10 @@ var CardRenderer = function(card) {
 
 	that.stand = function() {
 		that.getNode().removeClass("kneeling").addClass("standing");
+	};
+
+	that.updateCounter = function(counter, value) {
+		that.getCounterNode(counter).val(value);
 	};
 
 	that.render = function() {
@@ -235,8 +263,29 @@ var PlayerRenderer = function(player) {
 	}
 	that.content = player;
 
+	that.getCounterNode = function(counter) {
+		return that.getNode().children('[data-type=counter][data-id="' + counter + '"]');
+	};
+
+	that.createCounterNode = function(counter, value) {
+		return $('<input type="number" data-type="counter" data-id="' + counter + '" value="' + (typeof value === "undefined" ? 0 : value) + '">')
+		.on("change input", function(e) {
+			var val = $(this).val();
+			if (val < 0) {
+				$(this).val(0);
+				val = 0;
+			}
+			that.content.broadcastInvoke("updateCounter", true, [counter, val]);
+		});
+	};
+
 	that.createNode = function() {
 		var node = that._createNode();
+
+		for (var id in that.content.counters) {
+			node.append(that.createCounterNode(id));
+		}
+
 		for (var id in that.content.containers) {
 			var container = that.content.containers[id].renderer.createNode();
 			node.append(container);
@@ -270,6 +319,10 @@ var PlayerRenderer = function(player) {
 			that.getNode().append(container);
 		}
 		return that.getNode();
+	};
+
+	that.updateCounter = function(counter, value) {
+		that.getCounterNode(counter).val(value);
 	};
 
 	return that;

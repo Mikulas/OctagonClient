@@ -14,6 +14,10 @@ var Card = function() {
 	this.visibleTo = []; // player id[]
 	this.container = null;
 	this.renderer = new CardRenderer(this);
+	this.counters = {
+		power: 0,
+		gold: 0
+	};
 
 	this.kneel = function() {
 		this.kneeling = true;
@@ -60,6 +64,10 @@ var Card = function() {
 			this.container.order.push(this.id);
 		else
 			this.container.order.splice(0, 0, this.id);
+	};
+
+	this.updateCounter = function(counter, value) {
+		this.counters[counter] = value;
 	};
 
 	this.broadcastInvoke = function(call, render, args) {
@@ -163,6 +171,23 @@ var Player = function() {
 				return container;
 		}
 		return null;
+	};
+
+	this.updateCounter = function(counter, value) {
+		this.counters[counter] = value;
+	};
+
+	this.broadcastInvoke = function(call, render, args) {
+		args = typeof args === "undefined" ? [] : args;
+
+		this.game.connection.send({
+			method: "invoke",
+			type: "player",
+			id: this.id,
+			call: call,
+			render: render,
+			args: args
+		});
 	};
 }
 Player.uniqueId = 0;

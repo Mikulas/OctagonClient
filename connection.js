@@ -25,6 +25,11 @@ var Connection = function() {
 		var method = "on" + data.method.replace(/(^|_)(.)/g, function(match, s, dot) {
 			return dot.toUpperCase();
 		});
+
+		delete data.method;
+		delete data.client_id;
+		delete data.time;
+
 		that[method](data);
 	};
 
@@ -53,6 +58,9 @@ var Connection = function() {
 		if (data.type === "card") {
 			object = that.game.getCard(data.id);
 
+		} else if (data.type === "player") {
+			object = that.game.players[data.id];
+
 		} else {
 			throw Error("invoke on " + data.type + " not implemented");
 		}
@@ -68,7 +76,10 @@ var Connection = function() {
 			}
 		}
 
+		console.log("invoking method ", data.call, "on", object, "with", args);
+
 		object[data.call].apply(object, args);
+		console.log(object.renderer, data.call);
 		if (data.render === true)
 			object.renderer[data.call].apply(object.renderer, args);
 
