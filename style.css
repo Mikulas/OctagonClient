@@ -12,7 +12,7 @@
 [data-type=container].stacked [data-type=card]:first-of-type {display: inherit !important; background: gray;}
 
 [data-type=card] {background-color: rgba(200, 170, 160, .8); border-bottom: 1px solid rgba(0, 0, 0, .3);}
-[data-type=container].play [data-type=card].kneeling:after {content: " kneeling";}
-[data-type=container].play [data-type=card].standing:after {content: " standing";}
+[data-type=card] img {width: 30px;}
+[data-type=card].kneeling img {-webkit-transform:rotate(90deg); -webkit-transform-origin: 50% 65%;}
 
 [data-type=container]:not(.play) [data-type=card] [data-type=counter] {display: none;}

@@ -7,9 +7,10 @@ Array.prototype.shuffle = function() {
 	return this;
 };
 
-var Card = function() {
+var Card = function(image) {
 	this.id = ++Card.uniqueId;
 	this.name = null;
+	this.image = image;
 	this.kneeling = false;
 	this.visibleTo = []; // player id[]
 	this.container = null;
@@ -133,6 +134,8 @@ var Container = function(Renderer, player) {
 	};
 
 	this.shuffle = function() {
+		// TODO render it and broadcast it!!
+		// TODO also does not seem to work
 		this.order.shuffle;
 	};
 

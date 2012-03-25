@@ -85,13 +85,13 @@ $(function() {
 (function() {
 	_reset();
 	var p = new Player();
-	p.containers.play.add(new Card());
-	p.containers.play.add(new Card());
-	p.containers.play.add(new Card());
-	p.containers.hand.add(new Card());
-	p.containers.hand.add(new Card());
+	p.containers.play.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d1010"));
+	p.containers.play.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d1019"));
+	p.containers.play.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d1028"));
+	p.containers.hand.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d1037"));
+	p.containers.hand.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d1046"));
 	for (var i = 0; i < 5; ++i)
-		p.containers.deck.add(new Card());
+		p.containers.deck.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d105" + i));
 
 	g = new Game(new Connection());
 	g.add(p);

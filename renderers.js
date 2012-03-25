@@ -74,7 +74,7 @@ var CardRenderer = function(card) {
 	that.createNode = function() {
 		var node = that._createNode();
 
-		node.text(that.content.id);
+		node.append($("<img/>").attr("src", "cards/" + that.content.image + ".jpg"));
 		
 		for (var counter in that.content.counters) {
 			node.append(that.createCounterNode(counter));
