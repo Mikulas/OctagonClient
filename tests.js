@@ -111,7 +111,7 @@ $(function() {
 		
 		g.renderer.createNode();
 		g.renderer.render();
-		
+
 	} else {
 		g = new Game(new Connection());
 	}

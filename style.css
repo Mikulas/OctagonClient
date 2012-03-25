@@ -4,21 +4,30 @@
 
 [data-type=container] {display: block; background: #CCC; width: 100%; min-height: 150px; border-bottom: 1px dashed #888;}
 
-[data-type=container].hand:before {content: "hand";}
+/*[data-type=container].hand:before {content: "hand";}
 [data-type=container].stacked:before {content: "stacked";}
-[data-type=container].play:before {content: "play";}
+[data-type=container].play:before {content: "play";}*/
 
 [data-type=container].stacked [data-type=card] {display: none;}
-[data-type=container].stacked [data-type=card]:first-of-type {display: inherit !important; background: gray;}
+[data-type=container].stacked [data-type=card]:first-of-type {display: inline-block !important; background: gray;}
 
-[data-type=card] {background-color: rgba(200, 170, 160, .8); border-bottom: 1px solid rgba(0, 0, 0, .3);}
-[data-type=card] img {width: 30px;}
+[data-type=card] {display: inline-block; width: 150px; height: 214px;}
+[data-type=card] img {width: 150px;}
+[data-type=card].kneeling {width: 214px;}
 [data-type=card].kneeling img {-webkit-transform:rotate(90deg); -webkit-transform-origin: 50% 65%;}
-[data-type=container].stacked [data-type=card].visible {display: inherit;}
+[data-type=container].stacked [data-type=card].visible {display: inline-block;}
 [data-type=container].stacked.facedown [data-type=card]:not(.visible) img {content: url("cards/facedown.jpg");}
 
 [data-type=container]:not(.play) [data-type=card] [data-type=counter] {display: none;}
 
-[data-type=counter] {background: no-repeat left center; background-size: 20px 20px; border: none; width: 60px; padding-left: 20px; height: 25px;}
-[data-type=counter][data-id=gold] {background-image: url("icons/gold.png");}
+[data-type=counter] {background: rgba(255, 255, 255, 0.6) no-repeat 2px center; background-size: 20px 20px; border: none; width: 60px; padding-left: 22px; height: 25px; color: #444; font-size: 12pt; font-weight: bold;}
 [data-type=counter][data-id=power] {background-image: url("icons/power.png");}
+[data-type=counter][data-id=gold] {background-image: url("icons/gold.png");}
+[data-type=container] [data-type=counter] {position: relative; border-top-left-radius: 12px; border-bottom-left-radius: 12px;}
+[data-type=container] [data-type=counter][data-id=power] {top: -180px; left: 6px;}
+[data-type=container] [data-type=counter][data-id=gold] {top: -152px; left: -54px;}
+[data-type=container] .kneeling [data-type=counter][data-id=power] {top: -129px; left: -35px;}
+[data-type=container] .kneeling [data-type=counter][data-id=gold] {top: -126px; left: 115px;}
+/*[data-type=counter][value!^=0] {display: none !important;}*/
+
+[data-type=container] .ui-sortable-placeholder {display: inline-block; width: 150px; height: 214px;}

@@ -6,11 +6,10 @@ var Connection = function() {
 	that.socket = new WebSocket(this.host);
 	that.socket.onopen = function(msg) {
 		console.log("socket opened");
-		/*
 		setInterval(function() {
-			send("{\"method\": \"keep-alive\"}");
+			that.send({method: "keep-alive"});
 		}, 30 * 1000);
-		*/
+		
 		that.send({
 			method: "connect",
 			instance: "b",

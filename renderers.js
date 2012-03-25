@@ -60,7 +60,7 @@ var CardRenderer = function(card) {
 	};
 
 	that.createCounterNode = function(counter) {
-		return $('<input type="number" data-type="counter" data-id="' + counter + '" value="' + that.content.counters[counter] + '">')
+		return $('<input type="number" min="0" max="99" data-type="counter" data-id="' + counter + '" value="' + that.content.counters[counter] + '">')
 		.on("change input", function(e) {
 			var val = $(this).val();
 			if (val < 0) {
@@ -79,7 +79,7 @@ var CardRenderer = function(card) {
 	that.createNode = function() {
 		var node = that._createNode();
 
-		node.append(that.content.id).append($("<img/>").attr("src", "cards/" + that.content.image + ".jpg"));
+		node.append($("<img/>").attr("src", "cards/" + that.content.image + ".jpg"));
 		
 		for (var counter in that.content.counters) {
 			node.append(that.createCounterNode(counter));
@@ -195,6 +195,8 @@ var ContainerRenderer = function(container) {
 			connectWith: "[data-type=container]", 
 			stack: "[data-type=card]", 
 			scope: "container-" + that.content.id,
+			tolerance: 'pointer',
+			cursor: '-webkit-grabbing',
 			update: function(event, ui) {
 				var cid = ui.item.data("id");
 				var card = that.content.player.game.getCard(cid);
@@ -333,7 +335,7 @@ var PlayerRenderer = function(player) {
 	};
 
 	that.createCounterNode = function(counter) {
-		return $('<input type="number" data-type="counter" data-id="' + counter + '" value="' + that.content.counters[counter] + '">')
+		return $('<input type="number" min="0" max="99" data-type="counter" data-id="' + counter + '" value="' + that.content.counters[counter] + '">')
 		.on("change input", function(e) {
 			var val = $(this).val();
 			if (val < 0) {
@@ -369,6 +371,10 @@ var PlayerRenderer = function(player) {
 				return false;
 			}
 
+			if (key.shift) {
+				var amount = prompt("How many cards?", 2);
+				console.log(amount);
+			}
 			that.content.game.log("Player draws a card");
 
 			var cid = deck.order[0];
