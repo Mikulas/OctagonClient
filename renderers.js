@@ -227,6 +227,8 @@ var StackedContainerRenderer = function(container) {
 					case "shuffle":
 						that.content.shuffle();
 						console.info("Container #" + that.content.id + " shuffled");
+						that.render();
+						that.content.broadcastUpdate("order", true, that.content.order);
 						break;
 					case "expand":
 						that.expanded = true;

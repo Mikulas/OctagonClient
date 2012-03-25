@@ -134,9 +134,7 @@ var Container = function(Renderer, player) {
 	};
 
 	this.shuffle = function() {
-		// TODO render it and broadcast it!!
-		// TODO also does not seem to work
-		this.order.shuffle;
+		this.order = this.order.shuffle();
 	};
 
 	this.getCard = function(id) {
