@@ -60,6 +60,8 @@ var Connection = function() {
 	that.onMirror = function(data) {
 		console.log("received game mirror", data.tree);
 		that.game.processMirror(data.tree);
+		that.game.renderer.createNode();
+		that.game.renderer.render();
 	};
 
 	that.onInvoke = function(data) {

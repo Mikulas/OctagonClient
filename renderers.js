@@ -59,21 +59,20 @@ var CardRenderer = function(card) {
 		return that.getNode().children('[data-type=counter][data-id="' + counter + '"]');
 	};
 
-	that.createCounterNode = function(counter, value) {
-		return $('<input type="number" data-type="counter" data-id="' + counter + '" value="' + (typeof value === "undefined" ? 0 : value) + '">')
-		.data("last", 0)
+	that.createCounterNode = function(counter) {
+		return $('<input type="number" data-type="counter" data-id="' + counter + '" value="' + that.content.counters[counter] + '">')
 		.on("change input", function(e) {
 			var val = $(this).val();
 			if (val < 0) {
 				$(this).val(0);
 				val = 0;
 			}
-			var diff = val - $(this).data("last");
+			var diff = val - that.content.counters[counter];
 			if (diff !== 0) {
 				that.content.container.player.game.log("Card #" + that.content.id + " " + counter + " set to " + val + " (" + (diff > 0 ? "+" :  "") + diff + ")");
 				that.content.broadcastInvoke("updateCounter", true, [counter, val]);
 			}
-			$(this).data("last", val);
+			that.content.counters[counter] = val;
 		});
 	};
 
@@ -335,21 +334,20 @@ var PlayerRenderer = function(player) {
 		return that.getNode().children('[data-type=counter][data-id="' + counter + '"]');
 	};
 
-	that.createCounterNode = function(counter, value) {
-		return $('<input type="number" data-type="counter" data-id="' + counter + '" value="' + (typeof value === "undefined" ? 0 : value) + '">')
-		.data("last", 0)
+	that.createCounterNode = function(counter) {
+		return $('<input type="number" data-type="counter" data-id="' + counter + '" value="' + that.content.counters[counter] + '">')
 		.on("change input", function(e) {
 			var val = $(this).val();
 			if (val < 0) {
 				$(this).val(0);
 				val = 0;
 			}
-			var diff = val - $(this).data("last");
+			var diff = val - that.content.counters[counter];
 			if (diff !== 0) {
 				that.content.game.log("Player #" + that.content.id + " " + counter + " set to " + val + " (" + (diff > 0 ? "+" :  "") + diff + ")");
 				that.content.broadcastInvoke("updateCounter", true, [counter, val]);
 			}
-			$(this).data("last", val);
+			that.content.counters[counter] = val;
 		});
 	};
 
