@@ -5,7 +5,7 @@ var Connection = function() {
 	that.host = "ws://thrones.eu:4723";
 	that.socket = new WebSocket(this.host);
 	that.socket.onopen = function(msg) {
-		console.info("socket opened");
+		console.log("socket opened");
 		/*
 		setInterval(function() {
 			send("{\"method\": \"keep-alive\"}");
@@ -34,7 +34,7 @@ var Connection = function() {
 	};
 
 	that.socket.onclose = function(msg) {
-		console.info("socket closed");
+		console.log("socket closed");
 	};
 
 	that.socket.onerror = function(error) {
@@ -42,15 +42,15 @@ var Connection = function() {
 	};
 
 	that.onConnectResponse = function(data) {
-		console.info("connected to server");
+		console.log("connected to server");
 	};
 
 	that.onAnnounceJoin = function(data) {
-		console.info("player has joined the game, total players: " + data.count);
+		console.log("player has joined the game, total players: " + data.count);
 	};
 
 	that.onAnnounceLeave = function(data) {
-		console.info("player has left the game, total players: " + data.count);	
+		console.log("player has left the game, total players: " + data.count);	
 	};
 
 	that.onInvoke = function(data) {

@@ -61,13 +61,19 @@ var CardRenderer = function(card) {
 
 	that.createCounterNode = function(counter, value) {
 		return $('<input type="number" data-type="counter" data-id="' + counter + '" value="' + (typeof value === "undefined" ? 0 : value) + '">')
+		.data("last", 0)
 		.on("change input", function(e) {
 			var val = $(this).val();
 			if (val < 0) {
 				$(this).val(0);
 				val = 0;
 			}
-			that.content.broadcastInvoke("updateCounter", true, [counter, val]);
+			var diff = val - $(this).data("last");
+			if (diff !== 0) {
+				that.content.container.player.game.log("Card #" + that.content.id + " " + counter + " set to " + val + " (" + (diff > 0 ? "+" :  "") + diff + ")");
+				that.content.broadcastInvoke("updateCounter", true, [counter, val]);
+			}
+			$(this).data("last", val);
 		});
 	};
 
@@ -209,6 +215,7 @@ var ContainerRenderer = function(container) {
 				var kid = ui.item.parent("[data-type=container]").data("id");
 				var newContainer = that.content.player.game.getContainer(kid);
 
+				card.container.player.game.log("Player moves card #" + card.id + " from " + card.container.type + " to " + newContainer.type);
 				card.moveTo(newContainer);
 
 				card.broadcastInvoke("moveTo", false, [{pointer: true, type: "container", id: newContainer.id}]);
@@ -259,19 +266,19 @@ var StackedContainerRenderer = function(container) {
 				switch (action) {
 					case "shuffle":
 						that.content.shuffle();
-						console.info("Container #" + that.content.id + " shuffled");
+						that.content.player.game.log("Container #" + that.content.id + " shuffled");
 						that.render();
 						that.content.broadcastUpdate("order", true, that.content.order);
 						break;
 					case "expand":
 						that.expanded = true;
 						that.getNode().children('[data-type="card"]').addClass("visible");
-						console.info("Player starts looking at Container #" + that.content.id);
+						that.content.player.game.log("Player starts looking at Container #" + that.content.id);
 						break;
 					case "collapse":
 						that.expanded = false;
 						that.getNode().children('[data-type="card"]').removeClass("visible");
-						console.info("Player stops loking at Container #" + that.content.id);
+						that.content.player.game.log("Player stops loking at Container #" + that.content.id);
 						break;
 				}
 			},
@@ -330,13 +337,19 @@ var PlayerRenderer = function(player) {
 
 	that.createCounterNode = function(counter, value) {
 		return $('<input type="number" data-type="counter" data-id="' + counter + '" value="' + (typeof value === "undefined" ? 0 : value) + '">')
+		.data("last", 0)
 		.on("change input", function(e) {
 			var val = $(this).val();
 			if (val < 0) {
 				$(this).val(0);
 				val = 0;
 			}
-			that.content.broadcastInvoke("updateCounter", true, [counter, val]);
+			var diff = val - $(this).data("last");
+			if (diff !== 0) {
+				that.content.game.log("Player #" + that.content.id + " " + counter + " set to " + val + " (" + (diff > 0 ? "+" :  "") + diff + ")");
+				that.content.broadcastInvoke("updateCounter", true, [counter, val]);
+			}
+			$(this).data("last", val);
 		});
 	};
 
@@ -356,11 +369,11 @@ var PlayerRenderer = function(player) {
 		key('d', function() {
 			var deck = that.content.containers.deck;
 			if (deck.order.length === 0) {
-				console.info("Player cannot draw a card, deck depleted.");
+				that.content.game.log("Player cannot draw a card, deck depleted.");
 				return false;
 			}
 
-			console.info("Player draws a card");
+			that.content.game.log("Player draws a card");
 
 			var cid = deck.order[0];
 			var card = deck.cards[cid];
