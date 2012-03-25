@@ -1,12 +1,5 @@
 "use strict";
 
-Array.prototype.shuffle = function() {
-	var s = [];
-	while (this.length)s.push(this.splice(Math.random() * this.length, 1)[0]);
-	while (s.length) this.push(s.pop());
-	return this;
-};
-
 var Card = function(image) {
 	this.id = ++Card.uniqueId;
 	this.name = null;
@@ -156,7 +149,11 @@ var Container = function(Renderer, player) {
 	};
 
 	this.shuffle = function() {
-		this.order = this.order.shuffle();
+		var a = this.order;
+		var s = [];
+		while (a.length) s.push(a.splice(Math.random() * a.length, 1)[0]);
+		while (s.length) a.push(s.pop());
+		this.order = a;
 	};
 
 	this.getCard = function(id) {
@@ -178,8 +175,8 @@ var Container = function(Renderer, player) {
 	this.processMirror = function(tree) {
 		for (var cid in tree.cards) {
 			var c = new Card(tree.cards[cid].image);
-			this.add(c);
 			c.processMirror(tree.cards[cid]);
+			this.add(c);
 		}
 		delete tree.cards;
 		for (var i in tree) {
@@ -269,8 +266,8 @@ var Player = function() {
 			}
 			var k = new Container(renderer, this);
 			k.type = kid;
-			this.containers[kid] = k;
 			k.processMirror(tree.containers[kid]);
+			this.containers[kid] = k;
 		}
 		delete tree.containers;
 		for (var i in tree) {
@@ -348,8 +345,8 @@ var Game = function(connection) {
 	this.processMirror = function(tree) {
 		for (var pid in tree.players) {
 			var p = new Player();
-			this.add(p);
 			p.processMirror(tree.players[pid]);
+			this.add(p);
 		}
 		delete tree.players;
 		for (var i in tree) {

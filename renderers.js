@@ -79,7 +79,7 @@ var CardRenderer = function(card) {
 	that.createNode = function() {
 		var node = that._createNode();
 
-		node.append($("<img/>").attr("src", "cards/" + that.content.image + ".jpg"));
+		node.append(that.content.id).append($("<img/>").attr("src", "cards/" + that.content.image + ".jpg"));
 		
 		for (var counter in that.content.counters) {
 			node.append(that.createCounterNode(counter));
@@ -103,7 +103,6 @@ var CardRenderer = function(card) {
 						break;
 					case "discard":
 						that.content.container.player.game.log("Player discards card #" + that.content.id);
-						console.log(that.content);
 						that.content.discard();
 						that.content.renderer.discard();
 						that.content.broadcastInvoke("discard", true);
@@ -120,7 +119,6 @@ var CardRenderer = function(card) {
 							}
 						}
 						that.content.container.player.game.log("Player discards card #" + card.id + " at random");
-						console.log(card);
 						card.discard();
 						card.renderer.discard();
 						card.broadcastInvoke("discard", true);
@@ -187,8 +185,8 @@ var ContainerRenderer = function(container) {
 
 	that.__createNode = function() {
 		var node = that._createNode();
-		for (var id in that.content.cards) {
-			var card = that.content.cards[id].renderer.createNode();
+		for (var i in that.content.order) {
+			var card = that.content.cards[that.content.order[i]].renderer.createNode();
 			node.append(card);
 		}
 
@@ -217,7 +215,7 @@ var ContainerRenderer = function(container) {
 				card.container.player.game.log("Player moves card #" + card.id + " from " + card.container.type + " to " + newContainer.type);
 				card.moveTo(newContainer);
 
-				card.broadcastInvoke("moveTo", false, [{pointer: true, type: "container", id: newContainer.id}]);
+				card.broadcastInvoke("moveTo", true, [{pointer: true, type: "container", id: newContainer.id}]);
 			}
 		}).disableSelection();
 
@@ -232,10 +230,10 @@ var ContainerRenderer = function(container) {
 		that._render();
 		var node = that.getNode();
 		
-		$.each(that.content.order, function(o, id) {
-			var card = that.content.cards[id].renderer.render();
+		for (var i in that.content.order) {
+			var card = that.content.cards[that.content.order[i]];
 			node.append(card);
-		});
+		}
 		return node;
 	};
 
