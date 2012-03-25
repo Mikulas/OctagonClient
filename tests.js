@@ -1,5 +1,10 @@
 'use strict';
 
+var DEBUG = true;
+if (!DEBUG) {
+	console.log = function() {};
+}
+
 var failed = false;
 function expect(message, passed) {
 	if (!passed) {
@@ -84,20 +89,32 @@ $(function() {
 // Normal setup
 (function() {
 	_reset();
-	var p = new Player();
-	p.containers.play.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d1010"));
-	p.containers.play.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d1019"));
-	p.containers.play.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d1028"));
-	p.containers.hand.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d1037"));
-	p.containers.hand.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d1046"));
-	for (var i = 0; i < 5; ++i)
-		p.containers.deck.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d105" + i));
-
-	g = new Game(new Connection());
-	g.add(p);
 	
-	g.renderer.createNode();
-	g.renderer.render();
+	if (!localStorage.hasOwnProperty("client_view")) {
+			localStorage.client_view = 0;
+	}
+	++localStorage.client_view;
+
+	if (window.location.hash) {
+		console.info("MOCKING OBJECTS");
+		var p = new Player();
+		p.containers.play.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d1010"));
+		p.containers.play.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d1019"));
+		p.containers.play.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d1028"));
+		p.containers.hand.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d1037"));
+		p.containers.hand.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d1046"));
+		for (var i = 0; i < 5; ++i)
+			p.containers.deck.add(new Card("Ca12af4e8be4b4cdaa6b6534f970d105" + i));
+
+		g = new Game(new Connection());
+		g.add(p);
+		
+		g.renderer.createNode();
+		g.renderer.render();
+		
+	} else {
+		g = new Game(new Connection());
+	}
 })();
 
 // - - - - - - - WRAP UP - - - - - - - - - - - - 

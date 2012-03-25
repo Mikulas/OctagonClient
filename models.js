@@ -95,6 +95,24 @@ var Card = function(image) {
 		this.counters[counter] = value;
 	};
 
+	this.getTree = function() {
+		var tree = {
+			id: this.id,
+			name: this.name,
+			kneeling: this.kneeling,
+			visibleTo: this.visibleTo,
+			counters: this.counters,
+			image: this.image
+		};
+		return tree;
+	};
+
+	this.processMirror = function(tree) {
+		for (var i in tree) {
+			this[i] = tree[i];
+		}
+	};
+
 	this.broadcastInvoke = function(call, render, args) {
 		args = typeof args === "undefined" ? [] : args;
 
@@ -147,6 +165,26 @@ var Container = function(Renderer, player) {
 				return this.cards[id];
 		}
 		return null;
+	};
+
+	this.getTree = function() {
+		var tree = {id: this.id, type: this.type, order: this.order, cards: {}};
+		for (var cid in this.cards) {
+			tree.cards[cid] = this.cards[cid].getTree();
+		}
+		return tree;
+	};
+
+	this.processMirror = function(tree) {
+		for (var cid in tree.cards) {
+			var c = new Card(tree.cards[cid].image);
+			this.add(c);
+			c.processMirror(tree.cards[cid]);
+		}
+		delete tree.cards;
+		for (var i in tree) {
+			this[i] = tree[i];
+		}
 	};
 
 	this.broadcastUpdate = function(property) {
@@ -206,6 +244,40 @@ var Player = function() {
 		this.counters[counter] = value;
 	};
 
+	this.getTree = function() {
+		var tree = {id: this.id, counters: this.counters, containers: {}};
+		for (var kid in this.containers) {
+			tree.containers[kid] = this.containers[kid].getTree();
+		}
+		return tree;
+	};
+
+	this.processMirror = function(tree) {
+		for (var kid in tree.containers) {
+			var renderer = null;
+			switch (kid) {
+				case "play":
+					renderer = PlayContainerRenderer; break;
+				case "hand":
+					renderer = HandContainerRenderer; break;
+				case "plot":
+				case "death":
+				case "discard":
+					renderer = StackedContainerRenderer; break;
+				case "deck":
+					renderer = FacedownStackedContainerRenderer; break;
+			}
+			var k = new Container(renderer, this);
+			k.type = kid;
+			this.containers[kid] = k;
+			k.processMirror(tree.containers[kid]);
+		}
+		delete tree.containers;
+		for (var i in tree) {
+			this[i] = tree[i];
+		}
+	};
+
 	this.broadcastInvoke = function(call, render, args) {
 		args = typeof args === "undefined" ? [] : args;
 
@@ -263,6 +335,26 @@ var Game = function(connection) {
 		console.info("LOG", message);
 		if (typeof invoked === "undefined" || invoked === false)
 			this.broadcastLog(message);
+	};
+
+	this.getTree = function() {
+		var tree = {logMessages: this.logMessages, players: {}};
+		for (var pid in this.players) {
+			tree.players[pid] = this.players[pid].getTree();
+		}
+		return tree;
+	};
+
+	this.processMirror = function(tree) {
+		for (var pid in tree.players) {
+			var p = new Player();
+			this.add(p);
+			p.processMirror(tree.players[pid]);
+		}
+		delete tree.players;
+		for (var i in tree) {
+			this[i] = tree[i];
+		}
 	};
 
 	this.broadcastLog = function(message) {

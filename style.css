@@ -17,8 +17,8 @@
 [data-type=container].stacked [data-type=card].visible {display: inherit;}
 [data-type=container].stacked.facedown [data-type=card]:not(.visible) img {content: url("cards/facedown.jpg");}
 
-/*
-[data-type=card].facedown {display: inherit;}
-[data-type=card]:not(.hidden).facedown {display: inherit;}
-*/
 [data-type=container]:not(.play) [data-type=card] [data-type=counter] {display: none;}
+
+[data-type=counter] {background: no-repeat left center; background-size: 20px 20px; border: none; width: 60px; padding-left: 20px; height: 25px;}
+[data-type=counter][data-id=gold] {background-image: url("icons/gold.png");}
+[data-type=counter][data-id=power] {background-image: url("icons/power.png");}

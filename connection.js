@@ -47,10 +47,19 @@ var Connection = function() {
 
 	that.onAnnounceJoin = function(data) {
 		console.log("player has joined the game, total players: " + data.count);
+		this.send({
+			method: "mirror",
+			tree: that.game.getTree()
+		});
 	};
 
 	that.onAnnounceLeave = function(data) {
 		console.log("player has left the game, total players: " + data.count);	
+	};
+
+	that.onMirror = function(data) {
+		console.log("received game mirror", data.tree);
+		that.game.processMirror(data.tree);
 	};
 
 	that.onInvoke = function(data) {
@@ -109,9 +118,8 @@ var Connection = function() {
 	that.send = function(data) {
 		// TODO dynamic;
 		client_id = "1323193943817-9565945";
-		client_view = 2;
-
-		data.client_id = client_id + "-" + client_view;
+		data.client_id = client_id + "-" + localStorage.client_view;
+		console.info(data.client_id);
 		data.time = "" + new Date().getTime();
 		console.log("sending", JSON.stringify(data));
 		that.socket.send(JSON.stringify(data));
