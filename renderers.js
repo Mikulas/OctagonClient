@@ -36,6 +36,9 @@ var Renderer = function() {
 	};
 
 	this.moveTo = function(element, append) {
+		if (element.hasOwnProperty("renderer"))
+			element = element.renderer.getNode();
+
 		if (typeof append === "undefined" || !append)
 			this.getNode().prependTo(element);
 		else
@@ -172,7 +175,7 @@ var ContainerRenderer = function(container) {
 				var card = that.content.player.game.getCard(cid);
 				var kid = ui.item.parent("[data-type=container]").data("id");
 				var newContainer = that.content.player.game.getContainer(kid);
-				
+
 				card.moveTo(newContainer);
 
 				card.broadcastInvoke("moveTo", false, [{pointer: true, type: "container", id: newContainer.id}]);
@@ -301,19 +304,20 @@ var PlayerRenderer = function(player) {
 		// register hot keys
 		key('d', function() {
 			var deck = that.content.containers.deck;
-			if (Object.keys(deck.cards).length === 0) {
+			if (deck.order.length === 0) {
 				console.info("Player cannot draw a card, deck depleted.");
 				return false;
 			}
 
 			console.info("Player draws a card");
+
 			var cid = deck.order[0];
-			deck.order.shift();
 			var card = deck.cards[cid];
 
 			var append = true;
 			card.moveTo(that.content.containers.hand, append);
 			card.renderer.moveTo(card.container.renderer.getNode(), append);
+			card.broadcastInvoke("moveTo", true, [{pointer: true, type: "container", id: card.container.id}, append]);
 		});
 
 		return node;
