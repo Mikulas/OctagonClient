@@ -233,7 +233,7 @@ var ContainerRenderer = function(container) {
 		var node = that.getNode();
 		
 		for (var i in that.content.order) {
-			var card = that.content.cards[that.content.order[i]];
+			var card = that.content.cards[that.content.order[i]].renderer.getNode();
 			node.append(card);
 		}
 		return node;
