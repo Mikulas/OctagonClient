@@ -61,6 +61,8 @@ var Card = function() {
 		var methodLeave = "onLeave" + this.container.type.replace(/^(.)/, function(m, dot) {return dot.toUpperCase();});
 		if (this.hasOwnProperty(methodLeave))
 			this[methodLeave]();
+		if (this.renderer.hasOwnProperty(methodLeave))
+			this.renderer[methodLeave]();
 		
 		this.container = container;
 		
@@ -72,6 +74,8 @@ var Card = function() {
 		var methodEnter = "onEnter" + this.container.type.replace(/^(.)/, function(m, dot) {return dot.toUpperCase();});
 		if (this.hasOwnProperty(methodEnter))
 			this[methodEnter]();
+		if (this.renderer.hasOwnProperty(methodEnter))
+			this.renderer[methodEnter]();
 	};
 
 	this.onLeavePlay = function() {
