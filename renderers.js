@@ -96,13 +96,21 @@ var CardRenderer = function(card) {
 						that.stand();
 						that.content.broadcastInvoke("stand", true);
 						break;
+					case "discard":
+						console.info("Player discards card #" + that.content.id);
+						var discard = that.content.container.player.containers["discard"];
+						that.content.moveTo(discard);
+						that.content.renderer.moveTo(discard);
+						that.content.broadcastInvoke("moveTo", true, [{pointer: true, type: "container", id: discard.id}]);
 				}
 			},
 			// on show menu callback
 			function(e) {
 				clearMenu();
-				console.log(that.content.kneeling);
-				that.content.kneeling ? addMenuItem("stand", "Stand") : addMenuItem("kneel", "Kneel");
+				if (that.content.container.type === "play")
+					that.content.kneeling ? addMenuItem("stand", "Stand") : addMenuItem("kneel", "Kneel");
+				else if (that.content.container.type === "hand")
+					addMenuItem("discard", "Discard");
 			}
 		);
 
