@@ -178,7 +178,7 @@ var Player = function() {
 		plot: new Container(StackedContainerRenderer, this),
 		death: new Container(StackedContainerRenderer, this),
 		discard: new Container(StackedContainerRenderer, this),
-		deck: new Container(StackedContainerRenderer, this)
+		deck: new Container(FacedownStackedContainerRenderer, this)
 	};
 	for (var type in this.containers) {
 		this.containers[type].type = type;

@@ -250,7 +250,7 @@ var StackedContainerRenderer = function(container) {
 	var that = new ContainerRenderer(container);
 	that.expanded = false;
 
-	that.createNode = function() {
+	that.___createNode = function() {
 		var node = that.__createNode().addClass("stacked");
 
 		node.contextMenu(
@@ -265,12 +265,12 @@ var StackedContainerRenderer = function(container) {
 						break;
 					case "expand":
 						that.expanded = true;
-						that.getNode().children('[data-type="card"]').show();
+						that.getNode().children('[data-type="card"]').addClass("visible");
 						console.info("Player starts looking at Container #" + that.content.id);
 						break;
 					case "collapse":
 						that.expanded = false;
-						that.getNode().children('[data-type="card"]').hide();
+						that.getNode().children('[data-type="card"]').removeClass("visible");
 						console.info("Player stops loking at Container #" + that.content.id);
 						break;
 				}
@@ -283,6 +283,22 @@ var StackedContainerRenderer = function(container) {
 			}
 		);
 
+		return node;
+	};
+
+	that.createNode = function() {
+		return that.___createNode();
+	};
+
+	return that;
+}
+
+var FacedownStackedContainerRenderer = function(container) {
+	var that = new StackedContainerRenderer(container);
+
+	that.createNode = function() {
+		var node = that.___createNode();
+		node.addClass("facedown");
 		return node;
 	};
 
