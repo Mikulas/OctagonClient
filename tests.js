@@ -45,7 +45,9 @@ $(function() {
 // Container setup
 (function() {
 	var k = new Container(ContainerRenderer, new Player());
+	k.type = "hand";
 	var l = new Container(ContainerRenderer, new Player());
+	l.type = "play";
 
 	var c = new Card();
 	k.add(c);

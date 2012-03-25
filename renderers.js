@@ -120,6 +120,13 @@ var CardRenderer = function(card) {
 		that.getCounterNode(counter).val(value);
 	};
 
+	that.onLeavePlay = function() {
+		that.stand();
+		for (var i in that.content.counters) {
+			that.updateCounter(i, that.content.counters[i]);
+		}
+	};
+
 	that.render = function() {
 		that._render();
 		return that.getNode();
@@ -166,7 +173,15 @@ var ContainerRenderer = function(container) {
 				var kid = ui.item.parent("[data-type=container]").data("id");
 				var newContainer = that.content.player.game.getContainer(kid);
 				
+				var methodLeave = "onLeave" + card.container.type.replace(/^(.)/, function(m, dot) {return dot.toUpperCase();});
+				if (card.renderer.hasOwnProperty(methodLeave))
+					card.renderer[methodLeave]();
+
 				card.moveTo(newContainer);
+
+				var methodEnter = "onEnter" + card.container.type.replace(/^(.)/, function(m, dot) {return dot.toUpperCase();});
+				if (card.renderer.hasOwnProperty(methodEnter))
+					card.renderer[methodEnter]();
 
 				card.broadcastInvoke("moveTo", false, [{pointer: true, type: "container", id: newContainer.id}]);
 			}

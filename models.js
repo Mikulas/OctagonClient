@@ -57,6 +57,10 @@ var Card = function() {
 		this.container.order.splice(this.container.order.indexOf(this.id), 1);
 		// remove card itself
 		delete this.container.cards[this.id];
+
+		var methodLeave = "onLeave" + this.container.type.replace(/^(.)/, function(m, dot) {return dot.toUpperCase();});
+		if (this.hasOwnProperty(methodLeave))
+			this[methodLeave]();
 		
 		this.container = container;
 		
@@ -64,6 +68,18 @@ var Card = function() {
 			this.container.order.push(this.id);
 		else
 			this.container.order.splice(0, 0, this.id);
+
+		var methodEnter = "onEnter" + this.container.type.replace(/^(.)/, function(m, dot) {return dot.toUpperCase();});
+		if (this.hasOwnProperty(methodEnter))
+			this[methodEnter]();
+	};
+
+	this.onLeavePlay = function() {
+		console.log("onLeavePlay");
+		for (var i in this.counters) {
+			this.counters[i] = 0;
+		}
+		this.kneeling = false;
 	};
 
 	this.updateCounter = function(counter, value) {
@@ -91,6 +107,7 @@ var Container = function(Renderer, player) {
 	this.cards = {};
 	this.renderer = new Renderer(this);
 	this.order = []; // id[]
+	this.type = null;
 	
 	if (!(player instanceof Player)) {
 		throw TypeError("Only Player instance can be passed to Container.");
@@ -154,6 +171,9 @@ var Player = function() {
 		discard: new Container(StackedContainerRenderer, this),
 		deck: new Container(StackedContainerRenderer, this)
 	};
+	for (var type in this.containers) {
+		this.containers[type].type = type;
+	}
 
 	this.getCard = function(id) {
 		for (var kid in this.containers) {
